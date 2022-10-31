@@ -1,12 +1,12 @@
 ## FRONT
 
-frontend/nodes_modules
+./frontend/nodes_modules
 
 ## BACK
 
-backend/src/My_class/Config.php
-backend/vendor
+./backend/src/My_class/Config.php
+./backend/vendor
 
 ## AUTRE
 
-autre
+./autre
