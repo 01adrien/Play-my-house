@@ -1,0 +1,12 @@
+## FRONT
+
+frontend/nodes_modules
+
+## BACK
+
+backend/src/My_class/Config.php
+backend/vendor
+
+## AUTRE
+
+autre

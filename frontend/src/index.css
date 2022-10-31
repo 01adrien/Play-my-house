@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Proxima Nova, system-ui, sans-serif;
+  }
+}
+
+.root,
+#root,
+#docs-root {
+  --main-yellow: #e4ac46;
+  --main-purple: #be4680;
+  --bg-color: #faf9fa;
+}

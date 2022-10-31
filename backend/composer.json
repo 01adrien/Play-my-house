@@ -1,0 +1,17 @@
+{
+    "name": "adrien/backend",
+    "autoload": {
+        "psr-4": {
+            "Adrien\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "01adrien",
+            "email": "adrien.go@outlook.fr"
+        }
+    ],
+    "require": {
+        "mikecao/flight": "^2.0"
+    }
+}
