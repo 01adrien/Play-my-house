@@ -5,7 +5,7 @@
 ## BACK
 
 ./backend/src/My_class/Config.php
-./backend/vendor
+./backend/vendor/*
 
 ## AUTRE
 
