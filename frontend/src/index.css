@@ -8,10 +8,6 @@
   }
 }
 
-.root,
-#root,
-#docs-root {
-  --main-yellow: #e4ac46;
-  --main-purple: #be4680;
-  --bg-color: #faf9fa;
+.dropdown:hover > .dropdown-content {
+  display: block;
 }

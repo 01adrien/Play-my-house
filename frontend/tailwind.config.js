@@ -4,7 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        main_color: "#78dcca",
+        main_color: "#ed775a",
+        main_color_hover: "#d06a51",
+        main_color_light: "#f2a08c",
       },
     },
   },
