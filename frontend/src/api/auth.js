@@ -9,6 +9,9 @@ export async function signin(credentials) {
   );
 }
 
-export async function getUsers() {
-  return await axios.get("http://127.0.0.1:8080/src/router/users");
+export async function login(credentials) {
+  return await axios.post(
+    `${BASE_URL}/auth/login`,
+    JSON.stringify(credentials)
+  );
 }

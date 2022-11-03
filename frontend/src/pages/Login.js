@@ -7,11 +7,11 @@ export default function Login() {
   return (
     <Layout>
       <div className="w-full h-[80vh]">
-        <div className="w-full h-28 items-center flex justify-around">
+        <div className="w-full h-24 items-center flex justify-around">
           <p>ENREGISTREMENT</p>
           <p>CONNEXION</p>
         </div>
-        <div className="w-[100vw] mb-auto flex space-around">
+        <div className="w-[100vw] mb-auto h-[60%] flex space-around">
           <SignInForm />
           <LoginForm />
         </div>

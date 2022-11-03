@@ -14,7 +14,7 @@ export default function FormInput({ name, type, id, fn, value }) {
         id={id}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5"
         placeholder=""
-        required=""
+        required
         onChange={(e) => fn(e)}
         value={value}
       />

@@ -1,37 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import FormInput from "./input/FormInput";
 import BasicButton from "./button/BasicButton";
 import BasicCheckbox from "./checkbox/BasicCheckbox";
+import LoginErrors from "./LoginErrors";
+import { login } from "../api/auth";
+import { currentUserContext } from "../context/CurrentUserContext";
+import Spinner from "./Spinner";
 
 export default function LoginForm() {
+  const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
   const [credentials, setCredentials] = useState({ password: "", email: "" });
-  function handleSubmit(e) {
+  const { setUserInfos } = useContext(currentUserContext);
+
+  async function handleSubmit(e) {
+    setLoading(true);
     e.preventDefault();
-    console.log(credentials);
+    const { password, email } = credentials;
+    if (true) {
+      await login({ email: email, password: password })
+        .then(({ data }) => {
+          console.log(data);
+          setUserInfos((infos) => {
+            return { ...infos, data };
+          });
+          if (!data.granted) setCredentialsErrors(data);
+        })
+        .then(() => setLoading(false))
+        .catch((e) => console.log(e));
+    }
   }
   return (
-    <div className="w-[50%] flex justify-center items-center border-r-2 border-slate-200">
-      <form className="w-[50%]" onSubmit={(e) => handleSubmit(e)}>
-        <FormInput
-          name="email"
-          type="email"
-          id="email"
-          fn={(e) => setCredentials({ ...credentials, email: e.target.value })}
-          value={credentials.email}
-        />
-        <FormInput
-          name="mot de passe"
-          type="password"
-          id="password"
-          fn={(e) =>
-            setCredentials({ ...credentials, password: e.target.value })
-          }
-          value={credentials.password}
-        />
-        <BasicCheckbox label="remember me" />
-        <BasicButton text="Login" type="submit" />
-      </form>
+    <div className="flex-col items-center justify-center w-[50%]">
+      <div className="w-[100%] flex items-center justify-center border-r-2 border-slate-200">
+        <form className="w-[50%] flex-col" onSubmit={(e) => handleSubmit(e)}>
+          <FormInput
+            name="email"
+            type="email"
+            id="email"
+            fn={(e) => {
+              setCredentialsErrors({});
+              setCredentials({ ...credentials, email: e.target.value });
+            }}
+            value={credentials.email}
+          />
+          <FormInput
+            name="mot de passe"
+            type="password"
+            id="password"
+            fn={(e) => {
+              setCredentialsErrors({});
+              setCredentials({ ...credentials, password: e.target.value });
+            }}
+            value={credentials.password}
+          />
+          <BasicCheckbox label="remember me" />
+          <BasicButton text={loading ? <Spinner /> : "Login"} type="submit" />
+        </form>
+      </div>
+      {credentialsErrors && <LoginErrors errors={credentialsErrors} />}
     </div>
   );
 }
