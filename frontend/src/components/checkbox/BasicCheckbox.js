@@ -11,7 +11,7 @@ export default function BasicCheckbox({ label }) {
           required=""
         />
       </div>
-      <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+      <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
         {label}
       </label>
     </div>

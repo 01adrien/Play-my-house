@@ -6,12 +6,14 @@ import LoginErrors from "./LoginErrors";
 import { login } from "../api/auth";
 import { currentUserContext } from "../context/CurrentUserContext";
 import Spinner from "./Spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
   const [credentials, setCredentials] = useState({ password: "", email: "" });
-  const { setUserInfos } = useContext(currentUserContext);
+  const { setUserInfos, userInfos } = useContext(currentUserContext);
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     setLoading(true);
@@ -22,12 +24,18 @@ export default function LoginForm() {
         .then(({ data }) => {
           console.log(data);
           setUserInfos((infos) => {
-            return { ...infos, data };
+            return { ...infos, test: "name" };
           });
           if (!data.granted) setCredentialsErrors(data);
+          if (data.granted) navigate("/user", { state: { user: data } });
         })
-        .then(() => setLoading(false))
-        .catch((e) => console.log(e));
+        .then(() => {
+          setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
+          console.log(e);
+        });
     }
   }
   return (
@@ -55,7 +63,11 @@ export default function LoginForm() {
             value={credentials.password}
           />
           <BasicCheckbox label="remember me" />
-          <BasicButton text={loading ? <Spinner /> : "Login"} type="submit" />
+          <BasicButton
+            style={loading && "border-2 border-slate-700 "}
+            text={loading ? <Spinner /> : "Login"}
+            type="submit"
+          />
         </form>
       </div>
       {credentialsErrors && <LoginErrors errors={credentialsErrors} />}

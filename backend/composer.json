@@ -12,6 +12,9 @@
         }
     ],
     "require": {
-        "mikecao/flight": "^2.0"
+        "mikecao/flight": "^2.0",
+        "slim/slim": "^4.11",
+        "bramus/router": "~1.6",
+        "steampixel/simple-php-router": "^0.7.1"
     }
 }

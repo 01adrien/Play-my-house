@@ -30,7 +30,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <div className="w-full h-2/5"></div>
     </div>
   );
 }

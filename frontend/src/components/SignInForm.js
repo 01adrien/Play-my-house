@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import FormInput from "./input/FormInput";
 import BasicCheckbox from "./checkbox/BasicCheckbox";
+import Spinner from "./Spinner";
+import LoginErrors from "./LoginErrors";
 import BasicButton from "./button/BasicButton";
 import { signin } from "../api/auth";
 import { credentialsValidation, isEqual } from "../utils";
-import LoginErrors from "./LoginErrors";
 import { currentUserContext } from "../context/CurrentUserContext";
-import Spinner from "./Spinner";
 
 export default function SignInForm() {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,6 @@ export default function SignInForm() {
     name: "",
     passwordConfirm: "",
   });
-
   async function handleSubmit(e) {
     setLoading(true);
     e.preventDefault();
@@ -28,8 +27,7 @@ export default function SignInForm() {
     if (!isEqual(password, passwordConfirm)) {
       setCredentialsErrors({ passwordMatch_err: true });
     }
-    const errors = Object.keys(credentialsErrors);
-    if (!errors.length) {
+    if (true) {
       await signin({ email: email, password: password, name: name })
         .then(({ data }) => {
           console.log(data);
@@ -38,16 +36,22 @@ export default function SignInForm() {
           });
           if (!data.granted) setCredentialsErrors(data);
         })
-        .then(() => setLoading(false))
-        .catch((e) => console.log(e));
+        .then(() => {
+          setLoading(false);
+        })
+        .catch((e) => {
+          setLoading(false);
+          console.log(e);
+        });
     }
   }
+
   return (
     <div className="flex-col items-center justify-center w-[50%]">
       <div className="w-[100%] flex items-center justify-center border-r-2 border-slate-200">
         <form className="w-[50%] flex-col" onSubmit={(e) => handleSubmit(e)}>
           <FormInput
-            name="nom"
+            name="nom*"
             type="text"
             id="name"
             fn={(e) => {
@@ -57,7 +61,7 @@ export default function SignInForm() {
             value={credentials.name}
           />
           <FormInput
-            name="email"
+            name="email*"
             type="email"
             id="email"
             fn={(e) => {
@@ -67,7 +71,7 @@ export default function SignInForm() {
             value={credentials.email}
           />
           <FormInput
-            name="mot de passe"
+            name="mot de passe*"
             type="password"
             id="password"
             fn={(e) => {
@@ -77,7 +81,7 @@ export default function SignInForm() {
             value={credentials.password}
           />
           <FormInput
-            name="confirmation mot de passe"
+            name="confirmation mot de passe*"
             type="password"
             id="password-confirm"
             fn={(e) => {
@@ -89,7 +93,10 @@ export default function SignInForm() {
             }}
             value={credentials.passwordConfirm}
           />
-          <BasicCheckbox label="remember me" />
+          <BasicCheckbox
+            style={loading && "border-2 border-slate-700 "}
+            label="remember me"
+          />
           <BasicButton text={loading ? <Spinner /> : "Signin"} type="submit" />
         </form>
       </div>
