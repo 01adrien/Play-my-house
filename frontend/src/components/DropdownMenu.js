@@ -8,8 +8,22 @@ export default function DropdownMenu() {
   });
   return (
     <div id="dropdown" className="dropdown inline-block relative z-10">
-      <button className="bg-main_color text-white font-semibold py-2 px-4 inline-flex items-center w-[10vw]">
-        <span>Instruments</span>
+      <button className="bg-main_color text-white font-semibold py-2 inline-flex justlfy-center w-[10vw]">
+        <svg
+          className="pl-1 w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
+        </svg>
+        <span className="pl-3">Instruments</span>
       </button>
       <ul className="dropdown-content absolute hidden text-gray-700 w-[10vw] bg-white  border border-slate-200">
         {Object.keys(items).map((item) => {

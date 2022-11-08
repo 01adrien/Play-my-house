@@ -7,7 +7,7 @@
 
     class User extends \Controller\Controller {
 
-        const DEFAULT_AVATAR = "/home/adrien/Bureau/titre_pro/projet/backend/public/pictures/users/default.png";
+        const DEFAULT_AVATAR = "default.png";
         
         public static function get_all() {
             return \Model\User::get_all();

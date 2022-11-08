@@ -29,6 +29,7 @@ export default function User() {
               {Object.keys(headings).map((head) => {
                 return (
                   <div
+                    key={head}
                     onClick={() => setActiveHeading(head)}
                     className={`h-10 w-[80%] flex hover:bg-slate-200 ${
                       activeHeading === head && "bg-slate-200"

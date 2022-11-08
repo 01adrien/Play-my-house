@@ -4,13 +4,17 @@ import BasicButton from "./button/BasicButton";
 import FormInput from "./input/FormInput";
 import LoginErrors from "./LoginErrors";
 import Spinner from "./Spinner";
-import { getPictureName, getPicture } from "../api/userPicture";
+import { getPicture, uploadPicture } from "../api/user";
+import FileInput from "./input/FileInput";
+import whiteBG from "../assets/fond_blanc.jpeg";
 
 export default function UserProfile({ userInfos }) {
   // const { setUserInfos, userInfos } = useContext(currentUserContext);
-  const [picture, setPicture] = useState({ src: null });
+  const [picture, setPicture] = useState({ src: whiteBG });
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploadImg, setIsUploadImg] = useState(false);
   const [credentials, setCredentials] = useState({
     password: "",
     email: userInfos.email,
@@ -19,36 +23,33 @@ export default function UserProfile({ userInfos }) {
     newPasswordConfirm: "",
   });
 
-  console.log(userInfos);
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
+  const { name, keypass, id, picture_id } = userInfos;
   useEffect(() => {
-    getPictureName(userInfos.picture_id)
+    getPicture(userInfos.picture_id)
       .then(({ data }) => {
-        console.log(data);
-        getPicture(data)
-          .then(({ data }) => {
-            console.log(data);
-            setPicture({ src: data });
-          })
-          .catch(console.log);
+        setPicture({ src: data });
       })
       .catch(console.log);
-  }, []);
+  }, [isUploadImg]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("submit");
+  }
+
+  async function hamdleSubmitUpload(e) {
+    setPicture({ src: whiteBG });
+    e.preventDefault(e);
+    uploadPicture({ name, keypass, id, selectedFile, picture_id })
+      .then(({ data }) => {
+        console.log(data);
+        setIsUploadImg(!isUploadImg);
+      })
+      .then(() => setLoading(false))
+      .catch(console.log);
   }
   return (
     <div className="flex flex-row justify-between items-center w-[100%]">
-      <div className="flex flex-col pl-12 w-[50%]">
+      <div className="flex flex-col pl-12 w-[55%]">
         <form onSubmit={(e) => handleSubmit(e)} className="w-[100%]">
           <FormInput
             required={false}
@@ -118,13 +119,37 @@ export default function UserProfile({ userInfos }) {
           </div>
         </form>
       </div>
-      <div className=" w-[60%] flex justify-center">
-        {picture.src ? (
-          <img className="w-60 h-56 rounded" alt="avatar" src={picture.src} />
-        ) : (
-          <Spinner />
-        )}
-      </div>
+      <form
+        onSubmit={(e) => hamdleSubmitUpload(e)}
+        className=" w-[60%] h-[45vh] flex flex-col justify-between items-center"
+      >
+        <FileInput setSelectedFile={setSelectedFile} />
+        <img className="w-60 h-56 rounded" alt="avatar" src={picture.src} />
+        <BasicButton
+          width="40"
+          text={
+            picture.src === whiteBG ? (
+              <Spinner />
+            ) : (
+              <svg
+                class="w-8 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                ></path>
+              </svg>
+            )
+          }
+          type="submit"
+        />
+      </form>
     </div>
   );
 }

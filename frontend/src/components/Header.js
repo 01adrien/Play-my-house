@@ -1,7 +1,6 @@
 import React from "react";
 import SearchBar from "./SearchBar";
 import logo from "../assets/logo.png";
-import bannerPicture from "../assets/home_banner1.jpg";
 import DropdownMenu from "./DropdownMenu";
 import { Link } from "react-router-dom";
 
