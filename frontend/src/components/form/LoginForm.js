@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import FormInput from "./input/FormInput";
-import BasicButton from "./button/BasicButton";
-import BasicCheckbox from "./checkbox/BasicCheckbox";
-import LoginErrors from "./LoginErrors";
-import { login } from "../api/auth";
-import { currentUserContext } from "../context/CurrentUserContext";
-import Spinner from "./Spinner";
+import FormInput from "../input/FormInput";
+import BasicButton from "../button/BasicButton";
+import BasicCheckbox from "../checkbox/BasicCheckbox";
+import LoginErrors from "../LoginErrors";
+import { login } from "../../api/auth";
+import { getProfile } from "../../api/user";
+import Spinner from "../Spinner";
 import { useNavigate } from "react-router-dom";
 
-export default function LoginForm() {
+export default function LoginForm({ setUser }) {
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
   const [credentials, setCredentials] = useState({ password: "", email: "" });
-  const { setUserInfos, userInfos } = useContext(currentUserContext);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -22,12 +21,12 @@ export default function LoginForm() {
     if (true) {
       await login({ email: email, password: password })
         .then(({ data }) => {
-          console.log(data);
-          setUserInfos((infos) => {
-            return { ...infos, test: "name" };
-          });
           if (!data.granted) setCredentialsErrors(data);
-          if (data.granted) navigate("/user", { state: { user: data } });
+          if (data.granted) {
+            getProfile()
+              .then(setUser)
+              .then(() => navigate("/user"));
+          }
         })
         .then(() => {
           setLoading(false);

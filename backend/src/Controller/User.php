@@ -2,7 +2,7 @@
 
     namespace Controller;
 
-    include_once('../Autoloader.php');
+    include_once('/home/adrien/Bureau/titre_pro/projet/backend/src/Autoloader.php');
     \Autoloader::register();
 
     class User extends \Controller\Controller {
@@ -59,26 +59,33 @@
             $picture_id = \Controller\User_picture::create(['URI' => self::DEFAULT_AVATAR]);
             $valid_user['picture_id'] = $picture_id->id;
             if ($user = \Controller\User::create_update($valid_user, 'CREATE')) {
-                session_start();
-                $_SESSION['ID'] = session_id();
-                $_SESSION['user_ID'] = $user->id;
-                $_SESSION['user_name'] = $valid_user['name'];
-                $_SESSION['user_email'] = $valid_user['email'];
-                return ['granted' => true, 'email' => $valid_user['email'], 'name' => $valid_user['name'], 'picture_id' => $valid_user['picture_id'], 'keypass' => session_id(), 'id' => $user->id ];
+                $_SESSION['user_id'] = $user['id'];
+                return ['granted' => true];
             };
         }
 
         public static function login($post) {
             $post = \My_class\String_format::sanitize_input($post);
             if ($is_register = \Model\User::is_register((array)$post)) {
-                session_start();
-                $_SESSION['ID'] = session_id();
-                $_SESSION['userID'] = $is_register['id'];
-                $_SESSION['user_name'] = $is_register['name'];
-                $_SESSION['user_email'] = $is_register['email'];
-                return ['granted' => true, 'email' => $is_register['email'], 'name' => $is_register['name'], 'picture_id' => $is_register['picture_id'] ,'id' => $is_register['id'], 'keypass' => session_id() ];
+                $_SESSION['user_id'] = $is_register['id'];
+                return ['granted' => true];
             }
             return ['login_err' => true];
+        }
+
+        public static function get_profil() {
+            if ($_SESSION && $_SESSION['user_id']) {
+                $id['id'] = \Controller\Controller::formatdata($_SESSION, 'user_id', \Model\Table::P_INT);
+                $user = \Model\User::find_by($id, true);
+                return ['granted' => true, 'email' => $user->email, 'picture_id' => $user->picture_id, 'name' => $user->name, 'role' => $user->role, 'id' => $user->id ];
+            }
+            
+        }
+
+        public static function logout() {
+            session_destroy();
+		    unset($_SESSION);
+		    setcookie("userId", null, -1, '/');
         }
 }
 

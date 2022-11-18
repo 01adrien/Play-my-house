@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
-import { currentUserContext } from "../context/CurrentUserContext";
+import React, { useState, useEffect } from "react";
 import BasicButton from "./button/BasicButton";
 import FormInput from "./input/FormInput";
 import LoginErrors from "./LoginErrors";
@@ -8,24 +7,18 @@ import { getPicture, uploadPicture } from "../api/user";
 import FileInput from "./input/FileInput";
 import whiteBG from "../assets/fond_blanc.jpeg";
 
-export default function UserProfile({ userInfos }) {
-  // const { setUserInfos, userInfos } = useContext(currentUserContext);
+export default function UserProfile({ user, setUser }) {
   const [picture, setPicture] = useState({ src: whiteBG });
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploadImg, setIsUploadImg] = useState(false);
-  const [credentials, setCredentials] = useState({
-    password: "",
-    email: userInfos.email,
-    name: userInfos.name,
-    newPassword: "",
-    newPasswordConfirm: "",
-  });
+  const [credentials, setCredentials] = useState({});
 
-  const { name, keypass, id, picture_id } = userInfos;
+  const { name, email, picture_id, id, role } = user;
+
   useEffect(() => {
-    getPicture(userInfos.picture_id)
+    getPicture(picture_id)
       .then(({ data }) => {
         setPicture({ src: data });
       })
@@ -39,9 +32,8 @@ export default function UserProfile({ userInfos }) {
   async function hamdleSubmitUpload(e) {
     setPicture({ src: whiteBG });
     e.preventDefault(e);
-    uploadPicture({ name, keypass, id, selectedFile, picture_id })
+    uploadPicture({ name, id, selectedFile, picture_id })
       .then(({ data }) => {
-        console.log(data);
         setIsUploadImg(!isUploadImg);
       })
       .then(() => setLoading(false))
@@ -57,9 +49,9 @@ export default function UserProfile({ userInfos }) {
             type="text"
             id="name"
             fn={(e) => {
-              setCredentials({ ...credentials, name: e.target.value });
+              setUser({ ...user, name: e.target.value });
             }}
-            value={credentials.name}
+            value={name}
           />
           <FormInput
             required={false}
@@ -68,9 +60,9 @@ export default function UserProfile({ userInfos }) {
             id="email"
             fn={(e) => {
               setCredentialsErrors({});
-              setCredentials({ ...credentials, email: e.target.value });
+              setUser({ ...user, email: e.target.value });
             }}
-            value={credentials.email}
+            value={email}
           />
           <FormInput
             required={false}
@@ -79,7 +71,7 @@ export default function UserProfile({ userInfos }) {
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
-              setCredentials({ ...credentials, password: e.target.value });
+              setUser({ ...user, password: e.target.value });
             }}
             value={credentials.password}
           />
@@ -90,7 +82,7 @@ export default function UserProfile({ userInfos }) {
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
-              setCredentials({ ...credentials, newPassword: e.target.value });
+              setUser({ ...user, newPassword: e.target.value });
             }}
             value={credentials.newPassword}
           />
@@ -101,8 +93,8 @@ export default function UserProfile({ userInfos }) {
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
-              setCredentials({
-                ...credentials,
+              setUser({
+                ...user,
                 newPasswordConfirm: e.target.value,
               });
             }}
@@ -132,16 +124,16 @@ export default function UserProfile({ userInfos }) {
               <Spinner />
             ) : (
               <svg
-                class="w-8 h-6"
+                className="w-8 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                 ></path>
               </svg>

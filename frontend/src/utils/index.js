@@ -14,3 +14,6 @@ export function credentialsValidation(credentials) {
 }
 
 export const isEqual = (a, b) => a === b;
+
+export const localStoreAnything = (object) =>
+  Object.keys(object).map((item) => localStorage.setItem(item, object[item]));

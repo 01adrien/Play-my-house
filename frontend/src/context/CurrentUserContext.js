@@ -3,9 +3,9 @@ import React, { createContext, useState } from "react";
 export const currentUserContext = createContext();
 
 export default function CurrentUserContextprovider({ children }) {
-  const [userInfos, setUserInfos] = useState({ name: "test" });
+  const [infosUser, setInfosUser] = useState();
   return (
-    <currentUserContext.Provider value={{ userInfos, setUserInfos }}>
+    <currentUserContext.Provider value={{ infosUser, setInfosUser }}>
       {children}
     </currentUserContext.Provider>
   );

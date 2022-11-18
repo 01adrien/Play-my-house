@@ -2,7 +2,7 @@
 
     namespace Controller;
 
-    include_once('../Autoloader.php');
+    include_once('/home/adrien/Bureau/titre_pro/projet/backend/src/Autoloader.php');
     \Autoloader::register();
 
     class User_picture extends \Controller\Controller{
@@ -16,8 +16,12 @@
             return \Controller\Picto::get_picture($post);
         }
 
-        public static function upload_picture() {
-            return \Controller\Picto::upload_picture();
+        public static function upload_picture($post) {
+            $ext = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+            if ($ext === 'jpeg' || $ext == 'jpg') {
+                return \Controller\Picto::upload_picture();
+            }
+            
         }
 
         public static function update_picture($post) {

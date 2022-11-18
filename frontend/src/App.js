@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { currentUserContext } from "./context/CurrentUserContext";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -12,13 +11,20 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+  const [user, setUser] = useState({});
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<User />} />
+          <Route path="/" element={<Home setUser={setUser} user={user} />} />
+          <Route
+            path="/login"
+            element={<Login setUser={setUser} user={user} />}
+          />
+          <Route
+            path="/user"
+            element={<User setUser={setUser} user={user} />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

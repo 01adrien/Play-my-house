@@ -1,17 +1,23 @@
 import axios from "axios";
-
-const BASE_URL = "http://127.0.0.1:8000/src/router";
+import { AXIOS } from "./Axios";
 
 export async function signin(credentials) {
-  return await axios.post(
-    `${BASE_URL}/auth/signin`,
-    JSON.stringify(credentials)
-  );
+  const { email, password, name } = credentials;
+  const post = new FormData();
+  post.append("name", name);
+  post.append("email", email);
+  post.append("password", password);
+  return await AXIOS.post(`/user/signin`, post);
 }
 
 export async function login(credentials) {
-  return await axios.post(
-    `${BASE_URL}/auth/login`,
-    JSON.stringify(credentials)
-  );
+  const { email, password } = credentials;
+  const post = new FormData();
+  post.append("email", email);
+  post.append("password", password);
+  return await AXIOS.post(`/user/login`, post);
+}
+
+export async function logout() {
+  return await AXIOS.post(`/user/logout`);
 }

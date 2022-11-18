@@ -1,23 +1,29 @@
 import axios from "axios";
-
-const BASE_URL = "http://127.0.0.1:8000/src/router";
+import { AXIOS } from "./Axios";
 
 export async function getPicture(id) {
-  return await axios.get(`${BASE_URL}/users/picture/${id}`);
+  const post = new FormData();
+  post.append("id", id);
+  return await AXIOS.post(`/user_picture/get_picture`, post);
 }
 
 export async function uploadPicture(body) {
   const { id, name, selectedFile, keypass, picture_id } = body;
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("keypass", keypass);
-  formData.append("file", selectedFile);
-  formData.append("id", id);
-  formData.append("picture_id", picture_id);
+  const post = new FormData();
+  post.append("keypass", keypass);
+  post.append("file", selectedFile);
+  post.append("name", name);
+  post.append("id", id);
+  post.append("picture_id", picture_id);
 
-  return await axios.post(`${BASE_URL}/users/upload`, formData, {
+  return await AXIOS.post(`/user_picture/upload_picture`, post, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+}
+
+export async function getProfile() {
+  res = await AXIOS.get(`/user/get_profil`);
+  return res.data;
 }

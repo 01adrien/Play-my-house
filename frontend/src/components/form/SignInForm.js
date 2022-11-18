@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import FormInput from "./input/FormInput";
-import BasicCheckbox from "./checkbox/BasicCheckbox";
-import Spinner from "./Spinner";
-import LoginErrors from "./LoginErrors";
-import BasicButton from "./button/BasicButton";
-import { signin } from "../api/auth";
-import { credentialsValidation, isEqual } from "../utils";
-import { currentUserContext } from "../context/CurrentUserContext";
+import FormInput from "../input/FormInput";
+import BasicCheckbox from "../checkbox/BasicCheckbox";
+import Spinner from "../Spinner";
+import LoginErrors from "../LoginErrors";
+import BasicButton from "../button/BasicButton";
+import { signin } from "../../api/auth";
+import { credentialsValidation, isEqual } from "../../utils";
 
-export default function SignInForm() {
+export default function SignInForm({ setUser }) {
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
-  const { setUserInfos } = useContext(currentUserContext);
+
   const [credentials, setCredentials] = useState({
     password: "",
     email: "",
@@ -31,9 +30,7 @@ export default function SignInForm() {
       await signin({ email: email, password: password, name: name })
         .then(({ data }) => {
           console.log(data);
-          setUserInfos((infos) => {
-            return { ...infos, data };
-          });
+          setUser(data);
           if (!data.granted) setCredentialsErrors(data);
         })
         .then(() => {
