@@ -7,6 +7,7 @@ export default function FormInput({
   fn,
   value,
   required = true,
+  testId,
 }) {
   return (
     <div className="mb-4">
@@ -17,6 +18,7 @@ export default function FormInput({
         {name}
       </label>
       <input
+        data-cy={testId}
         type={type}
         id={id}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5"

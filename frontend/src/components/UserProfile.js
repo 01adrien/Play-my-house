@@ -5,20 +5,22 @@ import LoginErrors from "./LoginErrors";
 import Spinner from "./Spinner";
 import { getPicture, uploadPicture } from "../api/user";
 import FileInput from "./input/FileInput";
-import whiteBG from "../assets/fond_blanc.jpeg";
+import { user } from "../store/user";
+import { useRecoilState } from "recoil";
 
-export default function UserProfile({ user, setUser }) {
-  const [picture, setPicture] = useState({ src: whiteBG });
+export default function UserProfile() {
+  const [picture, setPicture] = useState({ src: null });
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploadImg, setIsUploadImg] = useState(false);
   const [credentials, setCredentials] = useState({});
+  const [profile, setProfile] = useRecoilState(user);
 
-  const { name, email, picture_id, id, role } = user;
+  const { name, email, picture_id, id, role, picture_name } = profile;
 
   useEffect(() => {
-    getPicture(picture_id)
+    getPicture(picture_id, picture_name)
       .then(({ data }) => {
         setPicture({ src: data });
       })
@@ -30,10 +32,10 @@ export default function UserProfile({ user, setUser }) {
   }
 
   async function hamdleSubmitUpload(e) {
-    setPicture({ src: whiteBG });
+    setPicture({ src: null });
     e.preventDefault(e);
     uploadPicture({ name, id, selectedFile, picture_id })
-      .then(({ data }) => {
+      .then(() => {
         setIsUploadImg(!isUploadImg);
       })
       .then(() => setLoading(false))
@@ -48,9 +50,7 @@ export default function UserProfile({ user, setUser }) {
             name="nom"
             type="text"
             id="name"
-            fn={(e) => {
-              setUser({ ...user, name: e.target.value });
-            }}
+            fn={(e) => {}}
             value={name}
           />
           <FormInput
@@ -60,7 +60,6 @@ export default function UserProfile({ user, setUser }) {
             id="email"
             fn={(e) => {
               setCredentialsErrors({});
-              setUser({ ...user, email: e.target.value });
             }}
             value={email}
           />
@@ -71,9 +70,8 @@ export default function UserProfile({ user, setUser }) {
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
-              setUser({ ...user, password: e.target.value });
             }}
-            value={credentials.password}
+            value={credentials.email}
           />
           <FormInput
             required={false}
@@ -82,7 +80,6 @@ export default function UserProfile({ user, setUser }) {
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
-              setUser({ ...user, newPassword: e.target.value });
             }}
             value={credentials.newPassword}
           />
@@ -93,10 +90,6 @@ export default function UserProfile({ user, setUser }) {
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
-              setUser({
-                ...user,
-                newPasswordConfirm: e.target.value,
-              });
             }}
             value={credentials.newPasswordConfirm}
           />
@@ -116,11 +109,17 @@ export default function UserProfile({ user, setUser }) {
         className=" w-[60%] h-[45vh] flex flex-col justify-between items-center"
       >
         <FileInput setSelectedFile={setSelectedFile} />
-        <img className="w-60 h-56 rounded" alt="avatar" src={picture.src} />
+        <div className="w-60 h-56 flex justify-center items-center rounded">
+          {picture?.src ? (
+            <img className="w-60 h-56 rounded" alt="avatar" src={picture.src} />
+          ) : (
+            <Spinner />
+          )}
+        </div>
         <BasicButton
           width="40"
           text={
-            picture.src === whiteBG ? (
+            !picture?.src ? (
               <Spinner />
             ) : (
               <svg

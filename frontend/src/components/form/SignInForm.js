@@ -6,17 +6,23 @@ import LoginErrors from "../LoginErrors";
 import BasicButton from "../button/BasicButton";
 import { signin } from "../../api/auth";
 import { credentialsValidation, isEqual } from "../../utils";
+import { useNavigate } from "react-router-dom";
+import { getProfile } from "../../api/user";
+import { useSetRecoilState } from "recoil";
+import { user } from "../../store/user";
 
-export default function SignInForm({ setUser }) {
+export default function SignInForm() {
+  const setProfile = useSetRecoilState(user);
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
-
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     password: "",
     email: "",
     name: "",
     passwordConfirm: "",
   });
+
   async function handleSubmit(e) {
     setLoading(true);
     e.preventDefault();
@@ -29,9 +35,12 @@ export default function SignInForm({ setUser }) {
     if (true) {
       await signin({ email: email, password: password, name: name })
         .then(({ data }) => {
-          console.log(data);
-          setUser(data);
           if (!data.granted) setCredentialsErrors(data);
+          if (data.granted) {
+            getProfile()
+              .then((u) => setProfile(u))
+              .then(() => navigate("/user"));
+          }
         })
         .then(() => {
           setLoading(false);
@@ -50,7 +59,7 @@ export default function SignInForm({ setUser }) {
           <FormInput
             name="nom*"
             type="text"
-            id="name"
+            id="name-signin"
             fn={(e) => {
               setCredentials({ ...credentials, name: e.target.value });
               setCredentialsErrors({});
@@ -60,7 +69,7 @@ export default function SignInForm({ setUser }) {
           <FormInput
             name="email*"
             type="email"
-            id="email"
+            id="email-signin"
             fn={(e) => {
               setCredentialsErrors({});
               setCredentials({ ...credentials, email: e.target.value });
@@ -70,7 +79,7 @@ export default function SignInForm({ setUser }) {
           <FormInput
             name="mot de passe*"
             type="password"
-            id="password"
+            id="password-signin"
             fn={(e) => {
               setCredentialsErrors({});
               setCredentials({ ...credentials, password: e.target.value });
@@ -80,7 +89,7 @@ export default function SignInForm({ setUser }) {
           <FormInput
             name="confirmation mot de passe*"
             type="password"
-            id="password-confirm"
+            id="password-confirm-signin"
             fn={(e) => {
               setCredentialsErrors({});
               setCredentials({
@@ -90,11 +99,12 @@ export default function SignInForm({ setUser }) {
             }}
             value={credentials.passwordConfirm}
           />
-          <BasicCheckbox
+          <BasicCheckbox style={"pb-2"} label="remember me" />
+          <BasicButton
+            text={loading ? <Spinner /> : "Signin"}
+            type="submit"
             style={loading && "border-2 border-slate-700 "}
-            label="remember me"
           />
-          <BasicButton text={loading ? <Spinner /> : "Signin"} type="submit" />
         </form>
       </div>
       {credentialsErrors && <LoginErrors errors={credentialsErrors} />}

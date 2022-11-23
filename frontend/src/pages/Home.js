@@ -1,17 +1,57 @@
-import React, { useEffect, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { getProfile } from "../api/user";
-import { pingServer } from "../api/Axios";
+import { getTenNewest } from "../api/instrument";
+import banner from "../assets/home_banner1.jpg";
+import InstrumentCard from "../components/cards/InstrumentCard";
+import { useRecoilState } from "recoil";
+import { user } from "../store/user";
 
-export default function Home({ user, setUser }) {
+export default function Home() {
+  const [instruments, setInstruments] = useState([]);
+  const [profile, setProfile] = useRecoilState(user);
+  console.log(profile);
   useEffect(() => {
-    getProfile().then(setUser);
-  });
+    getTenNewest().then(setInstruments);
+  }, []);
 
   return (
-    <Layout user={user} setUser={user}>
-      <div className="mb-auto h-10"></div>
-      <div>{JSON.stringify(user)}</div>
+    <Layout>
+      <div className="flex flex-col">
+        <img
+          className="object-contain rounded h-80"
+          src={banner}
+          alt="home-banner"
+        />
+        <div className="mt-8 flex items-center justify-center">
+          <div className="w-[75%] flex flex-col items-center text-center justify-center border-t-2 border-border_color">
+            <p className="text-main_color text-xl mt-6">
+              Aliquam facilisis arcu vitae sollicitudin pharetra. Orci varius
+              natoque penatibus
+            </p>
+            <div className="w-[40%] border-t-2 mt-3 border-border_color h-[1px]"></div>
+            <p className="mt-5">
+              Vivamus aliquam enim a enim egestas, at interdum erat mollis.
+              Quisque posuere feugiat blandit. Nullam fringilla risus in purus
+              ornare faucibus. Duis mauris urna, porttitor id nisi in, mollis
+              imperdiet tellus. Morbi purus magna,
+            </p>
+            <p className="text-main_color mt-10 text-xl">Les nouveautes</p>
+            <div className="w-[80px] border-t-2 mt-3 border-border_color h-[1px]"></div>
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <div className="w-[90%] flex flex-wrap justify-center">
+            {instruments?.map((instrument) => (
+              <InstrumentCard
+                key={instrument.id}
+                style={"hover:scale-110"}
+                instrument={instrument}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <p>{JSON.stringify(profile)}</p>
     </Layout>
   );
 }

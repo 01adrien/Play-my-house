@@ -1,10 +1,8 @@
 <?php 
     namespace My_class;
 
-    include_once('/home/adrien/Bureau/titre_pro/projet/backend/src/Autoloader.php');
-    \Autoloader::register();
-
-    class Database {
+    class Database 
+    {
         private static $conn;
         private $db_name;
         private $db_user;
@@ -13,22 +11,26 @@
         private $pdo;
 
 
-        public function __construct($db_name='',$db_user='',$db_pass='',$db_host='localhost'){
+        public function __construct($db_name='',$db_user='',$db_pass='',$db_host='localhost')
+        {
             $this->db_name=$db_name;
             $this->db_user=$db_user;
             $this->db_pass=$db_pass;
             $this->db_host=$db_host;
         }
 
-        public function getPDO(){ 
-            if ($this->pdo === null){
+        public function getPDO()
+        { 
+            if ($this->pdo === null)
+            {
                 $pdo = new \PDO("mysql:host=".$this->db_host.";dbname=".$this->db_name,$this->db_user, $this->db_pass);	
                 $this->pdo = $pdo;
             } else $pdo = $this->pdo;
             return $pdo;
         }
 
-        public function query($statement, $class_name = null, $one = false){
+        public function query($statement, $class_name = null, $one = false)
+        {
             $req = $this->getPDO()->query($statement);
             if($class_name) $req->setFetchMode(\PDO::FETCH_CLASS, $class_name);
             else $req->setFetchMode(\PDO::FETCH_OBJ);
@@ -36,11 +38,13 @@
             else return $req->fetchAll(\PDO::FETCH_ASSOC);
         }
 
-        public function last_insert_id(){
+        public function last_insert_id()
+        {
             return $this->getPDO()->lastInsertId();
         }
 
-        public function prepare($statement, array $attributes, $class_name = null, $one = false){
+        public function prepare($statement, array $attributes, $class_name = null, $one = false)
+        {
             try {
                 $req = $this->getPDO()->prepare($statement);
                 

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { AXIOS } from "./Axios";
 
 export async function signin(credentials) {
@@ -19,5 +18,5 @@ export async function login(credentials) {
 }
 
 export async function logout() {
-  return await AXIOS.post(`/user/logout`);
+  return await AXIOS.get(`/user/logout`);
 }

@@ -1,9 +1,9 @@
-import axios from "axios";
 import { AXIOS } from "./Axios";
 
-export async function getPicture(id) {
+export async function getPicture(id, fileName) {
   const post = new FormData();
   post.append("id", id);
+  post.append("fileName", fileName);
   return await AXIOS.post(`/user_picture/get_picture`, post);
 }
 

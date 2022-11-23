@@ -1,30 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import User from "./pages/User";
+import InstrumentFamily from "./pages/InstrumentFamily";
+import InstrumentType from "./pages/InstrumentType";
+import Instrument from "./pages/Instrument";
+import { Navigate } from "react-router-dom";
+import { user } from "./store/user";
+import { useRecoilValue } from "recoil";
 
-function ProtectedRoute({ children }) {
-  const user = true; // useContext(currentUserContext);
-  // user ? children : <Navigate to={"/login"} replace />;
-  children;
+function ProtectedRoute({ profile, children }) {
+  if (!profile?.name) return <Navigate to={"/login"} replace={true} />;
+  return children;
+}
+
+function ProtectedAdminRoute({ user, children }) {
+  if (!user?.role === "dmin") return <Navigate to={"/login"} replace={true} />;
+  return children;
 }
 
 export default function App() {
-  const [user, setUser] = useState({});
+  const profile = useRecoilValue(user);
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home setUser={setUser} user={user} />} />
-          <Route
-            path="/login"
-            element={<Login setUser={setUser} user={user} />}
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/user"
-            element={<User setUser={setUser} user={user} />}
+            element={
+              <ProtectedRoute profile={profile}>
+                <User />
+              </ProtectedRoute>
+            }
           />
+          <Route
+            path="/instrument-family/:family"
+            element={<InstrumentFamily />}
+          />
+          <Route path="/instrument-type/:type" element={<InstrumentType />} />
+          <Route path="/instrument/:id" element={<Instrument />} />
         </Routes>
       </BrowserRouter>
     </div>

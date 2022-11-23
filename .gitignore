@@ -7,6 +7,9 @@ dist/
 Config.php
 vendor/
 .parcel-cache/
+
 ## AUTRE
 
+password.txt
 autre
+.gitignore

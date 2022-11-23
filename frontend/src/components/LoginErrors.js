@@ -14,7 +14,10 @@ export default function LoginErrors({ errors }) {
   const err = Object.keys(errors);
   return (
     <div className="flex justify-center w-[100%]">
-      <div className="text-[12px] h-7 text-main_color underline w-[80%] text-center mt-6">
+      <div
+        data-cy="auth-errors"
+        className="text-[12px] h-7 text-main_color underline w-[80%] text-center mt-6"
+      >
         {msg[err[0]]}
       </div>
     </div>

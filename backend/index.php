@@ -11,8 +11,8 @@ if ($http_origin === "http://127.0.0.1:1234" ) {
 
 session_start();
 
-require __DIR__. '../vendor/autoload.php';
-include_once(__DIR__ . '../src/Autoloader.php');
+require __DIR__. '/vendor/autoload.php';
+include_once(__DIR__ . '/src/Autoloader.php');
 \Autoloader::register();
 
 define('CONFIG_PATH', __DIR__);

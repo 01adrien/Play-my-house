@@ -2,28 +2,29 @@
 
     namespace Controller;
 
-    include_once('/home/adrien/Bureau/titre_pro/projet/backend/src/Autoloader.php');
-    \Autoloader::register();
-
-    class User extends \Controller\Controller {
-
+    class User extends \Controller\Controller 
+    {
         const DEFAULT_AVATAR = "default.png";
         
-        public static function get_all() {
+        public static function get_all() 
+        {
             return \Model\User::get_all();
         }
 
-        public static function get_by_ID($post) {
+        public static function get_by_ID($post) 
+        {
             $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             return \Model\User::get_by_ID($post);
         }
 
-        public static function delete($post) {
+        public static function delete($post) 
+        {
             $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             return \Model\User::delete($post);
         }
 
-        public static function create_update($post, $action) {
+        public static function create_update($post, $action) 
+        {
             $post['email'] = self::formatdata($post, 'email', \Model\Table::P_STRING);
             $post['picture_id'] = self::formatdata($post, 'picture_id', \Model\Table::P_STRING);
             $post['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
@@ -32,9 +33,11 @@
             return \Model\User::create_update($post, $action);
         }
 
-        public static function validate_credentials($post) {
+        public static function validate_credentials($post) 
+        {
             $errors = [];
-            if (!$post['name'] || !$post['email'] || !$post['password']) {
+            if (!$post['name'] || !$post['email'] || !$post['password']) 
+            {
                 $errors['missing_err'] = true;
             }
             $post = \My_class\String_format::sanitize_input($post);
@@ -49,7 +52,8 @@
 
         public static function signin($post) {
             $valid_user = self::validate_credentials($post);
-            if (array_key_exists('name_err', $valid_user) || array_key_exists('missing_err', $valid_user) || array_key_exists('email_err', $valid_user) || array_key_exists('password_err', $valid_user)) {
+            if (array_key_exists('name_err', $valid_user) || array_key_exists('missing_err', $valid_user) || array_key_exists('email_err', $valid_user) || array_key_exists('password_err', $valid_user)) 
+            {
                 return $valid_user;
             }
             $valid_user['password'] = password_hash($valid_user['password'], PASSWORD_DEFAULT);
@@ -58,31 +62,38 @@
             if ($is_exists) return ['user_exists_err' => true];
             $picture_id = \Controller\User_picture::create(['URI' => self::DEFAULT_AVATAR]);
             $valid_user['picture_id'] = $picture_id->id;
-            if ($user = \Controller\User::create_update($valid_user, 'CREATE')) {
-                $_SESSION['user_id'] = $user['id'];
+            if ($user = \Controller\User::create_update($valid_user, 'CREATE')) 
+            {
+                $_SESSION['user_id'] = $user->id;
                 return ['granted' => true];
             };
         }
 
-        public static function login($post) {
+        public static function login($post) 
+        {
             $post = \My_class\String_format::sanitize_input($post);
-            if ($is_register = \Model\User::is_register((array)$post)) {
+            if ($is_register = \Model\User::is_register((array)$post)) 
+            {
                 $_SESSION['user_id'] = $is_register['id'];
                 return ['granted' => true];
             }
             return ['login_err' => true];
         }
 
-        public static function get_profil() {
-            if ($_SESSION && $_SESSION['user_id']) {
+        public static function get_profil() 
+        {
+            if ($_SESSION && $_SESSION['user_id']) 
+            {
                 $id['id'] = \Controller\Controller::formatdata($_SESSION, 'user_id', \Model\Table::P_INT);
                 $user = \Model\User::find_by($id, true);
-                return ['granted' => true, 'email' => $user->email, 'picture_id' => $user->picture_id, 'name' => $user->name, 'role' => $user->role, 'id' => $user->id ];
-            }
-            
+                $picture_id['id'] = \Controller\Controller::formatdata((array)$user, 'picture_id', \Model\Table::P_INT);
+                $picture = \Model\User_picture::find_by($picture_id, true);
+                return ['email' => $user->email, 'name' => $user->name, 'role' => $user->role, 'id' => $user->id, 'picture_name' => $picture->URI, ];
+            }   
         }
 
-        public static function logout() {
+        public static function logout() 
+        {   
             session_destroy();
 		    unset($_SESSION);
 		    setcookie("userId", null, -1, '/');

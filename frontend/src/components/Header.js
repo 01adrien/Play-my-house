@@ -4,8 +4,11 @@ import logo from "../assets/logo.png";
 import DropdownMenu from "./nav/DropdownMenu";
 import { Link } from "react-router-dom";
 import { logout } from "../api/auth";
+import { user } from "../store/user";
+import { useRecoilState } from "recoil";
 
-export default function Header({ user }) {
+export default function Header() {
+  const [profile, setProfile] = useRecoilState(user);
   return (
     <div className="h-46">
       <div className="w-full h-9 bg-main_color"></div>
@@ -22,13 +25,17 @@ export default function Header({ user }) {
         <div className="w-[80%] flex justify-between items-center">
           <DropdownMenu />
           <div>
-            {user ? (
+            {profile?.name ? (
               <div className="flex">
                 <Link to="/">
                   {" "}
                   <p
-                    onClick={logout}
+                    onClick={() => {
+                      logout();
+                      setProfile({ default: "user" });
+                    }}
                     className="hover:text-slate-500 cursor-pointer mr-5"
+                    data-cy="logout"
                   >
                     SE DECONNECTER
                   </p>
