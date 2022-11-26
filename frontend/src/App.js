@@ -1,23 +1,23 @@
-import React from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import User from "./pages/User";
-import InstrumentFamily from "./pages/InstrumentFamily";
-import InstrumentType from "./pages/InstrumentType";
-import Instrument from "./pages/Instrument";
-import AllInstruments from "./pages/AllInstruments";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-import { user } from "./store/user";
-import { useRecoilValue } from "recoil";
+import React from 'react';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import User from './pages/User';
+import InstrumentFamily from './pages/InstrumentFamily';
+import InstrumentType from './pages/InstrumentType';
+import Instrument from './pages/Instrument';
+import InstrumentsAll from './pages/InstrumentsAll';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { user } from './store/user';
+import { useRecoilValue } from 'recoil';
 
 function ProtectedRoute({ profile, children }) {
-  if (!profile?.name) return <Navigate to={"/login"} replace={true} />;
+  if (!profile?.name) return <Navigate to={'/login'} replace={true} />;
   return children;
 }
 
 function ProtectedAdminRoute({ user, children }) {
-  if (!user?.role === "dmin") return <Navigate to={"/login"} replace={true} />;
+  if (!user?.role === 'dmin') return <Navigate to={'/login'} replace={true} />;
   return children;
 }
 
@@ -43,7 +43,7 @@ export default function App() {
           />
           <Route path="/instrument-type/:type" element={<InstrumentType />} />
           <Route path="/instrument/:id" element={<Instrument />} />
-          <Route path="/instrument-all" element={<AllInstruments />} />
+          <Route path="/instrument-all" element={<InstrumentsAll />} />
         </Routes>
       </BrowserRouter>
     </div>

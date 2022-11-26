@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
 
 export const credentialsValidation = (credentials) => {
   const errors = {};
@@ -20,13 +20,21 @@ export const isEqual = (a, b) => a === b;
 export const makeSuccesToast = (styles, msg) => {
   return toast.success(msg, {
     style: {
-      border: styles?.border || "2px solid green",
-      padding: styles?.padding || "16px",
-      color: styles?.color || "green",
+      border: styles?.border || '2px solid green',
+      padding: styles?.padding || '16px',
+      color: styles?.color || 'green',
     },
     iconTheme: {
-      primary: styles?.primary || "green",
-      secondary: styles?.secondary || "white",
+      primary: styles?.primary || 'green',
+      secondary: styles?.secondary || 'white',
     },
+  });
+};
+
+export const scrollUp = () => {
+  window.scroll({
+    top: 100,
+    left: 100,
+    behavior: 'smooth',
   });
 };

@@ -4,13 +4,19 @@
 
     class Instrument extends \Controller\Controller
     {
+
+        public static function get_count() 
+        {
+            return \Model\Instrument::get_count();
+        }
+
         public static function get_ten_newest()
         {
             return \Model\Instrument::get_instrument(0, 10);
         }
 
 
-        public static function get_instruments($post)
+        public static function get_all($post)
         {
             return \Model\Instrument::get_instrument($post['offset'], $post['limit']);    
         }
@@ -86,6 +92,24 @@
                 return $brands;
             }
             if ($post['data'] === 'INSTRUMENT')return \Model\Instrument::get_instrument($post['offset'], $post['limit'], 'TYPE', $type_id);
+        }
+
+        public static function get_count_by_family_name($post) 
+        {   
+            $family_name['name'] = \Controller\Controller::formatdata($post, 'name', \Model\Table::P_STRING);
+            $family = \Model\Instrument_family::find_by($family_name, true);
+            $family_id['id'] = \Controller\Controller::formatdata((array)$family, 'id', \Model\Table::P_INT);
+
+            return \Model\Instrument::get_count_by($family_id, 'FAMILY');
+        }
+
+        public static function get_count_by_type_name($post)
+        {
+            $type_name['name'] = \Controller\Controller::formatdata($post, 'name', \Model\Table::P_STRING);
+            $type = \Model\Instrument_type::find_by($type_name, true);
+            $type_id['id'] = \Controller\Controller::formatdata((array)$type, 'id', \Model\Table::P_INT);
+
+            return \Model\Instrument::get_count_by($type_id, 'TYPE');
         }
 
         public static function get_all_brand() {

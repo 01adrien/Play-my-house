@@ -1,8 +1,11 @@
-import React from "react";
+import React from 'react';
 
 export default function Spinner() {
   return (
-    <div role="status relative top-[50%]">
+    <div
+      className="relative top-[50%] left-[45%]"
+      role="status relative top-[50%]"
+    >
       <svg
         aria-hidden="true"
         className="mr-2 w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600"

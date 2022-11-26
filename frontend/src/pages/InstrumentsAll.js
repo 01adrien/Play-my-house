@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { getByTypeName, getCountByTypeName } from '../api/instrument';
 import InstrumentListPage from '../components/InstrumentListPage';
-import { useRecoilValue } from 'recoil';
-import { user } from '../store/user';
-import usePagination from '../hooks/usePagination';
+import {
+  getAllBrand,
+  getAllType,
+  getInstruments,
+  getCount,
+} from '../api/instrument';
 import withLoading from '../HOC/withLoading';
+import usePagination from '../hooks/usePagination';
 
 const InstrumentListPageWithLoading = withLoading(InstrumentListPage);
 
-export default function InstrumentType() {
-  const { type } = useParams();
+export default function InstrumentsAll() {
+  const [typeList, setTypeList] = useState([]);
   const [brandList, setBrandList] = useState([]);
-  const profile = useRecoilValue(user);
   const {
     currentPage,
     setCurrentPage,
@@ -21,11 +22,14 @@ export default function InstrumentType() {
     itemsNumber,
     data,
     loading,
-  } = usePagination(getCountByTypeName, getByTypeName, type, 'INSTRUMENT');
+  } = usePagination(getCount, getInstruments);
+
+  console.log(loading);
 
   useEffect(() => {
-    getByTypeName(type, 'BRAND').then(setBrandList);
-  }, [type]);
+    getAllBrand().then(setBrandList);
+    getAllType().then(setTypeList);
+  }, []);
   return (
     <Layout>
       <InstrumentListPageWithLoading
@@ -33,11 +37,11 @@ export default function InstrumentType() {
         pagesNumber={Math.ceil(itemsNumber / itemsPerPage)}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        types={typeList}
         brands={brandList}
-        name={type}
+        name={'Tous les instruments'}
         instruments={data}
       />
-      <p>{JSON.stringify(profile)}</p>
     </Layout>
   );
 }

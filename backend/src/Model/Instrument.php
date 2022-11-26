@@ -6,10 +6,19 @@
     {
         protected static $table = "instruments";
 
+        public static function get_count()
+        {
+            $sql = "SELECT COUNT(*)
+                    FROM `".self::$table."` instru";
+
+            return \My_class\App::get_DB()->prepare($sql, [], null, true);
+        }
+
         public static function get_instrument($offset, $limit, $filter = 'ALL', $post = []) 
         {   
             if ($filter === 'FAMILY') $where = "WHERE instru.`family_id` =:id";
             if ($filter === 'TYPE') $where = "WHERE instru.`type_id` =:id";
+            if ($filter === 'ALL') $where = "WHERE instru.`id` IS NOT NULL";
             
             $sql = "SELECT
                     instru.`id`,
@@ -57,6 +66,7 @@
 
         public static function get_count_by($post, $data)
         {   
+            if ($data === 'FAMILY') $where = "WHERE instru.`family_id` =:id";
             if ($data === 'TYPE') $where = "WHERE instru.`type_id` =:id";
             if ($data === 'BRAND') $where = "WHERE instru.`brand_id` =:brand_id AND instru.`type_id` =:type_id";
             if ($data === 'FAMILY_&_BRAND') $where = "WHERE instru.`family_id` =:family_id AND instru.`brand_id` =:brand_id";

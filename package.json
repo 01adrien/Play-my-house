@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "eslint": "^8.28.0",
+    "pretier": "^0.0.1"
+  }
+}

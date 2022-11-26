@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { getInstrumentPicture } from "../../api/instrument";
-import BasicButton from "../button/BasicButton";
-import { Link } from "react-router-dom";
-import Spinner from "../icons/Spinner";
-import withLoading from "../../HOC/withLoading";
-import { Picture } from "../Picture";
+import React, { useEffect, useState } from 'react';
+import { getInstrumentPicture } from '../../api/instrument';
+import BasicButton from '../button/BasicButton';
+import { Link } from 'react-router-dom';
+import withLoading from '../../HOC/withLoading';
+import { Picture } from '../Picture';
 
 const PictureWithLoading = withLoading(Picture);
 
-export default function InstrumentCard({ instrument, style = "" }) {
+export default function InstrumentCard({ instrument, style = '' }) {
   const [loading, setLoading] = useState(true);
   const [picture, setPicture] = useState({ src: null });
   useEffect(() => {
@@ -19,12 +18,12 @@ export default function InstrumentCard({ instrument, style = "" }) {
   }, []);
   return (
     <div className={`p-3 ${style}`}>
-      <div className="w-64 h-48 flex justify-center items-center rounded-t border-2 border-border_color-center">
+      <div className="w-64 h-48 rounded-t border-2 border-border_color-center">
         <PictureWithLoading
           loading={loading}
           src={picture?.src}
           alt={`image ${instrument.instrumentName}`}
-          style={"w-64 h-48 rounded-t"}
+          style={'w-64 h-48 rounded-t'}
         />
       </div>
       <div className="flex justify-center h-28 w-64 border-b-2 border-r-2 border-l-2 border-border_color rounded-b">

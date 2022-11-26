@@ -1,4 +1,4 @@
-import { AXIOS } from "./Axios";
+import { AXIOS } from './Axios';
 
 export async function getTenNewest() {
   res = await AXIOS.get(`/instrument/get_ten_newest`);
@@ -7,23 +7,23 @@ export async function getTenNewest() {
 
 export async function getInstrumentPicture(fileName) {
   const post = new FormData();
-  post.append("fileName", fileName);
+  post.append('fileName', fileName);
   return await AXIOS.post(`/instrument/get_picture`, post, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
 }
 
 export async function getByFamilyName(name, data, offset, limit) {
   const post = new FormData();
-  post.append("name", name);
-  post.append("data", data);
-  post.append("offset", offset);
-  post.append("limit", limit);
+  post.append('name', name);
+  post.append('data', data);
+  post.append('offset', offset);
+  post.append('limit', limit);
   const res = await AXIOS.post(`/instrument/get_by_family_name`, post, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return res.data;
@@ -31,13 +31,13 @@ export async function getByFamilyName(name, data, offset, limit) {
 
 export async function getByTypeName(name, data, offset, limit) {
   const post = new FormData();
-  post.append("name", name);
-  post.append("data", data);
-  post.append("offset", offset);
-  post.append("limit", limit);
+  post.append('name', name);
+  post.append('data', data);
+  post.append('offset', offset);
+  post.append('limit', limit);
   const res = await AXIOS.post(`/instrument/get_by_type_name`, post, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
   return res.data;
@@ -53,6 +53,44 @@ export async function getAllType() {
   return res.data;
 }
 
-export async function getInstruments() {
-  return null;
+export async function getInstruments(offset, limit) {
+  const post = new FormData();
+  post.append('offset', offset);
+  post.append('limit', limit);
+  const res = await AXIOS.post(`/instrument/get_all`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return res.data;
+}
+
+export async function getCount() {
+  const res = await AXIOS.get(`/instrument/get_count`);
+  const [count] = Object.values(res.data);
+  return count;
+}
+
+export async function getCountByFamilyName(name) {
+  const post = new FormData();
+  post.append('name', name);
+  const res = await AXIOS.post(`/instrument/get_count_by_family_name`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  const [count] = Object.values(res.data);
+  return count;
+}
+
+export async function getCountByTypeName(name) {
+  const post = new FormData();
+  post.append('name', name);
+  const res = await AXIOS.post(`/instrument/get_count_by_type_name`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  const [count] = Object.values(res.data);
+  return count;
 }

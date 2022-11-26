@@ -1,5 +1,5 @@
-import React from "react";
-import BasicCheckbox from "../components/checkbox/BasicCheckbox";
+import React from 'react';
+import BasicCheckbox from '../components/checkbox/BasicCheckbox';
 
 export default function CheckBoxContainer({ types, brands }) {
   return (
@@ -16,7 +16,7 @@ export default function CheckBoxContainer({ types, brands }) {
                   <div key={type.id} className="flex justify-between">
                     <BasicCheckbox label={type.name} />
                     <span className="text-xs text-gray-500">
-                      ({type?.cout && Object.values(type.count)})
+                      ({type?.count && Object.values(type.count)})
                     </span>
                   </div>
                 );
