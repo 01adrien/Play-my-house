@@ -1,11 +1,12 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import User from "./pages/User";
 import InstrumentFamily from "./pages/InstrumentFamily";
 import InstrumentType from "./pages/InstrumentType";
 import Instrument from "./pages/Instrument";
+import AllInstruments from "./pages/AllInstruments";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { user } from "./store/user";
 import { useRecoilValue } from "recoil";
@@ -42,6 +43,7 @@ export default function App() {
           />
           <Route path="/instrument-type/:type" element={<InstrumentType />} />
           <Route path="/instrument/:id" element={<Instrument />} />
+          <Route path="/instrument-all" element={<AllInstruments />} />
         </Routes>
       </BrowserRouter>
     </div>

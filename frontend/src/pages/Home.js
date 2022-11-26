@@ -9,7 +9,6 @@ import { user } from "../store/user";
 export default function Home() {
   const [instruments, setInstruments] = useState([]);
   const [profile, setProfile] = useRecoilState(user);
-  console.log(profile);
   useEffect(() => {
     getTenNewest().then(setInstruments);
   }, []);

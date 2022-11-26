@@ -9,6 +9,13 @@
             return \Model\Instrument::get_instrument(0, 10);
         }
 
+
+        public static function get_instruments($post)
+        {
+            return \Model\Instrument::get_instrument($post['offset'], $post['limit']);    
+        }
+
+
         public static function get_menu_items()
         {   
             $menu = [];
@@ -79,6 +86,14 @@
                 return $brands;
             }
             if ($post['data'] === 'INSTRUMENT')return \Model\Instrument::get_instrument($post['offset'], $post['limit'], 'TYPE', $type_id);
+        }
+
+        public static function get_all_brand() {
+            return \Model\Instrument_brand::get_all();
+        }
+
+        public static function get_all_type() {
+            return \Model\Instrument_type::get_all();
         }
     }
 

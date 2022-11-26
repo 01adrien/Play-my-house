@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import { login } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { user } from "../../store/user";
 import FormInput from "../input/FormInput";
 import BasicButton from "../button/BasicButton";
 import BasicCheckbox from "../checkbox/BasicCheckbox";
 import LoginErrors from "../LoginErrors";
-import { login } from "../../api/auth";
-import { getProfile } from "../../api/user";
-import Spinner from "../Spinner";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { user } from "../../store/user";
+import useAuth from "../../hooks/useAuth";
+import withLoading from "../../HOC/withLoading";
+import Text from "../Text";
+
+const TextBtnWithLoading = withLoading(Text);
 
 export default function LoginForm() {
   const setProfile = useSetRecoilState(user);
@@ -18,28 +21,17 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
-    setLoading(true);
     e.preventDefault();
-    const { password, email } = credentials;
+    setLoading(true);
     if (true) {
-      await login({ email: email, password: password })
-        .then(({ data }) => {
-          console.log(data);
-          if (!data.granted) setCredentialsErrors(data);
-          if (data.granted) {
-            getProfile().then((u) => {
-              setProfile(u);
-              navigate("/user");
-            });
-          }
-        })
-        .then(() => {
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-          console.log(e);
-        });
+      useAuth(credentials, login).then(
+        ({ profile, loading, credentialsErrors }) => {
+          setLoading(loading);
+          setProfile(profile);
+          setCredentialsErrors(credentialsErrors);
+          if (profile) navigate("/user");
+        }
+      );
     }
   }
   return (
@@ -72,9 +64,11 @@ export default function LoginForm() {
           <BasicButton
             testId="submit-login"
             style={loading && "border-2 border-slate-700 "}
-            text={loading ? <Spinner /> : "Login"}
             type="submit"
-          />
+            width="40"
+          >
+            <TextBtnWithLoading text={"Login"} loading={loading} />
+          </BasicButton>
         </form>
       </div>
       {credentialsErrors && <LoginErrors errors={credentialsErrors} />}

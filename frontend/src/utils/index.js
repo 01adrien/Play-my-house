@@ -1,4 +1,6 @@
-export function credentialsValidation(credentials) {
+import toast from "react-hot-toast";
+
+export const credentialsValidation = (credentials) => {
   const errors = {};
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // entre 6 et 20 char 1 num 1 upper 1 lower
   const nameRegex = /^[a-zA-Z-' ]*$/;
@@ -11,9 +13,20 @@ export function credentialsValidation(credentials) {
   if (!credentials.name.match(nameRegex)) errors.name_err = true;
   if (!credentials.email.match(emailRegex)) errors.email_err = true;
   return errors;
-}
+};
 
 export const isEqual = (a, b) => a === b;
 
-export const localStoreAnything = (object) =>
-  Object.keys(object).map((item) => localStorage.setItem(item, object[item]));
+export const makeSuccesToast = (styles, msg) => {
+  return toast.success(msg, {
+    style: {
+      border: styles?.border || "2px solid green",
+      padding: styles?.padding || "16px",
+      color: styles?.color || "green",
+    },
+    iconTheme: {
+      primary: styles?.primary || "green",
+      secondary: styles?.secondary || "white",
+    },
+  });
+};

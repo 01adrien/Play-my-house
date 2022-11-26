@@ -42,3 +42,17 @@ export async function getByTypeName(name, data, offset, limit) {
   });
   return res.data;
 }
+
+export async function getAllBrand() {
+  const res = await AXIOS.get(`/instrument/get_all_Brand`);
+  return res.data;
+}
+
+export async function getAllType() {
+  const res = await AXIOS.get(`/instrument/get_all_type`);
+  return res.data;
+}
+
+export async function getInstruments() {
+  return null;
+}

@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import FormInput from "../input/FormInput";
 import BasicCheckbox from "../checkbox/BasicCheckbox";
-import Spinner from "../Spinner";
+import Spinner from "../icons/Spinner";
 import LoginErrors from "../LoginErrors";
 import BasicButton from "../button/BasicButton";
 import { signin } from "../../api/auth";
-import { credentialsValidation, isEqual } from "../../utils";
+import { credentialsValidation, isEqual, makeSuccesToast } from "../../utils";
 import { useNavigate } from "react-router-dom";
-import { getProfile } from "../../api/user";
 import { useSetRecoilState } from "recoil";
 import { user } from "../../store/user";
+import useAuth from "../../hooks/useAuth";
+import withLoading from "../../HOC/withLoading";
+import Text from "../Text";
+
+const TextBtnWithLoading = withLoading(Text);
 
 export default function SignInForm() {
   const setProfile = useSetRecoilState(user);
@@ -27,28 +31,27 @@ export default function SignInForm() {
     setLoading(true);
     e.preventDefault();
     setCredentialsErrors(credentialsValidation(credentials));
-    const { password, passwordConfirm, name, email } = credentials;
+    const { password, passwordConfirm } = credentials;
 
     if (!isEqual(password, passwordConfirm)) {
       setCredentialsErrors({ passwordMatch_err: true });
+      return setLoading(false);
     }
     if (true) {
-      await signin({ email: email, password: password, name: name })
-        .then(({ data }) => {
-          if (!data.granted) setCredentialsErrors(data);
-          if (data.granted) {
-            getProfile()
-              .then((u) => setProfile(u))
-              .then(() => navigate("/user"));
+      useAuth(credentials, signin).then(
+        ({ profile, loading, credentialsErrors }) => {
+          setLoading(loading);
+          setProfile(profile);
+          setCredentialsErrors(credentialsErrors);
+          if (profile) {
+            makeSuccesToast(
+              {},
+              "Compte cree avec succes, vous allez etre redirige !"
+            );
+            setTimeout(() => navigate("/user"), 2500);
           }
-        })
-        .then(() => {
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-          console.log(e);
-        });
+        }
+      );
     }
   }
 
@@ -101,10 +104,12 @@ export default function SignInForm() {
           />
           <BasicCheckbox style={"pb-2"} label="remember me" />
           <BasicButton
-            text={loading ? <Spinner /> : "Signin"}
             type="submit"
             style={loading && "border-2 border-slate-700 "}
-          />
+            width="40"
+          >
+            <TextBtnWithLoading text={"Signin"} loading={loading} />
+          </BasicButton>
         </form>
       </div>
       {credentialsErrors && <LoginErrors errors={credentialsErrors} />}

@@ -11,12 +11,12 @@ export default function CheckBoxContainer({ types, brands }) {
               <p className="text-center font-bold">filtre par instrument</p>
             </div>
             <div className="mt-2">
-              {types?.map((type, i) => {
+              {types?.map((type) => {
                 return (
-                  <div className="flex justify-between">
-                    <BasicCheckbox key={i} label={type.name} />
+                  <div key={type.id} className="flex justify-between">
+                    <BasicCheckbox label={type.name} />
                     <span className="text-xs text-gray-500">
-                      ({Object.values(type.count)})
+                      ({type?.cout && Object.values(type.count)})
                     </span>
                   </div>
                 );
@@ -31,10 +31,10 @@ export default function CheckBoxContainer({ types, brands }) {
         <div className="mt-2">
           {brands?.map((brand) => {
             return (
-              <div className="flex justify-between">
+              <div key={brand.id} className="flex justify-between">
                 <BasicCheckbox label={brand.name} />
                 <span className="text-xs text-gray-500">
-                  ({brand.count && Object.values(brand.count)})
+                  ({brand?.count && Object.values(brand.count)})
                 </span>
               </div>
             );

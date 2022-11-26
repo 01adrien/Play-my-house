@@ -8,9 +8,8 @@ export async function getPicture(id, fileName) {
 }
 
 export async function uploadPicture(body) {
-  const { id, name, selectedFile, keypass, picture_id } = body;
+  const { id, name, selectedFile, picture_id } = body;
   const post = new FormData();
-  post.append("keypass", keypass);
   post.append("file", selectedFile);
   post.append("name", name);
   post.append("id", id);

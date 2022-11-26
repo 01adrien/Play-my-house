@@ -1,38 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { getMenuItems } from "../../api";
 import { Link } from "react-router-dom";
+import Burger from "../icons/Burger";
+import BasicButton from "../button/BasicButton";
 
 export default function DropdownMenu() {
-  const width = "150";
   const [items, setItems] = useState({});
   const [dropdownStyle, setDropdownStyle] = useState(
     "dropdown inline-block z-10"
   );
+  const width = "150";
+
   useEffect(() => {
     getMenuItems().then(setItems);
   }, []);
+
   return (
     <div id="dropdown" className={`${dropdownStyle}`}>
-      <button
+      <Link
         onMouseEnter={() => setDropdownStyle("dropdown inline-block z-10")}
-        className={`bg-main_color text-white font-semibold w-[150px] py-2 inline-flex justlfy-center`}
+        to={"/instrument-all"}
       >
-        <svg
-          className="pl-1 w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+        <BasicButton
+          style={`bg-main_color text-white font-semibold rounded-none py-2 w-[150px] px-0 inline-flex justlfy-center`}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          ></path>
-        </svg>
-        <span className="pl-3">Instruments</span>
-      </button>
+          <div className="w-full flex space-between">
+            <Burger />
+            <span className="pl-3">Instruments</span>
+          </div>
+        </BasicButton>
+      </Link>
       <ul
         className={`dropdown-content cursor-pointer absolute hidden text-gray-700 w-[${width}px] bg-white  border border-slate-200`}
       >
@@ -57,7 +54,7 @@ export default function DropdownMenu() {
                         <Link to={`/instrument-type/${i}`}>
                           <span
                             onClick={() => setDropdownStyle("")}
-                            className="hover:text-main_color cursor-pointer bg-white py-2  w-[200px] px-4 block whitespace-no-wrap border border-slate-200"
+                            className="hover:text-main_color cursor-pointer bg-white py-2 w-[200px] px-4 block whitespace-no-wrap border border-slate-200"
                           >
                             {i}
                           </span>

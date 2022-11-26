@@ -2,15 +2,21 @@ import React, { useState, useEffect } from "react";
 import BasicButton from "./button/BasicButton";
 import FormInput from "./input/FormInput";
 import LoginErrors from "./LoginErrors";
-import Spinner from "./Spinner";
+import Spinner from "./icons/Spinner";
 import { getPicture, uploadPicture } from "../api/user";
 import FileInput from "./input/FileInput";
 import { user } from "../store/user";
 import { useRecoilState } from "recoil";
+import withLoading from "../HOC/withLoading";
+import { Picture } from "./Picture";
+import Upload from "./icons/Upload";
+
+const PictureWithLoading = withLoading(Picture);
 
 export default function UserProfile() {
   const [picture, setPicture] = useState({ src: null });
   const [loading, setLoading] = useState(false);
+  const [pictureLoading, setPictureLoading] = useState(true);
   const [credentialsErrors, setCredentialsErrors] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploadImg, setIsUploadImg] = useState(false);
@@ -18,13 +24,11 @@ export default function UserProfile() {
   const [profile, setProfile] = useRecoilState(user);
 
   const { name, email, picture_id, id, role, picture_name } = profile;
-
   useEffect(() => {
-    getPicture(picture_id, picture_name)
-      .then(({ data }) => {
-        setPicture({ src: data });
-      })
-      .catch(console.log);
+    getPicture(picture_id, picture_name).then(({ data }) => {
+      setPicture({ src: data });
+      setPictureLoading(false);
+    });
   }, [isUploadImg]);
 
   async function handleSubmit(e) {
@@ -32,14 +36,14 @@ export default function UserProfile() {
   }
 
   async function hamdleSubmitUpload(e) {
-    setPicture({ src: null });
+    setPictureLoading(true);
     e.preventDefault(e);
-    uploadPicture({ name, id, selectedFile, picture_id })
-      .then(() => {
-        setIsUploadImg(!isUploadImg);
-      })
-      .then(() => setLoading(false))
-      .catch(console.log);
+    setPicture({ src: null });
+    uploadPicture({ name, id, selectedFile, picture_id }).then(({ data }) => {
+      setIsUploadImg(!isUploadImg);
+      setProfile({ ...profile, ...data });
+      setPictureLoading(false);
+    });
   }
   return (
     <div className="flex flex-row justify-between items-center w-[100%]">
@@ -97,9 +101,10 @@ export default function UserProfile() {
             <div className="w-[60%]">
               <BasicButton
                 style={loading && "border-2 border-slate-700 "}
-                text={loading ? <Spinner /> : "Enregistrer"}
                 type="submit"
-              />
+              >
+                {loading ? <Spinner /> : <p>Enregistrer</p>}
+              </BasicButton>
             </div>
           </div>
         </form>
@@ -109,37 +114,18 @@ export default function UserProfile() {
         className=" w-[60%] h-[45vh] flex flex-col justify-between items-center"
       >
         <FileInput setSelectedFile={setSelectedFile} />
-        <div className="w-60 h-56 flex justify-center items-center rounded">
-          {picture?.src ? (
-            <img className="w-60 h-56 rounded" alt="avatar" src={picture.src} />
-          ) : (
-            <Spinner />
-          )}
+
+        <div className="w-60 h-56 flex justify-center items-center">
+          <PictureWithLoading
+            loading={pictureLoading}
+            src={picture?.src}
+            alt={"profil-picture"}
+            style={"rounded-xl w-60 h-56"}
+          />
         </div>
-        <BasicButton
-          width="40"
-          text={
-            !picture?.src ? (
-              <Spinner />
-            ) : (
-              <svg
-                className="w-8 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                ></path>
-              </svg>
-            )
-          }
-          type="submit"
-        />
+        <BasicButton width="40" type="submit">
+          {!picture?.src ? <Spinner /> : <Upload />}
+        </BasicButton>
       </form>
     </div>
   );

@@ -88,7 +88,7 @@
                 $user = \Model\User::find_by($id, true);
                 $picture_id['id'] = \Controller\Controller::formatdata((array)$user, 'picture_id', \Model\Table::P_INT);
                 $picture = \Model\User_picture::find_by($picture_id, true);
-                return ['email' => $user->email, 'name' => $user->name, 'role' => $user->role, 'id' => $user->id, 'picture_name' => $picture->URI, ];
+                return ['email' => $user->email, 'name' => $user->name, 'role' => $user->role, 'id' => $user->id, 'picture_id' => $picture->id, 'picture_name' => $picture->URI, ];
             }   
         }
 

@@ -30,6 +30,7 @@
             $post['URI'] = self::formatdata($post, 'URI', \Model\Table::P_STRING);
             $post['ext'] = self::formatdata($post, 'ext', \Model\Table::P_STRING);
             $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\User_picture::create_update($post, 'UPDATE');
+            \Model\User_picture::create_update($post, 'UPDATE');
+            return ['picture_id' => $post['id']['value'], 'picture_name' => $post['URI']['value']];
         }
     }   
