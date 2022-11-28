@@ -1,9 +1,10 @@
-import React from "react";
-import Layout from "../components/Layout";
-import LoginForm from "../components/form/LoginForm";
-import SignInForm from "../components/form/SignInForm";
-import { useRecoilValue } from "recoil";
-import { user } from "../store/user";
+import React from 'react';
+import Layout from '../components/Layout';
+import LoginForm from '../components/form/LoginForm';
+import SignInForm from '../components/form/SignInForm';
+import { useRecoilValue } from 'recoil';
+import { user } from '../store/user';
+import Footer from '../components/Footer';
 
 export default function Login() {
   const profile = useRecoilValue(user);
@@ -19,7 +20,7 @@ export default function Login() {
           <LoginForm />
         </div>
       </div>
-      <p>{JSON.stringify(profile)}</p>
+      <Footer />
     </Layout>
   );
 }

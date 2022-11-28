@@ -1,48 +1,49 @@
-import React, { useState } from "react";
-import Layout from "../components/Layout";
-import UserProfile from "../components/UserProfile";
-import { logout } from "../api/auth";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { user } from "../store/user";
+import React, { useState } from 'react';
+import Layout from '../components/Layout';
+import UserProfile from '../components/UserProfile';
+import { logout } from '../api/auth';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { user } from '../store/user';
+import Footer from '../components/Footer';
 
 export default function User() {
   const [profile, setProfile] = useRecoilState(user);
-  const [activeHeading, setActiveHeading] = useState("Details du compte");
+  const [activeHeading, setActiveHeading] = useState('Details du compte');
   const navigate = useNavigate();
   const disconnect = () => {
     logout(user);
-    setProfile({ default: "user" });
-    navigate("/");
+    setProfile({ default: 'user' });
+    navigate('/');
   };
   const UserHeadings = {
-    "Reservation a venir": "mes rervations a venir",
-    "Reservation passes": "mes rervations passees",
-    "Details du compte": <UserProfile />,
-    Deconnexion: "",
+    'Reservation a venir': 'mes rervations a venir',
+    'Reservation passes': 'mes rervations passees',
+    'Details du compte': <UserProfile />,
+    Deconnexion: '',
   };
 
   const ownerHeadings = {
-    "Mes instruments": "mes instruments",
-    "Reservation a venir": "mes rervations a venir",
-    "Reservation passes": "mes rervations passees",
-    "Details du compte": <UserProfile />,
-    Deconnexion: "",
+    'Mes instruments': 'mes instruments',
+    'Reservation a venir': 'mes rervations a venir',
+    'Reservation passes': 'mes rervations passees',
+    'Details du compte': <UserProfile />,
+    Deconnexion: '',
   };
 
   const adminHeadings = {
-    Utilisateurs: "tous les utilisateurs",
-    Reservations: "toutes les reservations",
-    Instruments: "tous les instruments",
-    Planning: "planning",
-    "Details du compte": <UserProfile />,
-    Deconnexion: "",
+    Utilisateurs: 'tous les utilisateurs',
+    Reservations: 'toutes les reservations',
+    Instruments: 'tous les instruments',
+    Planning: 'planning',
+    'Details du compte': <UserProfile />,
+    Deconnexion: '',
   };
 
   let headings = {};
-  if (profile?.role === "user") headings = UserHeadings;
-  if (profile?.role === "owner") headings = ownerHeadings;
-  if (profile?.role === "admin") headings = adminHeadings;
+  if (profile?.role === 'user') headings = UserHeadings;
+  if (profile?.role === 'owner') headings = ownerHeadings;
+  if (profile?.role === 'admin') headings = adminHeadings;
 
   return (
     <Layout>
@@ -61,12 +62,12 @@ export default function User() {
                   <div
                     key={head}
                     onClick={() => {
-                      head === "Deconnexion"
+                      head === 'Deconnexion'
                         ? disconnect()
                         : setActiveHeading(head);
                     }}
                     className={`h-10 w-[80%] flex hover:bg-slate-200 ${
-                      activeHeading === head && "bg-slate-200"
+                      activeHeading === head && 'bg-slate-200'
                     } cursor-pointer justify-start items-center`}
                   >
                     <p className="pl-5">{head}</p>
@@ -80,7 +81,7 @@ export default function User() {
           </div>
         </div>
       </div>
-      <p>{JSON.stringify(profile)}</p>
+      <Footer />{' '}
     </Layout>
   );
 }

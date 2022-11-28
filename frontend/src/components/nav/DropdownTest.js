@@ -9,6 +9,7 @@ export default function DropdownMenu() {
   const [dropdownStyle, setDropdownStyle] = useState(
     'dropdown inline-block relative'
   );
+  const width = '150';
 
   useEffect(() => {
     getMenuItems().then(setItems);
@@ -40,7 +41,6 @@ export default function DropdownMenu() {
               >
                 <Link to={`/instrument-family/${item}`}>
                   <span
-                    data-cy={item}
                     onClick={() => setDropdownStyle('')}
                     className="hover:bg-slate-300 py-2 px-4 block whitespace-no-wrap"
                   >
@@ -55,7 +55,6 @@ export default function DropdownMenu() {
                       <li key={i} className="border-t-2 border-t-border_color">
                         <Link to={`/instrument-type/${i}`}>
                           <span
-                            data-cy={i}
                             onClick={() => setDropdownStyle('')}
                             className="bg-white hover:bg-slate-300 py-2 px-4 block whitespace-no-wrap"
                           >

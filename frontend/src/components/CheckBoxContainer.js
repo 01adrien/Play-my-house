@@ -3,7 +3,7 @@ import BasicCheckbox from '../components/checkbox/BasicCheckbox';
 
 export default function CheckBoxContainer({ types, brands }) {
   return (
-    <div className="flex flex-col w-[95%] pt-3">
+    <div className="flex flex-col w-[95%] pt-3 pb-16">
       <div className="flex flex-col">
         {types && (
           <>

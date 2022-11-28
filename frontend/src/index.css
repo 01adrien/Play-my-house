@@ -11,3 +11,7 @@
 .dropdown:hover > .dropdown-content {
   display: block;
 }
+
+button {
+  outline: none;
+}

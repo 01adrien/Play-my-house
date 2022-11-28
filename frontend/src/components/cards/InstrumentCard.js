@@ -23,22 +23,25 @@ export default function InstrumentCard({ instrument, style = '' }) {
           loading={loading}
           src={picture?.src}
           alt={`image ${instrument.instrumentName}`}
-          style={'w-64 h-48 rounded-t'}
+          style={'w-64 h-48 rounded-t object-cover'}
         />
       </div>
       <div className="flex justify-center h-28 w-64 border-b-2 border-r-2 border-l-2 border-border_color rounded-b">
         <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[70%]">
           <div>
             <p className="text-main_color text-sm text-center">
-              {instrument.type} {instrument.brand}
+              {instrument.type}
             </p>
             <p className="text-sm text-center">
-              {instrument.instrumentName.slice(0, 20)}...
+              {instrument.brand.slice(0, 20)}
             </p>
           </div>
-          <Link to={`/instrument/${instrument.id}`}>
+          <Link
+            to={`/instrument/${instrument.id}`}
+            state={{ ...instrument, picture: null }}
+          >
             <BasicButton type="button" height="7" style="text-sm">
-              <p className="h-fit">details</p>
+              <p className="-translate-y-2">details</p>
             </BasicButton>
           </Link>
         </div>

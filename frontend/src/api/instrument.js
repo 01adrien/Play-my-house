@@ -44,7 +44,7 @@ export async function getByTypeName(name, data, offset, limit) {
 }
 
 export async function getAllBrand() {
-  const res = await AXIOS.get(`/instrument/get_all_Brand`);
+  const res = await AXIOS.get(`/instrument/get_all_brand`);
   return res.data;
 }
 
@@ -93,4 +93,15 @@ export async function getCountByTypeName(name) {
   });
   const [count] = Object.values(res.data);
   return count;
+}
+
+export async function getAllPictureForOne(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/get_all_pictures_for_one`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return res.data;
 }

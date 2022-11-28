@@ -6,7 +6,7 @@ export default function usePagination(fnCount, fnData, ...args) {
   const [itemsNumber, setItemsNumber] = useState(null);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
   const offset = currentPage * itemsPerPage;
   const limit = itemsPerPage;
 
@@ -18,7 +18,7 @@ export default function usePagination(fnCount, fnData, ...args) {
 
   useEffect(() => {
     args
-      ? fnData(...args, offset - 10, limit)
+      ? fnData(...args, offset - 12, limit)
           .then(setData)
           .then(() => {
             setLoading(false);
@@ -27,7 +27,7 @@ export default function usePagination(fnCount, fnData, ...args) {
             }, 200);
           })
           .then()
-      : fnData(offset - 10, limit)
+      : fnData(offset - 12, limit)
           .then(setData)
           .then(() => {
             setLoading(false);
@@ -35,7 +35,7 @@ export default function usePagination(fnCount, fnData, ...args) {
               scrollUp();
             }, 200);
           });
-  }, [currentPage]);
+  }, [currentPage, args[0]]);
 
   return {
     currentPage,

@@ -38,3 +38,8 @@ export const scrollUp = () => {
     behavior: 'smooth',
   });
 };
+
+export const compose =
+  (...fns) =>
+  (x) =>
+    fns.reduceRight((res, fn) => fn(res), x);

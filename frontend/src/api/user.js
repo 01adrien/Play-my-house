@@ -1,28 +1,46 @@
-import { AXIOS } from "./Axios";
+import { AXIOS } from './Axios';
 
 export async function getPicture(id, fileName) {
   const post = new FormData();
-  post.append("id", id);
-  post.append("fileName", fileName);
+  post.append('id', id);
+  post.append('fileName', fileName);
   return await AXIOS.post(`/user_picture/get_picture`, post);
+}
+
+export async function getPictureByUserId(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/user_picture/get_picture_by_user_id`, post);
+  return res.data;
 }
 
 export async function uploadPicture(body) {
   const { id, name, selectedFile, picture_id } = body;
   const post = new FormData();
-  post.append("file", selectedFile);
-  post.append("name", name);
-  post.append("id", id);
-  post.append("picture_id", picture_id);
+  post.append('file', selectedFile);
+  post.append('name', name);
+  post.append('id', id);
+  post.append('picture_id', picture_id);
 
   return await AXIOS.post(`/user_picture/upload_picture`, post, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
   });
 }
 
 export async function getProfile() {
   res = await AXIOS.get(`/user/get_profil`);
+  return res.data;
+}
+
+export async function getUserById(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/user/get_by_ID`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return res.data;
 }

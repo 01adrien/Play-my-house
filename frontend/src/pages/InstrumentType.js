@@ -29,6 +29,7 @@ export default function InstrumentType() {
   return (
     <Layout>
       <InstrumentListPageWithLoading
+        pageLoader
         loading={loading}
         pagesNumber={Math.ceil(itemsNumber / itemsPerPage)}
         currentPage={currentPage}
@@ -37,7 +38,6 @@ export default function InstrumentType() {
         name={type}
         instruments={data}
       />
-      <p>{JSON.stringify(profile)}</p>
     </Layout>
   );
 }

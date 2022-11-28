@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { login } from "../../api/auth";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { user } from "../../store/user";
-import FormInput from "../input/FormInput";
-import BasicButton from "../button/BasicButton";
-import BasicCheckbox from "../checkbox/BasicCheckbox";
-import LoginErrors from "../LoginErrors";
-import useAuth from "../../hooks/useAuth";
-import withLoading from "../../HOC/withLoading";
-import Text from "../Text";
+import React, { useState } from 'react';
+import { login } from '../../api/auth';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { user } from '../../store/user';
+import FormInput from '../input/FormInput';
+import BasicButton from '../button/BasicButton';
+import BasicCheckbox from '../checkbox/BasicCheckbox';
+import LoginErrors from '../LoginErrors';
+import useAuth from '../../hooks/useAuth';
+import withLoading from '../../HOC/withLoading';
+import Text from '../Text';
 
 const TextBtnWithLoading = withLoading(Text);
 
@@ -17,7 +17,7 @@ export default function LoginForm() {
   const setProfile = useSetRecoilState(user);
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
-  const [credentials, setCredentials] = useState({ password: "", email: "" });
+  const [credentials, setCredentials] = useState({ password: '', email: '' });
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -29,7 +29,7 @@ export default function LoginForm() {
           setLoading(loading);
           setProfile(profile);
           setCredentialsErrors(credentialsErrors);
-          if (profile) navigate("/user");
+          if (profile) navigate('/user');
         }
       );
     }
@@ -60,14 +60,13 @@ export default function LoginForm() {
             }}
             value={credentials.password}
           />
-          <BasicCheckbox label="remember me" style={"pb-2"} />
+          <BasicCheckbox label="remember me" style={'pb-2'} />
           <BasicButton
             testId="submit-login"
-            style={loading && "border-2 border-slate-700 "}
+            style={loading && 'border-2 border-slate-700 '}
             type="submit"
-            width="40"
           >
-            <TextBtnWithLoading text={"Login"} loading={loading} />
+            <TextBtnWithLoading text={'Login'} loading={loading} />
           </BasicButton>
         </form>
       </div>

@@ -28,6 +28,7 @@ export default function InstrumentFamily() {
     family,
     'INSTRUMENT'
   );
+  console.log(data);
 
   useEffect(() => {
     getByFamilyName(family, 'TYPE').then(setTypeList);
@@ -37,6 +38,7 @@ export default function InstrumentFamily() {
   return (
     <Layout>
       <InstrumentListPageWithLoading
+        pageLoader
         loading={loading}
         pagesNumber={Math.ceil(itemsNumber / itemsPerPage)}
         currentPage={currentPage}
@@ -46,7 +48,6 @@ export default function InstrumentFamily() {
         name={family}
         instruments={data}
       />
-      <p>{JSON.stringify(profile)}</p>
     </Layout>
   );
 }

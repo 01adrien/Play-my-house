@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
-import FormInput from "../input/FormInput";
-import BasicCheckbox from "../checkbox/BasicCheckbox";
-import Spinner from "../icons/Spinner";
-import LoginErrors from "../LoginErrors";
-import BasicButton from "../button/BasicButton";
-import { signin } from "../../api/auth";
-import { credentialsValidation, isEqual, makeSuccesToast } from "../../utils";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { user } from "../../store/user";
-import useAuth from "../../hooks/useAuth";
-import withLoading from "../../HOC/withLoading";
-import Text from "../Text";
+import React, { useState, useEffect, useContext } from 'react';
+import FormInput from '../input/FormInput';
+import BasicCheckbox from '../checkbox/BasicCheckbox';
+import Spinner from '../icons/Spinner';
+import LoginErrors from '../LoginErrors';
+import BasicButton from '../button/BasicButton';
+import { signin } from '../../api/auth';
+import { credentialsValidation, isEqual, makeSuccesToast } from '../../utils';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { user } from '../../store/user';
+import useAuth from '../../hooks/useAuth';
+import withLoading from '../../HOC/withLoading';
+import Text from '../Text';
 
 const TextBtnWithLoading = withLoading(Text);
 
@@ -21,10 +21,10 @@ export default function SignInForm() {
   const [credentialsErrors, setCredentialsErrors] = useState({});
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
-    password: "",
-    email: "",
-    name: "",
-    passwordConfirm: "",
+    password: '',
+    email: '',
+    name: '',
+    passwordConfirm: '',
   });
 
   async function handleSubmit(e) {
@@ -46,9 +46,9 @@ export default function SignInForm() {
           if (profile) {
             makeSuccesToast(
               {},
-              "Compte cree avec succes, vous allez etre redirige !"
+              'Compte cree avec succes, vous allez etre redirige !'
             );
-            setTimeout(() => navigate("/user"), 2500);
+            setTimeout(() => navigate('/user'), 2500);
           }
         }
       );
@@ -102,13 +102,12 @@ export default function SignInForm() {
             }}
             value={credentials.passwordConfirm}
           />
-          <BasicCheckbox style={"pb-2"} label="remember me" />
+          <BasicCheckbox style={'pb-2'} label="remember me" />
           <BasicButton
             type="submit"
-            style={loading && "border-2 border-slate-700 "}
-            width="40"
+            style={loading && 'border-2 border-slate-700 '}
           >
-            <TextBtnWithLoading text={"Signin"} loading={loading} />
+            <TextBtnWithLoading text={'Signin'} loading={loading} />
           </BasicButton>
         </form>
       </div>

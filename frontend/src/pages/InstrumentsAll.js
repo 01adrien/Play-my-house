@@ -24,8 +24,6 @@ export default function InstrumentsAll() {
     loading,
   } = usePagination(getCount, getInstruments);
 
-  console.log(loading);
-
   useEffect(() => {
     getAllBrand().then(setBrandList);
     getAllType().then(setTypeList);
@@ -33,6 +31,7 @@ export default function InstrumentsAll() {
   return (
     <Layout>
       <InstrumentListPageWithLoading
+        pageLoader
         loading={loading}
         pagesNumber={Math.ceil(itemsNumber / itemsPerPage)}
         currentPage={currentPage}

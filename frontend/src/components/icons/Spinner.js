@@ -1,14 +1,15 @@
 import React from 'react';
 
-export default function Spinner() {
+export default function Spinner({ size }) {
   return (
     <div
-      className="relative top-[50%] left-[45%]"
-      role="status relative top-[50%]"
+      data-cy="loader"
+      className="w-full h-full flex justify-center items-center"
+      role="status"
     >
       <svg
         aria-hidden="true"
-        className="mr-2 w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600"
+        className={`mr-2 w-[10%] h-[10%] text-gray-200 animate-spin fill-main_color`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

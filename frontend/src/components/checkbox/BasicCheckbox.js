@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function BasicCheckbox({ label, style }) {
   return (
@@ -7,7 +7,7 @@ export default function BasicCheckbox({ label, style }) {
         <input
           type="checkbox"
           value=""
-          className="w-3 h-3 bg-gray-50 rounded border border-gray-300"
+          className="w-3 h-3 focus:ring-0 cursor-pointer bg-gray-50 rounded border border-gray-300"
           required=""
         />
       </div>

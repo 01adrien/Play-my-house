@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 export default function BasicButton({
   type,
   style,
-  width = "[100%]",
-  height = "12",
+  width = '[100%]',
+  height = '12',
   testId,
   children,
 }) {
@@ -14,7 +14,7 @@ export default function BasicButton({
       type={type}
       className={`${style} text-white flex justify-center items-center bg-main_color w-${width} h-${height} hover:bg-main_color_hover focus:outline-none font-bold rounded px-5 py-3 text-center`}
     >
-      {children}
+      <div className="w-[100%] h-[100%] flex justify-center">{children}</div>
     </button>
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import CheckBoxContainer from './CheckBoxContainer';
 import InstrumentCard from './cards/InstrumentCard';
 import Pagination from './Pagination';
+import Footer from './Footer';
 
 export default function InstrumentListPage({
   types,
@@ -13,8 +14,8 @@ export default function InstrumentListPage({
   setCurrentPage,
 }) {
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-[85%]">
+    <div className={`w-full flex flex-col space-between items-center`}>
+      <div className="w-[85%] h-[100%]">
         <div className="flex flex-col items-center justify-center border-b-2 border-border_color">
           <p className="font-medium pt-3">{name.toUpperCase()}</p>
           <p className="w-[65%] py-5 text-center">
@@ -27,21 +28,28 @@ export default function InstrumentListPage({
             Nulla pretium{' '}
           </p>
         </div>
-        <div className="flex pt-3">
+        <div className="flex pt-3 h-full">
           <div className="flex min-w-[250px]">
-            <div className="border-r-2 border-border_color w-[80%] auto flex h-full">
+            <div className="border-r-2 border-border_color w-[80%] h-[100%] flex ">
               <CheckBoxContainer types={types} brands={brands} />
             </div>
           </div>
-          <div className="flex flex-col">
-            <div className="flex flex-wrap justify-center h-fit">
-              {instruments?.map((instrument) => {
-                return (
-                  <InstrumentCard key={instrument.id} instrument={instrument} />
-                );
-              })}
+          <div className="flex flex-col h-[100%]">
+            <div className="flex flex-wrap justify-center h-fit mb-28">
+              {instruments.length ? (
+                instruments?.map((instrument) => {
+                  return (
+                    <InstrumentCard
+                      key={instrument.id}
+                      instrument={instrument}
+                    />
+                  );
+                })
+              ) : (
+                <p>pas d'instruments</p>
+              )}
             </div>
-            <div className="w-full flex justify-center">
+            <div className="flex justify-center">
               {pagesNumber > 1 && instruments.length && (
                 <Pagination
                   index={pagesNumber}

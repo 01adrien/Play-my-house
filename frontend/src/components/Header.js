@@ -1,12 +1,12 @@
-import React from "react";
-import SearchBar from "./SearchBar";
-import logo from "../assets/logo.png";
-import DropdownMenu from "./nav/DropdownMenu";
-import { Link, Navigate } from "react-router-dom";
-import { logout } from "../api/auth";
-import { user } from "../store/user";
-import { useRecoilState } from "recoil";
-import Profile from "./icons/Profile";
+import React from 'react';
+import SearchBar from './SearchBar';
+import logo from '../assets/logo.png';
+import DropdownMenu from './nav/DropdownMenu';
+import { Link, Navigate } from 'react-router-dom';
+import { logout } from '../api/auth';
+import { user } from '../store/user';
+import { useRecoilState } from 'recoil';
+import Profile from './icons/Profile';
 
 export default function Header() {
   const [profile, setProfile] = useRecoilState(user);
@@ -24,7 +24,7 @@ export default function Header() {
       </div>
       <div className="w-full h-10 flex justify-center border-b-2 items-center border-slate-200">
         <div
-          onClick={() => <Navigate to={"/instrument-all"} replace />}
+          onClick={() => <Navigate to={'/instrument-all'} replace />}
           className="w-[80%] flex justify-between items-center"
         >
           <DropdownMenu />
@@ -32,11 +32,11 @@ export default function Header() {
             {profile?.name ? (
               <div className="flex">
                 <Link to="/">
-                  {" "}
+                  {' '}
                   <p
                     onClick={() => {
                       logout();
-                      setProfile({ default: "user" });
+                      setProfile({ default: 'user' });
                     }}
                     className="hover:text-slate-500 cursor-pointer mr-5"
                     data-cy="logout"

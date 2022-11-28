@@ -1,21 +1,29 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import { getTenNewest } from "../api/instrument";
-import banner from "../assets/home_banner1.jpg";
-import InstrumentCard from "../components/cards/InstrumentCard";
-import { useRecoilState } from "recoil";
-import { user } from "../store/user";
+import React, { useEffect, useState } from 'react';
+import Layout from '../components/Layout';
+import { getTenNewest } from '../api/instrument';
+import banner from '../assets/home_banner1.jpg';
+import InstrumentCard from '../components/cards/InstrumentCard';
+import { useRecoilState } from 'recoil';
+import { user } from '../store/user';
+import Footer from '../components/Footer';
 
 export default function Home() {
   const [instruments, setInstruments] = useState([]);
   const [profile, setProfile] = useRecoilState(user);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    getTenNewest().then(setInstruments);
+    getTenNewest()
+      .then(setInstruments)
+      .then(() => {
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+      });
   }, []);
 
   return (
     <Layout>
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full">
         <img
           className="object-contain rounded h-80"
           src={banner}
@@ -43,14 +51,14 @@ export default function Home() {
             {instruments?.map((instrument) => (
               <InstrumentCard
                 key={instrument.id}
-                style={"hover:scale-110"}
+                style={'hover:scale-110'}
                 instrument={instrument}
               />
             ))}
           </div>
         </div>
       </div>
-      <p>{JSON.stringify(profile)}</p>
+      {/* {!loading && <Footer />} */}
     </Layout>
   );
 }
