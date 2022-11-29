@@ -70,12 +70,29 @@
             if ($data === 'TYPE') $where = "WHERE instru.`type_id` =:id";
             if ($data === 'BRAND') $where = "WHERE instru.`brand_id` =:brand_id AND instru.`type_id` =:type_id";
             if ($data === 'FAMILY_&_BRAND') $where = "WHERE instru.`family_id` =:family_id AND instru.`brand_id` =:brand_id";
+            if ($data === 'ALL_BRAND') $where = "WHERE instru.`brand_id` =:brand_id";
 
             $sql = "SELECT COUNT(*)
                     FROM `".self::$table."` instru
                     ".$where."";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, true);
+        }
+
+        public static function get_instrument_disponibility($post)
+        {
+            $sql = "SELECT
+                    instru.`timeline_id_monday` monday,
+                    instru.`timeline_id_tuesday` tuesday,
+                    instru.`timeline_id_wednesday` wednesday,
+                    instru.`timeline_id_thursday` thursday,
+                    instru.`timeline_id_friday` friday,
+                    instru.`timeline_id_saturday` saturday,
+                    instru.`timeline_id_sunday` sunday
+                    FROM `".self::$table."` instru
+                    WHERE instru.`id` =:id";
+
+            return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
     }
 

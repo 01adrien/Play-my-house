@@ -1,19 +1,19 @@
+import { Accordion } from 'flowbite-react';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Layout from '../components/Layout';
+import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { user } from '../store/user';
-import { useLocation } from 'react-router-dom';
+import { getInstrumentDisponibility } from '../api/reservation';
 import { getUserById } from '../api/user';
+import BasicButton from '../components/button/BasicButton';
+import UserSmallCards from '../components/cards/UserSmallCards';
+import Layout from '../components/Layout';
+import { Picture } from '../components/Picture';
 import withCarousel from '../HOC/withCarousel';
 import withLoading from '../HOC/withLoading';
-import { Picture } from '../components/Picture';
-import { compose } from '../utils';
 import useCarousel from '../hooks/useCarousel';
-import { Accordion } from 'flowbite-react';
 import useProfilePicture from '../hooks/useProfilePicture';
-import UserSmallCards from '../components/cards/UserSmallCards';
-import BasicButton from '../components/button/BasicButton';
+import { user } from '../store/user';
+import { compose, daysTraduction } from '../utils';
 
 const PictureWithCarouselAndLoading = compose(
   withCarousel,
@@ -25,20 +25,22 @@ const UserSmallCardsWithLoading = withLoading(UserSmallCards);
 export default function Instrument() {
   const { id } = useParams();
   const location = useLocation();
-  const profile = useRecoilValue(user);
   const [instrument, setInstrument] = useState(location.state);
+  const profile = useRecoilValue(user);
   const [owner, setOwner] = useState([]);
+  const [weekDispos, setWeekDispos] = useState({});
   const { loading, pictures } = useCarousel(id);
   const { avatar, avatarLoading } = useProfilePicture(instrument.owner_id);
 
   useEffect(() => {
-    getUserById(instrument.owner_id).then(setOwner).then;
+    getUserById(instrument.owner_id).then(setOwner);
+    getInstrumentDisponibility(instrument.id).then(setWeekDispos);
   }, [id]);
 
   return (
     <Layout>
       <div className="w-[100%] flex flex-col items-center justify-center  mt-16">
-        <div className="flex justify-between max-h-96 h-[80%] w-[50%]">
+        <div className="flex justify-between max-h-96 h-[80%] w-[50%] pb-12">
           <div className="h-72 w-96 rounded-md border-[1px] border-border_color">
             {pictures && (
               <PictureWithCarouselAndLoading
@@ -49,7 +51,7 @@ export default function Instrument() {
               />
             )}
           </div>
-          <div className="flex flex-col justify-between justify center">
+          <div className="flex flex-col justify-between">
             <Accordion
               flush={true}
               className="focus:ring-0 w-72 ml-20 shadow-md"
@@ -80,13 +82,16 @@ export default function Instrument() {
                 </Accordion.Title>
                 <Accordion.Content>
                   <div className="text-xs overflow-y-scroll">
-                    <p>lundi</p>
-                    <p>mardi</p>
-                    <p>mercredi</p>
-                    <p>jeudi</p>
-                    <p>vendredi</p>
-                    <p>samedi</p>
-                    <p>dimanche</p>
+                    {weekDispos &&
+                      Object.keys(weekDispos).map((day) => {
+                        return (
+                          <p key={day}>
+                            {daysTraduction[day]}
+                            {': '}
+                            {weekDispos[day]}
+                          </p>
+                        );
+                      })}
                   </div>
                 </Accordion.Content>
               </Accordion.Panel>
@@ -95,7 +100,7 @@ export default function Instrument() {
               width="52"
               type="button"
               style={
-                'self-center relative bottom-0 shadow-md hover:scale-105 mb-12'
+                'self-center justify-self-start relative bottom-0 shadow-md hover:scale-105 '
               }
             >
               <p className="">Reserver</p>

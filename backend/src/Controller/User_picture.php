@@ -15,6 +15,17 @@
             return \Controller\Picto::get_picture($post, 'USER');
         }
 
+        public static function get_picture_by_user_id($post) 
+        {   
+            $attr = [];
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $user = \Model\User::get_by_ID($attr);
+            $attr['id'] = self::formatdata((array)$user, 'picture_id', \Model\Table::P_INT);
+            $picture = \Model\User_picture::get_by_ID($attr);
+            $post['fileName'] = $picture->URI;
+            return \Controller\Picto::get_picture($post, 'USER');
+        }
+
         public static function upload_picture($post) 
         {
             $ext = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);

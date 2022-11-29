@@ -14,7 +14,9 @@
         public static function get_by_ID($post) 
         {
             $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\User::get_by_ID($post);
+            $user = \Model\User::get_by_ID($post);
+            unset($user->password);
+            return $user;
         }
 
         public static function delete($post) 

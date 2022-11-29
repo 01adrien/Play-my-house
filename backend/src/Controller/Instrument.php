@@ -21,6 +21,25 @@
             return \Model\Instrument::get_instrument($post['offset'], $post['limit']);    
         }
 
+        public static function get_all_pictures_for_one($post) 
+        {   
+            $post['id'] = \Controller\Controller::formatdata($post, 'id', \Model\Table::P_INT);
+            $pictures = \Model\Instrument_picture::get_all_pictures_for_one($post);
+            $data = [];
+            if (count($pictures) > 1 )
+            {
+                for($i = 0; $i < count($pictures); $i++)
+                {
+                    $post['fileName'] = $pictures[$i]->URI;
+                    $data[]= self::get_picture($post);
+                }
+                return $data;
+            } 
+    
+            $post['fileName'] = $pictures[0]->URI;
+            $data[]= self::get_picture($post);
+            return $data;
+        }
 
         public static function get_menu_items()
         {   
@@ -113,11 +132,31 @@
         }
 
         public static function get_all_brand() {
-            return \Model\Instrument_brand::get_all();
+            $brands =  (array)\Model\Instrument_brand::get_all();
+            for ($i = 0; $i <= count($brands); $i++)
+            {   
+                if ($brands[$i] !== null) 
+                {
+                    $attr['brand_id'] = \Controller\Controller::formatdata($brands[$i], 'id', \Model\Table::P_INT);
+                    $brands[$i]['count'] = \Model\Instrument::get_count_by($attr, 'ALL_BRAND');
+                }
+
+            }
+            return $brands;
         }
 
         public static function get_all_type() {
-            return \Model\Instrument_type::get_all();
+            $types =  \Model\Instrument_type::get_all();
+            for ($i = 0; $i <= count($types); $i++)
+            {   
+                if ($types[$i] !== null) 
+                {
+                    $attr['id'] = \Controller\Controller::formatdata($types[$i], 'id', \Model\Table::P_INT);
+                    $types[$i]['count'] = \Model\Instrument::get_count_by($attr, 'TYPE');
+                }
+
+            }
+            return $types;
         }
     }
 

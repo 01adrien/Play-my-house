@@ -43,3 +43,13 @@ export const compose =
   (...fns) =>
   (x) =>
     fns.reduceRight((res, fn) => fn(res), x);
+
+export const daysTraduction = {
+  monday: 'lundi',
+  tuesday: 'mardi',
+  wednesday: 'mercredi',
+  thursday: 'jeudi',
+  friday: 'vendredi',
+  saturday: 'samedi',
+  sunday: 'dimanche',
+};

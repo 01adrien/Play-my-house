@@ -28,7 +28,6 @@
         {
             $query = "SELECT * FROM `". static::get_table() ."`WHERE id = :id";
             $stmt =  \My_class\App::get_DB()->prepare($query, $post, null, true);
-            echo json_encode($stmt); exit();
             if($stmt) return $stmt;
             return 'ID incorrect';
         }

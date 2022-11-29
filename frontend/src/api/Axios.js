@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-export const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = process.env.API_BASE_URL;
 
 export const AXIOS = axios.create({
   baseURL: BASE_URL,
@@ -8,5 +8,5 @@ export const AXIOS = axios.create({
 });
 
 export async function pingServer() {
-  return await AXIOS.get("/");
+  return await AXIOS.get('/');
 }

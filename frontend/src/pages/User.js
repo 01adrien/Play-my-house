@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Layout from '../components/Layout';
-import UserProfile from '../components/UserProfile';
-import { logout } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { user } from '../store/user';
+import { logout } from '../api/auth';
 import Footer from '../components/Footer';
+import Layout from '../components/Layout';
+import UserProfile from '../components/UserProfile';
+import { user } from '../store/user';
 
 export default function User() {
   const [profile, setProfile] = useRecoilState(user);
@@ -20,6 +20,7 @@ export default function User() {
     'Reservation a venir': 'mes rervations a venir',
     'Reservation passes': 'mes rervations passees',
     'Details du compte': <UserProfile />,
+    Messages: 'Mes messages',
     Deconnexion: '',
   };
 
@@ -28,6 +29,7 @@ export default function User() {
     'Reservation a venir': 'mes rervations a venir',
     'Reservation passes': 'mes rervations passees',
     'Details du compte': <UserProfile />,
+    Messages: 'Mes messages',
     Deconnexion: '',
   };
 
@@ -36,6 +38,7 @@ export default function User() {
     Reservations: 'toutes les reservations',
     Instruments: 'tous les instruments',
     Planning: 'planning',
+    Messages: 'Mes messages',
     'Details du compte': <UserProfile />,
     Deconnexion: '',
   };
@@ -66,8 +69,8 @@ export default function User() {
                         ? disconnect()
                         : setActiveHeading(head);
                     }}
-                    className={`h-10 w-[80%] flex hover:bg-slate-200 ${
-                      activeHeading === head && 'bg-slate-200'
+                    className={`h-10 w-[80%] flex hover:text-main_color ${
+                      activeHeading === head && 'bg-slate-200 text-main_color'
                     } cursor-pointer justify-start items-center`}
                   >
                     <p className="pl-5">{head}</p>
