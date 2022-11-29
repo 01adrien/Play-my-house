@@ -15,3 +15,6 @@
 button {
   outline: none;
 }
+.DayPicker-Day--monday {
+  color: #00bcd4;
+}

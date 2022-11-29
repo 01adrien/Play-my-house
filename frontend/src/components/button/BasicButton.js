@@ -7,9 +7,11 @@ export default function BasicButton({
   height = '12',
   testId,
   children,
+  onClick,
 }) {
   return (
     <button
+      onClick={onClick}
       data-cy={testId}
       type={type}
       className={`${style} text-white flex justify-center items-center bg-main_color w-${width} h-${height} hover:bg-main_color_hover focus:outline-none font-bold rounded px-5 py-3 text-center`}
