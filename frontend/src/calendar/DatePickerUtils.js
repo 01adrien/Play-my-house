@@ -1,5 +1,4 @@
 import React, { forwardRef } from 'react';
-import { CalendarContainer } from 'react-datepicker';
 import BasicButton from '../components/button/BasicButton';
 
 export const DatePickerBtn = forwardRef(({ value, onClick }, ref) => (
@@ -16,27 +15,40 @@ export const DatePickerBtn = forwardRef(({ value, onClick }, ref) => (
   </div>
 ));
 
-export const isDispoDay = (day, arr) =>
-  arr.includes(day.toString().slice(0, 3).toLocaleLowerCase());
+export const isDispoDay = (day, arr1, arr2, selectedMonth) => {
+  const formatDay2 = day.toLocaleDateString().replace(/-/g, '/');
+  const formatDay1 = day.toString().slice(0, 3).toLocaleLowerCase();
+  return (
+    arr1.includes(formatDay1) &&
+    !arr2.includes(formatDay2) &&
+    day.getMonth() + 1 === selectedMonth
+  );
+};
 
 export const currentMonth = () => new Date().getMonth();
 export const currentYear = () => new Date().getFullYear();
 export const currentDay = () => new Date().getDay();
 
-export const highlightDispoDay = (day, arr) =>
-  arr.includes(day.toString().slice(0, 3).toLocaleLowerCase()) &&
-  day > new Date()
-    ? 'bg-main_color rounded-md text-white'
+export const highlightDispoDay = (
+  day,
+  arr1,
+  arr2,
+  arr3,
+  selectedMonth,
+  selectedYear
+) => {
+  const formatDay1 = day.toString().slice(0, 3).toLocaleLowerCase();
+  const formatDay2 = day.toLocaleDateString().replace(/-/g, '/');
+  return !arr2.includes(formatDay2) &&
+    arr3.includes(formatDay1) &&
+    day > new Date() &&
+    !arr1.includes(formatDay2) &&
+    day.getMonth() + 1 === selectedMonth &&
+    day.getFullYear() === selectedYear
+    ? 'bg-main_color shadow-md rounded-md text-white hover:text-black'
+    : arr1.includes(formatDay2)
+    ? 'bg-[#ffc4ab] shadow-md from-main_color to-slate-300 hover:text-black hover:bg-slate-200 rounded-md text-white'
     : '';
-
-export const DatePickerContainer = ({ children }) => {
-  return (
-    <div className="h-96 border-2 bg-white rouded-md border-main_color">
-      <CalendarContainer className="">
-        <div className="">{children}</div>
-      </CalendarContainer>
-    </div>
-  );
 };
 
 export const daysTraduction = {

@@ -10,9 +10,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { user } from './store/user';
 import { useRecoilValue } from 'recoil';
-import withLoading from './HOC/withLoading';
-
-const HomePageWithLoading = withLoading(Home);
 
 function ProtectedRoute({ profile, children }) {
   if (!profile?.name) return <Navigate to={'/login'} replace={true} />;
@@ -26,21 +23,11 @@ function ProtectedAdminRoute({ user, children }) {
 
 export default function App() {
   const profile = useRecoilValue(user);
-  const [pageLoading, setPageLoading] = useState(true);
-  useEffect(() => {
-    setPageLoading(true);
-    setTimeout(() => {
-      setPageLoading(false);
-    }, 1000);
-  }, []);
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/"
-            element={<HomePageWithLoading loading={pageLoading} />}
-          />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/user"

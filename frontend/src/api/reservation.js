@@ -1,4 +1,5 @@
 import { AXIOS } from './Axios';
+import format from 'date-fns/format';
 
 export async function getInstrumentDisponibility(id) {
   const post = new FormData();
@@ -11,15 +12,22 @@ export async function getInstrumentDisponibility(id) {
 }
 
 export async function getReservationForOneByMonth(id, month, year) {
-  console.log(id, month, year);
   const post = new FormData();
+  month < 10 ? post.append('month', `0${month}`) : post.append('month', month);
   post.append('id', id);
-  post.append('month', month);
   post.append('year', year);
   const res = await AXIOS.post(
     `/reservation/get_reservation_for_one_by_month`,
     post
   );
+  return res.data;
+}
+
+export async function getDispoSlotsByDay(id, day) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('day', format(day, 'yyyy-MM-dd'));
+  const res = await AXIOS.post(`/reservation/get_dispo_slots_by_day`, post);
   return res.data;
 }
 

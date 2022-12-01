@@ -54,6 +54,7 @@
 
         public static function get_reservation_for_one_by_month($post)
         {
+            // echo json_encode($post); exit();
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $attr['month'] = self::formatdata($post, 'month', \Model\Table::P_INT);
             $attr['year'] = self::formatdata($post, 'year', \Model\Table::P_INT);
@@ -84,13 +85,9 @@
                 foreach ($day_resas as $resa)
                 {
                     $resa = (array)$resa;
-                    $attr = [];
-                    $attr['id'] = self::formatdata($resa, $resa['day'], \Model\Table::P_INT );
-                    $timeline = \Model\Timeline_day::get_by_ID($attr);
-                    foreach ($timeline as $h) if ($timeline->$h === null) unset($timeline->$h);
-                    $no_dispo .= $resa['start']."h-".$resa['end']."h". " . ";
+                    $no_dispo .= $resa['start']."h-".$resa['end']."h". " et ";
                 }
-            return \substr($no_dispo, 0, -1);
+            return \substr($no_dispo, 0, -3);
             }
         }
     }

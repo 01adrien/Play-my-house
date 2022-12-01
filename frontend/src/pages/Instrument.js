@@ -5,10 +5,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import {
-  getInstrumentDisponibility,
-  getReservationForOneByMonth,
-} from '../api/reservation';
+import { getDispoSlotsByDay } from '../api/reservation';
 import { getUserById } from '../api/user';
 import {
   DatePickerBtn,
@@ -19,6 +16,7 @@ import {
   highlightDispoDay,
   daysTraduction,
 } from '../calendar/DatePickerUtils';
+import { useDatePicker } from '../hooks/useDatePicker';
 import BasicButton from '../components/button/BasicButton';
 import UserSmallCards from '../components/cards/UserSmallCards';
 import Layout from '../components/Layout';
@@ -29,7 +27,6 @@ import useCarousel from '../hooks/useCarousel';
 import useProfilePicture from '../hooks/useProfilePicture';
 import { user } from '../store/user';
 import { compose } from '../utils';
-
 registerLocale('fr', fr);
 
 const PictureWithCarouselAndLoading = compose(
@@ -45,29 +42,66 @@ export default function Instrument() {
   const [instrument, _] = useState(location.state);
   const profile = useRecoilValue(user);
   const [owner, setOwner] = useState([]);
-  const [weekDispos, setWeekDispos] = useState({});
   const { loading, pictures } = useCarousel(id);
   const { avatar, avatarLoading } = useProfilePicture(instrument.owner_id);
-  const [arrayDays, setArrayDays] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
+  const [notDispoSlots, setNotDispoSlots] = useState('');
+  const {
+    weekDispos,
+    arrayDays,
+    NotEmptyDays,
+    notDispoDays,
+    selectedMonth,
+    setSelectedMonth,
+    selectedYear,
+    setSelectedYear,
+  } = useDatePicker(id);
+
+  function handleDayHover(day) {
+    const formatDay = day.toLocaleDateString();
+    if (NotEmptyDays.includes(formatDay)) {
+      getDispoSlotsByDay(id, day).then((slots) => {
+        return setNotDispoSlots({
+          date: formatDay,
+          slots: slots,
+        });
+      });
+    }
+  }
+
+  function dayStyle(day) {
+    return highlightDispoDay(
+      day,
+      NotEmptyDays,
+      notDispoDays,
+      arrayDays,
+      selectedMonth,
+      selectedYear
+    );
+  }
+
+  function handleChangeMonth(month) {
+    setSelectedMonth(month.getMonth() + 1);
+    setSelectedYear(month.getFullYear());
+  }
+
+  function handleCloseCalendar() {
+    setNotDispoSlots('');
+    setSelectedMonth(currentMonth() + 1);
+    setSelectedYear(currentYear());
+  }
+
+  function daysToShow(day) {
+    return isDispoDay(day, arrayDays, notDispoDays, selectedMonth);
+  }
+
   useEffect(() => {
-    setArrayDays([]);
     getUserById(instrument.owner_id).then(setOwner);
-    getInstrumentDisponibility(instrument.id).then((week) => {
-      setWeekDispos(week);
-      Object.keys(week).map((day) => setArrayDays((prev) => [day, ...prev]));
-    });
-    getReservationForOneByMonth(
-      instrument.id,
-      currentMonth() + 1,
-      currentYear()
-    ).then(console.log);
   }, [id]);
 
   return (
     <Layout>
-      <div className="w-[100%] flex flex-col items-center justify-center  mt-16">
-        <div className="flex flex-col justify-between max-h-96 h-[80%] max-w-[650px] w-[60%]">
+      <div className="w-[100%] flex flex-col items-center justify-center">
+        <div className="flex flex-col justify-between max-h-96 mt-8 h-[80%] max-w-[650px] w-[60%]">
           <div className="flex justify-between ">
             <div className="h-72 w-96 min-w-[300px] max-w-[300px] rounded-md border-[1px] border-border_color">
               {pictures && (
@@ -79,7 +113,7 @@ export default function Instrument() {
                 />
               )}
             </div>
-            <div className="flex flex-col justify-between items-end w-72">
+            <div className="flex flex-col justify-between items-end w-72 h-72">
               <Accordion
                 flush={true}
                 className="focus:ring-0 w-72 ml-20 shadow-md"
@@ -126,21 +160,28 @@ export default function Instrument() {
               </Accordion>
             </div>
           </div>
+          <div className="w-full h-8 flex justify-center">
+            {notDispoSlots && (
+              <div className="text-sm w-full flex justify-center text-center items-center">
+                <p className="pr-2 text-base">⚠️</p>
+                <p className="text-red-600 pr-2">{notDispoSlots.slots}</p>
+                <p>non disponible(s) pour le {notDispoSlots.date} </p>
+              </div>
+            )}
+          </div>
           <div className="w-full flex justify-center">
             <div className="w-[80%] flex justify-center">
               <DatePicker
-                className=""
+                locale="fr"
+                onCalendarClose={handleCloseCalendar}
                 disabledKeyboardNavigation
                 minDate={new Date()}
-                filterDate={(day) => isDispoDay(day, arrayDays)}
-                locale="fr"
                 selected={new Date()}
-                // onMonthChange={}
-                //onChange={(date) => {}}
-                dayClassName={(day) => highlightDispoDay(day, arrayDays)}
-                // onDayMouseEnter={(date) =>
-                //   console.log(date.toLocaleDateString())
-                // }
+                filterDate={daysToShow}
+                onDayMouseEnter={handleDayHover}
+                onMonthChange={handleChangeMonth}
+                onChange={(day) => console.log(day)}
+                dayClassName={dayStyle}
                 customInput={<DatePickerBtn />}
               ></DatePicker>
               <BasicButton
