@@ -8,11 +8,7 @@ export async function getTenNewest() {
 export async function getInstrumentPicture(fileName) {
   const post = new FormData();
   post.append('fileName', fileName);
-  return await AXIOS.post(`/instrument/get_picture`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return await AXIOS.post(`/instrument/get_picture`, post);
 }
 
 export async function getByFamilyName(name, data, offset, limit) {
@@ -21,11 +17,7 @@ export async function getByFamilyName(name, data, offset, limit) {
   post.append('data', data);
   post.append('offset', offset);
   post.append('limit', limit);
-  const res = await AXIOS.post(`/instrument/get_by_family_name`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const res = await AXIOS.post(`/instrument/get_by_family_name`, post);
   return res.data;
 }
 
@@ -35,11 +27,7 @@ export async function getByTypeName(name, data, offset, limit) {
   post.append('data', data);
   post.append('offset', offset);
   post.append('limit', limit);
-  const res = await AXIOS.post(`/instrument/get_by_type_name`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const res = await AXIOS.post(`/instrument/get_by_type_name`, post);
   return res.data;
 }
 
@@ -57,11 +45,7 @@ export async function getInstruments(offset, limit) {
   const post = new FormData();
   post.append('offset', offset);
   post.append('limit', limit);
-  const res = await AXIOS.post(`/instrument/get_all`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const res = await AXIOS.post(`/instrument/get_all`, post);
   return res.data;
 }
 
@@ -74,11 +58,7 @@ export async function getCount() {
 export async function getCountByFamilyName(name) {
   const post = new FormData();
   post.append('name', name);
-  const res = await AXIOS.post(`/instrument/get_count_by_family_name`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const res = await AXIOS.post(`/instrument/get_count_by_family_name`, post);
   const [count] = Object.values(res.data);
   return count;
 }
@@ -86,11 +66,7 @@ export async function getCountByFamilyName(name) {
 export async function getCountByTypeName(name) {
   const post = new FormData();
   post.append('name', name);
-  const res = await AXIOS.post(`/instrument/get_count_by_type_name`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const res = await AXIOS.post(`/instrument/get_count_by_type_name`, post);
   const [count] = Object.values(res.data);
   return count;
 }
@@ -98,10 +74,6 @@ export async function getCountByTypeName(name) {
 export async function getAllPictureForOne(id) {
   const post = new FormData();
   post.append('id', id);
-  const res = await AXIOS.post(`/instrument/get_all_pictures_for_one`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const res = await AXIOS.post(`/instrument/get_all_pictures_for_one`, post);
   return res.data;
 }

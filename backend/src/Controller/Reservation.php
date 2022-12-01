@@ -15,7 +15,7 @@
                 if (!$val) '';
                 else 
                 {
-                    $id['id'] = self::formatdata(['id' => $val], 'id', \model\Table::P_INT);
+                    $id['id'] = self::formatdata(['id' => $val], 'id', \Model\Table::P_INT);
                     $timeLine = \Model\Timeline_day::get_by_ID($id);
                     unset($timeLine->id);
                     $i = 1;
@@ -26,7 +26,7 @@
                         }
                     }
                 }                
-                if (gettype($day) === string) 
+                if (\is_string($day)) 
                 {   
                     foreach ($data[$day] as $key => $value)
                     {   
@@ -50,6 +50,14 @@
                 }
             }
             return $final_data;
+        }
+
+        public static function get_reservation_for_one_by_month($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $attr['month'] = self::formatdata($post, 'month', \Model\Table::P_INT);
+            $attr['year'] = self::formatdata($post, 'year', \Model\Table::P_INT);
+            return \Model\Reservation::get_reservation_for_one_by_month($attr);
         }
     }
 ?>

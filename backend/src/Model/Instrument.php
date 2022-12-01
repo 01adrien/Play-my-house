@@ -82,13 +82,13 @@
         public static function get_instrument_disponibility($post)
         {
             $sql = "SELECT
-                    instru.`timeline_id_monday` monday,
-                    instru.`timeline_id_tuesday` tuesday,
-                    instru.`timeline_id_wednesday` wednesday,
-                    instru.`timeline_id_thursday` thursday,
-                    instru.`timeline_id_friday` friday,
-                    instru.`timeline_id_saturday` saturday,
-                    instru.`timeline_id_sunday` sunday
+                    instru.`timeline_id_monday` mon,
+                    instru.`timeline_id_tuesday` tue,
+                    instru.`timeline_id_wednesday` wed,
+                    instru.`timeline_id_thursday` thu,
+                    instru.`timeline_id_friday` fri,
+                    instru.`timeline_id_saturday` sat,
+                    instru.`timeline_id_sunday` sun
                     FROM `".self::$table."` instru
                     WHERE instru.`id` =:id";
 

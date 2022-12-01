@@ -1,0 +1,9 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L]
+RewriteRule "api/public/pictures/(.*)" "https://backend.no-idea-web.fr/public/pictures/(.*)"
+
+<FilesMatch "^\.">
+Order allow,deny
+Deny from all
+</FilesMatch>

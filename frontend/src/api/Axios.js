@@ -6,7 +6,3 @@ export const AXIOS = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });
-
-export async function pingServer() {
-  return await AXIOS.get('/');
-}

@@ -22,11 +22,7 @@ export async function uploadPicture(body) {
   post.append('id', id);
   post.append('picture_id', picture_id);
 
-  return await AXIOS.post(`/user_picture/upload_picture`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return await AXIOS.post(`/user_picture/upload_picture`, post);
 }
 
 export async function getProfile() {
@@ -37,10 +33,6 @@ export async function getProfile() {
 export async function getUserById(id) {
   const post = new FormData();
   post.append('id', id);
-  const res = await AXIOS.post(`/user/get_by_ID`, post, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const res = await AXIOS.post(`/user/get_by_ID`, post);
   return res.data;
 }

@@ -3,20 +3,31 @@ import { CalendarContainer } from 'react-datepicker';
 import BasicButton from '../components/button/BasicButton';
 
 export const DatePickerBtn = forwardRef(({ value, onClick }, ref) => (
-  <div className="flex w-full justify-center">
+  <div className="">
     <BasicButton
       ref={ref}
       onClick={onClick}
-      width="60"
+      width="52"
       type="button"
-      style={
-        'self-center relative bottom-0 shadow-md hover:scale-105 flex justify-center items-center'
-      }
+      style={'shadow-md hover:scale-105'}
     >
-      <p className="">Reserver !</p>
+      <p className="">Reservervation</p>
     </BasicButton>
   </div>
 ));
+
+export const isDispoDay = (day, arr) =>
+  arr.includes(day.toString().slice(0, 3).toLocaleLowerCase());
+
+export const currentMonth = () => new Date().getMonth();
+export const currentYear = () => new Date().getFullYear();
+export const currentDay = () => new Date().getDay();
+
+export const highlightDispoDay = (day, arr) =>
+  arr.includes(day.toString().slice(0, 3).toLocaleLowerCase()) &&
+  day > new Date()
+    ? 'bg-main_color rounded-md text-white'
+    : '';
 
 export const DatePickerContainer = ({ children }) => {
   return (
@@ -26,4 +37,14 @@ export const DatePickerContainer = ({ children }) => {
       </CalendarContainer>
     </div>
   );
+};
+
+export const daysTraduction = {
+  mon: 'lundi',
+  tue: 'mardi',
+  wed: 'mercredi',
+  thu: 'jeudi',
+  fri: 'vendredi',
+  sat: 'samedi',
+  sun: 'dimanche',
 };
