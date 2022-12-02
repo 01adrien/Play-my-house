@@ -6,14 +6,6 @@
     {
         protected static $table = "instruments";
 
-        public static function get_count()
-        {
-            $sql = "SELECT COUNT(*)
-                    FROM `".self::$table."` instru";
-
-            return \My_class\App::get_DB()->prepare($sql, [], null, true);
-        }
-
         public static function get_instrument($offset, $limit, $filter = 'ALL', $post = []) 
         {   
             if ($filter === 'FAMILY') $where = "WHERE instru.`family_id` =:id";

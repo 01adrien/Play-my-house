@@ -65,6 +65,15 @@
             $stmt = \My_class\App::get_DB()->prepare($query, $post, null, $uniq);
             return $stmt;
         }
+
+        public static function get_count()
+        {
+            $sql = "SELECT COUNT(*)
+                    FROM `".static::get_table()."`";
+
+            return \My_class\App::get_DB()->prepare($sql, [], null, true);
+        }
+
     }
 
 ?>
