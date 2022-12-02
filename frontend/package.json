@@ -22,8 +22,7 @@
     "react-hot-toast": "^2.4.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.2",
-    "recoil": "^0.7.6",
-    "tw-elements": "^1.0.0-alpha12"
+    "recoil": "^0.7.6"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",

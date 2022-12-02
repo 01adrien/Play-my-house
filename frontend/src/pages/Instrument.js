@@ -1,6 +1,6 @@
 import fr from 'date-fns/locale/fr';
 import { Accordion } from 'flowbite-react';
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useLocation, useParams } from 'react-router-dom';
@@ -38,13 +38,12 @@ const UserSmallCardsWithLoading = withLoading(UserSmallCards);
 
 export default function Instrument() {
   const { id } = useParams();
-  const location = useLocation();
-  const [instrument, _] = useState(location.state);
   const profile = useRecoilValue(user);
+  const location = useLocation();
   const [owner, setOwner] = useState([]);
-  const { loading, pictures } = useCarousel(id);
-  const { avatar, avatarLoading } = useProfilePicture(instrument.owner_id);
   const [notDispoSlots, setNotDispoSlots] = useState('');
+  const { loading, pictures } = useCarousel(id);
+  const { avatar, avatarLoading } = useProfilePicture(location.state.owner_id);
   const {
     weekDispos,
     arrayDays,
@@ -95,7 +94,7 @@ export default function Instrument() {
   }
 
   useEffect(() => {
-    getUserById(instrument.owner_id).then(setOwner);
+    getUserById(location.state.owner_id).then(setOwner);
   }, [id]);
 
   return (
@@ -164,7 +163,7 @@ export default function Instrument() {
             {notDispoSlots && (
               <div className="text-sm w-full flex justify-center text-center items-center">
                 <p className="pr-2 text-base">⚠️</p>
-                <p className="text-red-600 pr-2">{notDispoSlots.slots}</p>
+                <p className="text-red-600 pr-2">{notDispoSlots.slots.txt}</p>
                 <p>non disponible(s) pour le {notDispoSlots.date} </p>
               </div>
             )}
@@ -173,10 +172,10 @@ export default function Instrument() {
             <div className="w-[80%] flex justify-center">
               <DatePicker
                 locale="fr"
-                onCalendarClose={handleCloseCalendar}
-                disabledKeyboardNavigation
                 minDate={new Date()}
                 selected={new Date()}
+                disabledKeyboardNavigation
+                onCalendarClose={handleCloseCalendar}
                 filterDate={daysToShow}
                 onDayMouseEnter={handleDayHover}
                 onMonthChange={handleChangeMonth}

@@ -18,7 +18,7 @@ export default function usePagination(fnCount, fnData, ...args) {
 
   useEffect(() => {
     args
-      ? fnData(...args, offset - 12, limit)
+      ? fnData(...args, offset - itemsPerPage, limit)
           .then(setData)
           .then(() => {
             setLoading(false);
@@ -27,7 +27,7 @@ export default function usePagination(fnCount, fnData, ...args) {
             }, 200);
           })
           .then()
-      : fnData(offset - 12, limit)
+      : fnData(offset - itemsPerPage, limit)
           .then(setData)
           .then(() => {
             setLoading(false);
