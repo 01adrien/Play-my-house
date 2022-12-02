@@ -28,7 +28,6 @@ export default function InstrumentFamily() {
     family,
     'INSTRUMENT'
   );
-  console.log(data);
 
   useEffect(() => {
     getByFamilyName(family, 'TYPE').then(setTypeList);

@@ -36,3 +36,17 @@ export async function getUserById(id) {
   const res = await AXIOS.post(`/user/get_by_ID`, post);
   return res.data;
 }
+
+export async function getAllUsers(offset, limit) {
+  const post = new FormData();
+  post.append('offset', offset);
+  post.append('limit', limit);
+  const res = await AXIOS.post(`/user/get_all_users_safe`, post);
+  return res.data;
+}
+
+export async function getUserCount() {
+  const res = await AXIOS.get(`/user/get_count`);
+  const [count] = Object.values(res.data);
+  return count;
+}

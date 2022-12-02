@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "name": "Pianos electriques",
+    "family_id": "1",
+    "count": { "COUNT(*)": "3" }
+  },
+  {
+    "id": "2",
+    "name": "Guitares acoustiques",
+    "family_id": "2",
+    "count": { "COUNT(*)": "3" }
+  },
+  {
+    "id": "3",
+    "name": "Violons",
+    "family_id": "2",
+    "count": { "COUNT(*)": "2" }
+  },
+  {
+    "id": "4",
+    "name": "Basses",
+    "family_id": "2",
+    "count": { "COUNT(*)": "1" }
+  },
+  {
+    "id": "5",
+    "name": "Saxophones",
+    "family_id": "3",
+    "count": { "COUNT(*)": "3" }
+  },
+  {
+    "id": "6",
+    "name": "Trompettes",
+    "family_id": "3",
+    "count": { "COUNT(*)": "4" }
+  },
+  {
+    "id": "7",
+    "name": "Clarinettes",
+    "family_id": "3",
+    "count": { "COUNT(*)": "1" }
+  }
+]

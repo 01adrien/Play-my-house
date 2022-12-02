@@ -10,7 +10,7 @@ export default function CheckBoxContainer({ types, brands }) {
             <div className="flex">
               <p className="text-center font-bold">filtre par instrument</p>
             </div>
-            <div className="mt-2">
+            <div data-cy="checkbox-type" className="mt-2 ">
               {types?.map((type) => {
                 return (
                   <div key={type.id} className="flex justify-between">
@@ -28,7 +28,7 @@ export default function CheckBoxContainer({ types, brands }) {
         <div className="flex mt-5">
           <p className="text-center font-bold">filtre par marque</p>
         </div>
-        <div className="mt-2">
+        <div data-cy="checkbox-brand" className="mt-2">
           {brands?.map((brand) => {
             return (
               <div key={brand.id} className="flex justify-between">

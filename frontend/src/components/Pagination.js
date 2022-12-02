@@ -9,7 +9,7 @@ export default function Pagination({ index, setCurrentPage, currentPage }) {
       <div
         key={i}
         className={`${
-          page === currentPage && 'bg-slate-300 text-main_color'
+          page === currentPage && 'bg-slate-300'
         } border-r-[1px] borderborder-[1px] border-slate-400 hover:bg-slate-300`}
       >
         <a
@@ -24,14 +24,15 @@ export default function Pagination({ index, setCurrentPage, currentPage }) {
   }
 
   return (
-    <nav className="bg-white h-16 absolute text-slate-600 flex justify-center items-center text-lg cursor-pointer w-[250px] mt-3">
+    <nav className="bg-white h-16 text-slate-600 flex justify-center items-center text-lg cursor-pointer w-[250px]">
       <span
-        className="font-thin m-2 border-[1px] border-slate-400 h-8 w-8 text-center rounded hover:bg-slate-300"
+        data-cy="prev-page"
+        className="font-thin border-t-[1px] border-b-[1px] border-l-[1px] border-slate-400 h-8 w-8 text-center rounded-l hover:bg-slate-300"
         onClick={currentPage > 1 ? () => setCurrentPage(currentPage - 1) : null}
       >
         ❮
       </span>
-      <div className="border-l-[1px] border-t-[1px] rounded border-b-[1px] border-slate-400 h-8 flex">
+      <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-8 flex">
         {index < 5
           ? pages.map((page, i) => {
               return pageCountComponent(page, i);
@@ -50,7 +51,8 @@ export default function Pagination({ index, setCurrentPage, currentPage }) {
         {index > 5 && currentPage < index - 2 ? <span>...</span> : null}
       </div>
       <span
-        className="font-thin m-2  h-8 w-8 text-center border-[1px] border-slate-400 rounded hover:bg-slate-300"
+        data-cy="next-page"
+        className="font-thin h-8 w-8 text-center border-t-[1px] border-b-[1px] border-r-[1px] rounded-r border-slate-400 hover:bg-slate-300"
         onClick={
           currentPage < index ? () => setCurrentPage(currentPage + 1) : null
         }

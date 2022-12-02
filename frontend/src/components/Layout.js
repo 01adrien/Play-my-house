@@ -12,7 +12,7 @@ export default function Layout({ children }) {
     getProfile().then((u) => setProfile(u));
   }, []);
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen h-[100%]">
       <Header />
       {children}
       <Toaster />

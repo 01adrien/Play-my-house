@@ -15,17 +15,13 @@
 
 Cypress.Commands.add('login', (role) => {
   cy.visit('/login');
-  let fixtureFile;
-  if (role === 'user') fixtureFile = 'user.json';
-  if (role === 'owner') fixtureFile = 'owner.json';
-  if (role === 'admin') fixtureFile = 'admin.json';
   cy.intercept('**/user/login', {
     statusCode: 200,
     body: { granted: true },
   });
   cy.intercept(`**/user/get_profil`, {
     statusCode: 200,
-    fixture: fixtureFile,
+    fixture: `auth/${role}.json`,
   });
   cy.get('[id="email-login"]').type('john.doe@email.com');
   cy.get('[id="password-login"]').type('789456');

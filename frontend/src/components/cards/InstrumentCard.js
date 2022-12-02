@@ -41,7 +41,7 @@ export default function InstrumentCard({ instrument, style = '' }) {
             state={{ ...instrument, picture: null }}
           >
             <BasicButton type="button" height="7" style="text-sm">
-              <p className="-translate-y-2">details</p>
+              <p>details</p>
             </BasicButton>
           </Link>
         </div>

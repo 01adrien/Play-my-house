@@ -25,6 +25,7 @@ import withCarousel from '../HOC/withCarousel';
 import withLoading from '../HOC/withLoading';
 import useCarousel from '../hooks/useCarousel';
 import useProfilePicture from '../hooks/useProfilePicture';
+import Footer from '../components/Footer';
 import { user } from '../store/user';
 import { compose } from '../utils';
 registerLocale('fr', fr);
@@ -195,7 +196,7 @@ export default function Instrument() {
             </div>
           </div>
         </div>
-        <div className="w-[60%] h-80 text-center mt-8">
+        <div className="w-[60%] pb-8 text-center mt-8">
           Ut volutpat id massa in auctor. Pellentesque habitant morbi tristique
           senectus et netus et malesuada fames ac turpis egestas. Vivamus
           egestas sed nulla non condimentum. Pellentesque tristique viverra
@@ -213,6 +214,7 @@ export default function Instrument() {
           nunc. Mauris fringilla erat sed risus pellentesque aliquam.
         </div>
       </div>
+      <Footer />
     </Layout>
   );
 }

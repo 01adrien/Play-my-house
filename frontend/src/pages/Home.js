@@ -47,7 +47,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="w-[90%] flex flex-wrap justify-center">
+          <div className="w-[90%] flex flex-wrap justify-center mb-4">
             {instruments?.map((instrument) => (
               <InstrumentCard
                 key={instrument.id}
@@ -58,7 +58,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* {!loading && <Footer />} */}
+      {!loading && <Footer />}
     </Layout>
   );
 }

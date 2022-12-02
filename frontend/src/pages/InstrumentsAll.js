@@ -5,7 +5,7 @@ import {
   getAllBrand,
   getAllType,
   getInstruments,
-  getCount,
+  getInstrumentCount,
 } from '../api/instrument';
 import withLoading from '../HOC/withLoading';
 import usePagination from '../hooks/usePagination';
@@ -22,7 +22,7 @@ export default function InstrumentsAll() {
     itemsNumber,
     data,
     loading,
-  } = usePagination(getCount, getInstruments);
+  } = usePagination(getInstrumentCount, getInstruments);
 
   useEffect(() => {
     getAllBrand().then(setBrandList);
@@ -31,7 +31,6 @@ export default function InstrumentsAll() {
   return (
     <Layout>
       <InstrumentListPageWithLoading
-        pageLoader
         loading={loading}
         pagesNumber={Math.ceil(itemsNumber / itemsPerPage)}
         currentPage={currentPage}

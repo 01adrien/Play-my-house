@@ -49,7 +49,7 @@ export async function getInstruments(offset, limit) {
   return res.data;
 }
 
-export async function getCount() {
+export async function getInstrumentCount() {
   const res = await AXIOS.get(`/instrument/get_count`);
   const [count] = Object.values(res.data);
   return count;

@@ -14,7 +14,7 @@ export default function usePagination(fnCount, fnData, ...args) {
     args
       ? fnCount(args[0]).then(setItemsNumber)
       : fnCount().then(setItemsNumber);
-  }, []);
+  }, [fnCount]);
 
   useEffect(() => {
     args
@@ -35,7 +35,7 @@ export default function usePagination(fnCount, fnData, ...args) {
               scrollUp();
             }, 200);
           });
-  }, [currentPage, args[0]]);
+  }, [currentPage, args[0], fnData]);
 
   return {
     currentPage,

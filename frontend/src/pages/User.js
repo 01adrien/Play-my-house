@@ -2,21 +2,25 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { logout } from '../api/auth';
-import Footer from '../components/Footer';
 import Layout from '../components/Layout';
+import Footer from '../components/Footer';
+import BaseTable from '../components/tables/BaseTable';
 import UserProfile from '../components/UserProfile';
 import { user } from '../store/user';
+import { getAllUsers, getUserCount } from '../api/user';
+import { getInstruments, getInstrumentCount } from '../api/instrument';
 
 export default function User() {
   const [profile, setProfile] = useRecoilState(user);
   const [activeHeading, setActiveHeading] = useState('Details du compte');
+
   const navigate = useNavigate();
   const disconnect = () => {
     logout(user);
     setProfile({ default: 'user' });
     navigate('/');
   };
-  const UserHeadings = {
+  const userHeadings = {
     'Reservation a venir': 'mes rervations a venir',
     'Reservation passes': 'mes rervations passees',
     'Details du compte': <UserProfile />,
@@ -34,29 +38,28 @@ export default function User() {
   };
 
   const adminHeadings = {
-    Utilisateurs: 'tous les utilisateurs',
-    Reservations: 'toutes les reservations',
-    Instruments: 'tous les instruments',
+    Utilisateurs: <BaseTable fn1={getUserCount} fn2={getAllUsers} />,
+    Instruments: <BaseTable fn1={getInstrumentCount} fn2={getInstruments} />,
     Planning: 'planning',
-    Messages: 'Mes messages',
     'Details du compte': <UserProfile />,
+    Messages: 'Mes messages',
     Deconnexion: '',
   };
 
-  let headings = {};
-  if (profile?.role === 'user') headings = UserHeadings;
+  let headings;
+  if (profile?.role === 'user') headings = userHeadings;
   if (profile?.role === 'owner') headings = ownerHeadings;
   if (profile?.role === 'admin') headings = adminHeadings;
 
   return (
     <Layout>
-      <div className="w-full h-[80vh] flex justify-center">
+      <div className="w-full h-[70vh] flex justify-center">
         <div className=" w-[85%] h-full">
           <div className="h-24 flex items-center">
             <p className="text-[1.8em] font-bold">Mon compte</p>
           </div>
-          <div className="flex justify-around w-[100%] h-[70%]">
-            <div className="flex flex-col border-r-2 border-border_color h-[100%] w-[25%]">
+          <div className="flex justify-around w-[100%] h-[100%]">
+            <div className="flex flex-col border-r-2 border-border_color w-52">
               <div className="h-14 w-[80%] flex justify-start items-center border-b-2">
                 <p className="text-[1.2em] pl-5"> MON COMPTE</p>
               </div>
@@ -78,13 +81,12 @@ export default function User() {
                 );
               })}
             </div>
-            <div className=" w-[100%]">
-              <div>{headings[activeHeading]}</div>
+            <div className=" w-[80%] flex justify-center">
+              <div className="w-[90%]">{headings[activeHeading]}</div>
             </div>
           </div>
         </div>
       </div>
-      <Footer />{' '}
     </Layout>
   );
 }

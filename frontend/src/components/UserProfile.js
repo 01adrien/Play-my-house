@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import BasicButton from "./button/BasicButton";
-import FormInput from "./input/FormInput";
-import LoginErrors from "./LoginErrors";
-import Spinner from "./icons/Spinner";
-import { getPicture, uploadPicture } from "../api/user";
-import FileInput from "./input/FileInput";
-import { user } from "../store/user";
-import { useRecoilState } from "recoil";
-import withLoading from "../HOC/withLoading";
-import { Picture } from "./Picture";
-import Upload from "./icons/Upload";
+import React, { useState, useEffect } from 'react';
+import BasicButton from './button/BasicButton';
+import FormInput from './input/FormInput';
+import LoginErrors from './LoginErrors';
+import Spinner from './icons/Spinner';
+import { getPicture, uploadPicture } from '../api/user';
+import FileInput from './input/FileInput';
+import { user } from '../store/user';
+import { useRecoilState } from 'recoil';
+import withLoading from '../HOC/withLoading';
+import { Picture } from './Picture';
+import Upload from './icons/Upload';
 
 const PictureWithLoading = withLoading(Picture);
 
@@ -100,7 +100,7 @@ export default function UserProfile() {
           <div className="pt-3 flex justify-center w-[100%]">
             <div className="w-[60%]">
               <BasicButton
-                style={loading && "border-2 border-slate-700 "}
+                style={loading && 'border-2 border-slate-700 '}
                 type="submit"
               >
                 {loading ? <Spinner /> : <p>Enregistrer</p>}
@@ -119,12 +119,12 @@ export default function UserProfile() {
           <PictureWithLoading
             loading={pictureLoading}
             src={picture?.src}
-            alt={"profil-picture"}
-            style={"rounded-xl w-60 h-56"}
+            alt={'profil-picture'}
+            style={'rounded-xl w-60 h-56'}
           />
         </div>
         <BasicButton width="40" type="submit">
-          {!picture?.src ? <Spinner /> : <Upload />}
+          {<Upload />}
         </BasicButton>
       </form>
     </div>
