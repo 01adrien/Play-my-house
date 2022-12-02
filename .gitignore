@@ -2,11 +2,15 @@
 
 node_modules/
 dist/
+.parcel-cache/
+.env.*
+
 ## BACK
 
 Config.php
 vendor/
-.parcel-cache/
+
 ## AUTRE
 
-autre
+secret
+.gitignore
