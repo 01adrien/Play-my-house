@@ -11,6 +11,6 @@ Config.php
 vendor/
 
 ## AUTRE
-
+.htaccess
 secret
 .gitignore

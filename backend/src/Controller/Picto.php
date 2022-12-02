@@ -9,12 +9,12 @@
 
         public static function get_picture($post, $type)
         {
-           $ext = pathinfo($post['fileName']);
+           $file_info = pathinfo($post['fileName']);
            $file_name = $post['fileName'];
            if ($type === 'INSTRUMENT') $path = self::INSTRUMENT_PATH . $file_name;
            if ($type === 'USER') $path = self::USER_PATH . $file_name;
            $data = file_get_contents($path);
-           $base64 = 'data:image/' . $ext . ';base64,' . base64_encode($data);
+           $base64 = 'data:image/' . $file_info['extension'] . ';base64,' . base64_encode($data);
            return $base64;
         }
 

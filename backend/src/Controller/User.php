@@ -6,9 +6,14 @@
     {
         const DEFAULT_AVATAR = "default.png";
         
-        public static function get_all() 
+        public static function get_count()
         {
-            return \Model\User::get_all();
+            return \Model\User::get_count();
+        }
+
+        public static function get_all_users_safe($post)
+        {
+            return \Model\User::get_all_users_safe($post['offset'], $post['limit']);
         }
 
         public static function get_by_ID($post) 

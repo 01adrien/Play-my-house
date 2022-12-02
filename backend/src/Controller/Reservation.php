@@ -26,7 +26,7 @@
                         }
                     }
                 }                
-                if (\is_string($day)) 
+                if (\is_string($day) && isset($data[$day])) 
                 {   
                     foreach ($data[$day] as $key => $value)
                     {   
@@ -66,7 +66,7 @@
                 $attr = [];
                 $attr['id'] = self::formatdata($resa, $resa['day'], \Model\Table::P_INT );
                 $timeline = \Model\Timeline_day::get_by_ID($attr);
-                foreach ($timeline as $h) if ($timeline->$h === null) unset($timeline->$h);
+                // foreach ($timeline as $h) if ($timeline->$h === null) unset($timeline->$h);
                 $total_slots = $timeline->total_hours;
                 $array = [];
                 $array['day'] = $resa['date'];
