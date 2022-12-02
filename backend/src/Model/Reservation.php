@@ -40,7 +40,14 @@
                     FROM `".self::$table."` resa
                     ".$where."";
 
-            return \My_class\App::get_DB()->prepare($sql, $post, null, false);
+            $reservations =  \My_class\App::get_DB()->prepare($sql, $post, null, false);
+
+            foreach ($reservations as $r)
+            {
+
+                $r->reservation_slot = count(range($r->start, $r->end)) - 1;
+            }
+            return $reservations;
         }
 
     }
