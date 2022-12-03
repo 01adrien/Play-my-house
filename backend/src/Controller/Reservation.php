@@ -123,7 +123,8 @@
         public static function get_active_count_by_user($post)
         {
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\Reservation::get_active_count_by_user($attr);
+            $count = \Model\Reservation::get_active_count_by_user($attr);
+            return $count[0];
         }
 
         public static function get_inactive_user_reservation($post)
@@ -142,7 +143,8 @@
         public static function get_inactive_count_by_user($post)
         {
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\Reservation::get_inactive_count_by_user($attr);
+            $count =  \Model\Reservation::get_inactive_count_by_user($attr);
+            return $count[0];
         }
     }
 ?>

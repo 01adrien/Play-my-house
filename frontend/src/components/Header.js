@@ -25,7 +25,7 @@ export default function Header() {
       <div className="w-full h-12 flex justify-center border-b-2 items-center border-slate-200">
         <div
           onClick={() => <Navigate to={'/instrument-all'} replace />}
-          className="w-[80%] flex justify-between items-center"
+          className="w-[80%] h-12 flex justify-between items-center"
         >
           <DropdownMenu />
           <div>

@@ -29,21 +29,26 @@ export default function User() {
     navigate('/');
   };
 
+  const handleSelectHeading = (h) => {
+    h === 'Deconnexion' ? disconnect() : setActiveHeading(h);
+    setItemsToDelete([]);
+  };
+
   const userHeadings = {
     'Reservation a venir': (
       <BaseTable
         fn1={getActiveCountByUser}
         fn2={getActiveUserReservation}
-        id={68}
-        view="USER_RESERVATION_TO_COME"
+        id={profile.id}
+        view="USER_RESERVATION"
       />
     ),
     'Reservation passes': (
       <BaseTable
         fn1={getInactiveCountByUser}
         fn2={getInactiveUserReservation}
-        id={68}
-        view="USER_RESERVATION_PAST"
+        id={profile.id}
+        view="USER_RESERVATION"
       />
     ),
     'Details du compte': <UserProfile />,
@@ -95,17 +100,18 @@ export default function User() {
                 return (
                   <div
                     key={head}
-                    onClick={() => {
-                      head === 'Deconnexion'
-                        ? disconnect()
-                        : setActiveHeading(head);
-                      setItemsToDelete([]);
-                    }}
+                    onClick={() => handleSelectHeading(head)}
                     className={`h-10 w-[80%] flex hover:text-main_color ${
                       activeHeading === head && 'bg-slate-200 text-main_color'
                     } cursor-pointer justify-start items-center`}
                   >
-                    <p className="pl-5">{head}</p>
+                    <p
+                      className={`pl-2 ${
+                        activeHeading !== head && 'hover:scale-105'
+                      }`}
+                    >
+                      {head}
+                    </p>
                   </div>
                 );
               })}

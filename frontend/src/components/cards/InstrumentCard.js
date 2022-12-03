@@ -27,7 +27,7 @@ export default function InstrumentCard({ instrument, style = '' }) {
         />
       </div>
       <div className="flex justify-center h-28 w-64 border-b-2 border-r-2 border-l-2 border-border_color rounded-b">
-        <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[70%]">
+        <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[80%]">
           <div>
             <p className="text-main_color text-sm text-center">
               {instrument.type}

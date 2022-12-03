@@ -30,11 +30,11 @@ export default function InstrumentListPage({
         </div>
         <div className="flex pt-3 min-h-[500px]">
           <div className="flex min-w-[250px]">
-            <div className="border-r-2 border-border_color w-[80%] h-[100%] flex ">
+            <div className="border-r-2 border-border_color w-[90%] h-[100%] flex ">
               <CheckBoxContainer types={types} brands={brands} />
             </div>
           </div>
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full w-[100%]">
             <div className="flex flex-wrap justify-center h-fit mb-6  ">
               {instruments.length ? (
                 instruments?.map((instrument) => {

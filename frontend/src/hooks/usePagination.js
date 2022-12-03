@@ -13,7 +13,13 @@ export default function usePagination(fnCount, fnData, ...args) {
   useEffect(() => {
     setCurrentPage(1);
     args && args[0]
-      ? fnCount(args[0]).then(setItemsNumber)
+      ? fnCount(args[0]).then((data) => {
+          if (typeof data === 'object') {
+            setItemsNumber(Object.values(data));
+          } else {
+            setItemsNumber(data);
+          }
+        })
       : fnCount().then(setItemsNumber);
   }, [fnCount]);
 

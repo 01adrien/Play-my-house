@@ -92,7 +92,7 @@
 
         public static function get_inactive_count_by_user($post)
         {
-            $sql = "SELECT COUNT(*) FROM `".self::$table."` resa
+            $sql = "SELECT COUNT(*) FROM `".static::get_table()."` resa
                     WHERE resa.`user_id` =:id AND resa.`active` = 0";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);

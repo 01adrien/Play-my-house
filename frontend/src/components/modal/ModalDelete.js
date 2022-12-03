@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'flowbite-react';
 import { listToDelete } from '../../store/user';
 import { useRecoilValue } from 'recoil';
-// import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 export default function ModalDelete({ onClose, onConfirm, label }) {
   const items = useRecoilValue(listToDelete);
@@ -11,7 +11,7 @@ export default function ModalDelete({ onClose, onConfirm, label }) {
       <Modal.Header />
       <Modal.Body>
         <div className="text-center">
-          {/* <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400" /> */}
+          <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400" />
           <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
             {items.length ? (
               <div className="text-sm">

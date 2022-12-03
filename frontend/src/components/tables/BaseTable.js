@@ -27,19 +27,17 @@ export default function BaseTable({ fn1, fn2, view, id }) {
     isChecked,
   } = useDeleteItems(view, fn1, setItemsNumber);
 
-  console.log(id);
-
   return (
     <>
       {!loading ? (
-        <div className="flex flex-col">
-          <div className="flex justify-around w-full h-18 items-center">
+        <div className="flex flex-col min-w-[700px]">
+          <div className="flex justify-around w-full text-sm h-18 items-center">
             <BasicButton
               onClick={openModal}
               width="40"
-              style="h-10 bg-red-600 hover:bg-red-700"
+              style="h-10 bg-red-600 hover:bg-red-700 hover:scale-105"
             >
-              <p className="self-center">delete</p>
+              <p className="self-center">supprimer</p>
             </BasicButton>
             {Math.ceil(itemsNumber / itemsPerPage) > 0 && data.length && (
               <Pagination
@@ -49,14 +47,16 @@ export default function BaseTable({ fn1, fn2, view, id }) {
               />
             )}
           </div>
-          <Table hoverable={true} striped={true}>
+          <Table hoverable={true} striped={true} className="min-w-[500px] mt-6">
             <Table.Head>
               <Table.HeadCell className="!p-4">
                 <p>🎶</p>
               </Table.HeadCell>
               {data[0] &&
                 Object.keys(data[0]).map((h) => (
-                  <Table.HeadCell key={h}>{h}</Table.HeadCell>
+                  <Table.HeadCell className="!px-2 text-xs" key={h}>
+                    {h}
+                  </Table.HeadCell>
                 ))}
             </Table.Head>
             <Table.Body className="divide-y">
@@ -65,15 +65,17 @@ export default function BaseTable({ fn1, fn2, view, id }) {
                   key={d.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
-                  <Table.Cell className="focus:ring-0 !p-4">
+                  <Table.Cell className="focus:ring-0 !p-4 text-sm">
                     <Checkbox
-                      checked={isChecked(d)}
+                      checked={isChecked(d, view)}
                       onChange={(e) => handleSelectItem(e, d)}
                       className="focus:ring-0"
                     />
                   </Table.Cell>
                   {Object.keys(d).map((cell) => (
-                    <Table.Cell key={cell}>{d[cell] || '--'}</Table.Cell>
+                    <Table.Cell className="text-xs !px-2" key={cell}>
+                      {d[cell] || '--'}
+                    </Table.Cell>
                   ))}
                 </Table.Row>
               ))}

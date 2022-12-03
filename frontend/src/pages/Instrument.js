@@ -3,6 +3,7 @@ import { Accordion } from 'flowbite-react';
 import React, { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { HiOutlineArrowCircleDown } from 'react-icons/hi';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { getDispoSlotsByDay } from '../api/reservation';
@@ -115,6 +116,7 @@ export default function Instrument() {
             </div>
             <div className="flex flex-col justify-between items-end w-72 h-72">
               <Accordion
+                arrowIcon={HiOutlineArrowCircleDown}
                 flush={true}
                 className="focus:ring-0 w-72 ml-20 shadow-md"
               >

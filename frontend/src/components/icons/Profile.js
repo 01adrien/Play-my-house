@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function Profile() {
   return (
@@ -8,7 +8,7 @@ export default function Profile() {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-6 h-6"
+      className="w-6 h-6 hover:scale-110"
     >
       <path
         strokeLinecap="round"
