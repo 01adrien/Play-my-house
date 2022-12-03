@@ -20,7 +20,7 @@ export default function DropdownMenu() {
         to={'/instrument-all'}
       >
         <BasicButton
-          style={`bg-main_color w-36 text-white font-semibold py-2 px-4 h-8 inline-flex items-center`}
+          style={`bg-main_color w-36 text-white font-semibold py-2 px-4 h-12 inline-flex items-center`}
         >
           <div className="w-full flex space-between">
             <span className="pl-3">Instruments</span>

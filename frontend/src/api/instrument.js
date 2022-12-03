@@ -1,7 +1,7 @@
 import { AXIOS } from './Axios';
 
 export async function getTenNewest() {
-  res = await AXIOS.get(`/instrument/get_ten_newest`);
+  const res = await AXIOS.get(`/instrument/get_ten_newest`);
   return res.data;
 }
 

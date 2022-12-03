@@ -26,7 +26,7 @@ export async function uploadPicture(body) {
 }
 
 export async function getProfile() {
-  res = await AXIOS.get(`/user/get_profil`);
+  const res = await AXIOS.get(`/user/get_profil`);
   return res.data;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Table, Checkbox } from 'flowbite-react';
 import Spinner from '../icons/Spinner';
 import usePagination from '../../hooks/usePagination';
@@ -14,6 +14,7 @@ export default function BaseTable({ fn1, fn2 }) {
     data,
     loading,
   } = usePagination(fn1, fn2);
+  console.log('gdfdgd');
   return (
     <>
       {!loading ? (

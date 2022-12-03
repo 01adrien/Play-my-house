@@ -46,6 +46,8 @@ export default function User() {
     Deconnexion: '',
   };
 
+  console.log('jjijij');
+
   let headings;
   if (profile?.role === 'user') headings = userHeadings;
   if (profile?.role === 'owner') headings = ownerHeadings;

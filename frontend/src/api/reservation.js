@@ -30,14 +30,3 @@ export async function getDispoSlotsByDay(id, day) {
   const res = await AXIOS.post(`/reservation/get_dispo_slots_by_day`, post);
   return res.data;
 }
-
-data = [
-  {
-    day: '28/12/2022',
-    dispo: [{ '13-14': false }, { '14-15': true }, { '15-16': false }],
-  },
-  {
-    day: '30/12/2022',
-    dispo: ['18-21', '21-22'],
-  },
-];
