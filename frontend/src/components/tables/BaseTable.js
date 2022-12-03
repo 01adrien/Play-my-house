@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Checkbox, Modal } from 'flowbite-react';
+import { Table, Checkbox } from 'flowbite-react';
 import Spinner from '../icons/Spinner';
 import usePagination from '../../hooks/usePagination';
 import Pagination from '../Pagination';
@@ -7,7 +7,7 @@ import BasicButton from '../button/BasicButton';
 import ModalDelete from '../modal/ModalDelete';
 import { useDeleteItems, viewTolabel } from '../../hooks/useDeleteItems';
 
-export default function BaseTable({ fn1, fn2, view }) {
+export default function BaseTable({ fn1, fn2, view, id }) {
   const {
     currentPage,
     setCurrentPage,
@@ -16,16 +16,18 @@ export default function BaseTable({ fn1, fn2, view }) {
     setItemsNumber,
     data,
     loading,
-  } = usePagination(fn1, fn2);
+  } = usePagination(fn1, fn2, id);
 
   const {
-    itemsToDelete,
     handleConfirm,
     closeModal,
     openModal,
     handleSelectItem,
     showModal,
+    isChecked,
   } = useDeleteItems(view, fn1, setItemsNumber);
+
+  console.log(id);
 
   return (
     <>
@@ -65,6 +67,7 @@ export default function BaseTable({ fn1, fn2, view }) {
                 >
                   <Table.Cell className="focus:ring-0 !p-4">
                     <Checkbox
+                      checked={isChecked(d)}
                       onChange={(e) => handleSelectItem(e, d)}
                       className="focus:ring-0"
                     />
@@ -78,7 +81,6 @@ export default function BaseTable({ fn1, fn2, view }) {
           </Table>
           {showModal && (
             <ModalDelete
-              items={itemsToDelete}
               onConfirm={handleConfirm}
               onClose={closeModal}
               label={viewTolabel[view]}

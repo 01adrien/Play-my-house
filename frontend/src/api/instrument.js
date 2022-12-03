@@ -80,7 +80,6 @@ export async function getAllPictureForOne(id) {
 
 export async function getInstrumentAdmin(offset, limit) {
   const post = new FormData();
-  console.log(offset, limit);
   post.append('offset', offset);
   post.append('limit', limit);
   const res = await AXIOS.post(`/instrument/get_admin_data`, post);

@@ -39,7 +39,6 @@ export async function getUserById(id) {
 
 export async function getUserAdmin(offset, limit) {
   const post = new FormData();
-  console.log(offset, limit);
   post.append('offset', offset);
   post.append('limit', limit);
   const res = await AXIOS.post(`/user/get_admin_data`, post);

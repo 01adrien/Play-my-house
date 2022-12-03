@@ -30,3 +30,41 @@ export async function getDispoSlotsByDay(id, day) {
   const res = await AXIOS.post(`/reservation/get_dispo_slots_by_day`, post);
   return res.data;
 }
+
+export async function getActiveUserReservation(id, offset, limit) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('offset', offset);
+  post.append('limit', limit);
+  const res = await AXIOS.post(
+    `/reservation/get_active_user_reservation`,
+    post
+  );
+  return res.data;
+}
+
+export async function getActiveCountByUser(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/reservation/get_active_count_by_user`, post);
+  return res.data;
+}
+
+export async function getInactiveUserReservation(id, offset, limit) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('offset', offset);
+  post.append('limit', limit);
+  const res = await AXIOS.post(
+    `/reservation/get_inactive_user_reservation`,
+    post
+  );
+  return res.data;
+}
+
+export async function getInactiveCountByUser(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/reservation/get_inactive_count_by_user`, post);
+  return res.data;
+}

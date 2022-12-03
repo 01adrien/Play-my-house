@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 import { logout } from '../api/auth';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
@@ -9,8 +8,17 @@ import UserProfile from '../components/UserProfile';
 import { user } from '../store/user';
 import { getUserAdmin, getUserCount } from '../api/user';
 import { getInstrumentAdmin, getInstrumentCount } from '../api/instrument';
+import {
+  getActiveUserReservation,
+  getActiveCountByUser,
+  getInactiveCountByUser,
+  getInactiveUserReservation,
+} from '../api/reservation';
+import { listToDelete } from '../store/user';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 
 export default function User() {
+  const setItemsToDelete = useSetRecoilState(listToDelete);
   const [profile, setProfile] = useRecoilState(user);
   const [activeHeading, setActiveHeading] = useState('Details du compte');
 
@@ -20,9 +28,24 @@ export default function User() {
     setProfile({ default: 'user' });
     navigate('/');
   };
+
   const userHeadings = {
-    'Reservation a venir': 'mes rervations a venir',
-    'Reservation passes': 'mes rervations passees',
+    'Reservation a venir': (
+      <BaseTable
+        fn1={getActiveCountByUser}
+        fn2={getActiveUserReservation}
+        id={68}
+        view="USER_RESERVATION_TO_COME"
+      />
+    ),
+    'Reservation passes': (
+      <BaseTable
+        fn1={getInactiveCountByUser}
+        fn2={getInactiveUserReservation}
+        id={68}
+        view="USER_RESERVATION_PAST"
+      />
+    ),
     'Details du compte': <UserProfile />,
     Messages: 'Mes messages',
     Deconnexion: '',
@@ -76,6 +99,7 @@ export default function User() {
                       head === 'Deconnexion'
                         ? disconnect()
                         : setActiveHeading(head);
+                      setItemsToDelete([]);
                     }}
                     className={`h-10 w-[80%] flex hover:text-main_color ${
                       activeHeading === head && 'bg-slate-200 text-main_color'

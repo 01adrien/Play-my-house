@@ -15,7 +15,7 @@
         {
             return \Model\User::get_admin_data($post['offset'], $post['limit']);
         }
-
+        
         public static function get_by_ID($post) 
         {
             $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);

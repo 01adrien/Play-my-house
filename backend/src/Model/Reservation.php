@@ -44,12 +44,60 @@
 
             foreach ($reservations as $r)
             {
-
                 $r->reservation_slot = count(range($r->start, $r->end)) - 1;
             }
             return $reservations;
         }
 
-    }
+        public static function get_active_user_reservation($post, $offset, $limit)
+        {
+            $sql = "SELECT
+                    DATE(resa.`start`) `date`,
+                    LOWER(DAYNAME(resa.`start`)) `day`,
+                    HOUR(resa.`start`) `start`,
+                    HOUR(resa.`end`) `end`,
+                    resa.`instrument_id`
+                    FROM `".self::$table."` resa
+                    WHERE resa.`user_id` =:id AND resa.`active` = 1
+                    ORDER BY resa.`start` DESC LIMIT ".$limit." OFFSET ".$offset."";
+
+            
+            return \My_class\App::get_DB()->prepare($sql, $post, null, false);
+        }
+
+        public static function get_active_count_by_user($post)
+        {
+            $sql = "SELECT COUNT(*) FROM `".self::$table."` resa
+                    WHERE resa.`user_id` =:id AND resa.`active` = 1";
+
+            return \My_class\App::get_DB()->prepare($sql, $post, null, false);
+        }
+
+        public static function get_inactive_user_reservation($post, $offset, $limit)
+        {
+            $sql = "SELECT
+                    DATE(resa.`start`) `date`,
+                    LOWER(DAYNAME(resa.`start`)) `day`,
+                    HOUR(resa.`start`) `start`,
+                    HOUR(resa.`end`) `end`,
+                    resa.`instrument_id`
+                    FROM `".self::$table."` resa
+                    WHERE resa.`user_id` =:id AND resa.`active` = 0
+                    ORDER BY resa.`start` DESC LIMIT ".$limit." OFFSET ".$offset."";
+
+            
+            return \My_class\App::get_DB()->prepare($sql, $post, null, false);
+
+        }
+
+        public static function get_inactive_count_by_user($post)
+        {
+            $sql = "SELECT COUNT(*) FROM `".self::$table."` resa
+                    WHERE resa.`user_id` =:id AND resa.`active` = 0";
+
+            return \My_class\App::get_DB()->prepare($sql, $post, null, false);
+        }
+
+    }   
 
 ?>

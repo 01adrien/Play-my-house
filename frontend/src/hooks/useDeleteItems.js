@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { deleteInstrument } from '../api/instrument';
 import { deleteUser } from '../api/user';
 import { makeSuccesToast } from '../utils';
+import { listToDelete } from '../store/user';
+import { useRecoilState } from 'recoil';
 
 export const viewTolabel = {
   ADMIN_USERS: 'utilisateur(s)',
@@ -14,9 +16,14 @@ const viewToFunction = {
 };
 
 export function useDeleteItems(view, fn1, setItemsNumber) {
-  const [itemsToDelete, setItemsToDelete] = useState([]);
+  const [itemsToDelete, setItemsToDelete] = useRecoilState(listToDelete);
   const [showModal, setShowModal] = useState(false);
   const openModal = () => setShowModal(true);
+
+  const isChecked = (row) =>
+    !!itemsToDelete.filter(
+      (item) => item.id === row.id && item.name === row.name
+    ).length;
 
   function handleSelectItem(e, item) {
     e.target.checked
@@ -30,19 +37,18 @@ export function useDeleteItems(view, fn1, setItemsNumber) {
   }
 
   function handleConfirm() {
-    itemsToDelete.forEach((items) => viewToFunction[view](items.id));
+    itemsToDelete.forEach((item) => viewToFunction[view](item.id));
     makeSuccesToast({}, 'suppression effectuée!');
     fn1().then(setItemsNumber);
     closeModal();
   }
 
   return {
-    itemsToDelete,
-    setItemsToDelete,
     closeModal,
     openModal,
     handleSelectItem,
     showModal,
     handleConfirm,
+    isChecked,
   };
 }

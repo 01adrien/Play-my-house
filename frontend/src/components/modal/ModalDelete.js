@@ -1,8 +1,11 @@
 import React from 'react';
 import { Modal, Button } from 'flowbite-react';
+import { listToDelete } from '../../store/user';
+import { useRecoilValue } from 'recoil';
 // import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
-export default function ModalDelete({ items, onClose, onConfirm, label }) {
+export default function ModalDelete({ onClose, onConfirm, label }) {
+  const items = useRecoilValue(listToDelete);
   return (
     <Modal show={true} size="md" popup={true} onClose={onClose}>
       <Modal.Header />

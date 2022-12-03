@@ -66,7 +66,6 @@
                 $attr = [];
                 $attr['id'] = self::formatdata($resa, $resa['day'], \Model\Table::P_INT );
                 $timeline = \Model\Timeline_day::get_by_ID($attr);
-                // foreach ($timeline as $h) if ($timeline->$h === null) unset($timeline->$h);
                 $total_slots = $timeline->total_hours;
                 $array = [];
                 $array['day'] = $resa['date'];
@@ -93,6 +92,57 @@
             }
             return ['txt' => \substr($no_dispo_txt, 0, -3), 'count' => $no_dispo_count];
             
+        }
+
+        public static function __get_full_resa($r)
+        {
+            $instru['id'] = self::formatdata($r, 'instrument_id', \Model\Table::P_INT);
+            $instrument = (array)\Model\Instrument::get_by_ID($instru);
+            $user['id'] = self::formatdata($instrument, 'owner_id', \Model\Table::P_INT);
+            $owner = (array)\Model\User::get_owner($user);
+            return [
+                'date' => $r['date'], 'jour' => $r['day'], 'horaires' => $r['start'].'h - '.$r['end'].'h',
+                'instrument' => $instrument['name'], 'nom' => $owner[0]->name, "adresse" => $owner[0]->address,
+                'ville' => $owner[0]->city.' '.$owner[0]->CP, 'téléphone' => $owner[0]->telephone
+            ];
+        }
+
+        public static function get_active_user_reservation($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $reservations = \Model\Reservation::get_active_user_reservation($attr, $post['offset'], $post['limit']);
+            $data = [];
+            foreach($reservations as $r)
+            {
+                $r = (array)$r;
+                $data[] = self::__get_full_resa($r);
+            }
+            return $data;
+        }
+
+        public static function get_active_count_by_user($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Reservation::get_active_count_by_user($attr);
+        }
+
+        public static function get_inactive_user_reservation($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $reservations = \Model\Reservation::get_inactive_user_reservation($attr, $post['offset'], $post['limit']);
+            $data = [];
+            foreach($reservations as $r)
+            {
+                $r = (array)$r;
+                $data[] = self::__get_full_resa($r);
+            }
+            return $data;
+        }
+
+        public static function get_inactive_count_by_user($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Reservation::get_inactive_count_by_user($attr);
         }
     }
 ?>
