@@ -34,7 +34,7 @@ export default function InstrumentListPage({
               <CheckBoxContainer types={types} brands={brands} />
             </div>
           </div>
-          <div className="flex flex-col h-[100%]">
+          <div className="flex flex-col h-full">
             <div className="flex flex-wrap justify-center h-fit mb-6  ">
               {instruments.length ? (
                 instruments?.map((instrument) => {
@@ -49,7 +49,7 @@ export default function InstrumentListPage({
                 <p>pas d'instruments</p>
               )}
             </div>
-            <div className="flex justify-center">
+            <div className={`flex justify-center`}>
               {pagesNumber > 1 && instruments.length && (
                 <Pagination
                   index={pagesNumber}
@@ -61,7 +61,7 @@ export default function InstrumentListPage({
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

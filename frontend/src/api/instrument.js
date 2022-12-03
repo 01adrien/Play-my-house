@@ -77,3 +77,19 @@ export async function getAllPictureForOne(id) {
   const res = await AXIOS.post(`/instrument/get_all_pictures_for_one`, post);
   return res.data;
 }
+
+export async function getInstrumentAdmin(offset, limit) {
+  const post = new FormData();
+  console.log(offset, limit);
+  post.append('offset', offset);
+  post.append('limit', limit);
+  const res = await AXIOS.post(`/instrument/get_admin_data`, post);
+  return res.data;
+}
+
+export async function deleteInstrument(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/delete`, post);
+  return res.data;
+}

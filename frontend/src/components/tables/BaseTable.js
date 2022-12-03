@@ -1,26 +1,42 @@
-import React, { useEffect } from 'react';
-import { Table, Checkbox } from 'flowbite-react';
+import React from 'react';
+import { Table, Checkbox, Modal } from 'flowbite-react';
 import Spinner from '../icons/Spinner';
 import usePagination from '../../hooks/usePagination';
 import Pagination from '../Pagination';
 import BasicButton from '../button/BasicButton';
+import ModalDelete from '../modal/ModalDelete';
+import { useDeleteItems, viewTolabel } from '../../hooks/useDeleteItems';
 
-export default function BaseTable({ fn1, fn2 }) {
+export default function BaseTable({ fn1, fn2, view }) {
   const {
     currentPage,
     setCurrentPage,
     itemsPerPage,
     itemsNumber,
+    setItemsNumber,
     data,
     loading,
   } = usePagination(fn1, fn2);
-  console.log('gdfdgd');
+
+  const {
+    itemsToDelete,
+    handleConfirm,
+    closeModal,
+    openModal,
+    handleSelectItem,
+    showModal,
+  } = useDeleteItems(view, fn1, setItemsNumber);
+
   return (
     <>
       {!loading ? (
         <div className="flex flex-col">
           <div className="flex justify-around w-full h-18 items-center">
-            <BasicButton width="40" style="h-10 bg-red-600 hover:bg-red-700">
+            <BasicButton
+              onClick={openModal}
+              width="40"
+              style="h-10 bg-red-600 hover:bg-red-700"
+            >
               <p className="self-center">delete</p>
             </BasicButton>
             {Math.ceil(itemsNumber / itemsPerPage) > 0 && data.length && (
@@ -48,15 +64,26 @@ export default function BaseTable({ fn1, fn2 }) {
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
                   <Table.Cell className="focus:ring-0 !p-4">
-                    <Checkbox className="focus:ring-0" />
+                    <Checkbox
+                      onChange={(e) => handleSelectItem(e, d)}
+                      className="focus:ring-0"
+                    />
                   </Table.Cell>
                   {Object.keys(d).map((cell) => (
-                    <Table.Cell key={cell}>{d[cell]}</Table.Cell>
+                    <Table.Cell key={cell}>{d[cell] || '--'}</Table.Cell>
                   ))}
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
+          {showModal && (
+            <ModalDelete
+              items={itemsToDelete}
+              onConfirm={handleConfirm}
+              onClose={closeModal}
+              label={viewTolabel[view]}
+            />
+          )}
         </div>
       ) : (
         <Spinner />

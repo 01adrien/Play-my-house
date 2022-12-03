@@ -12,7 +12,6 @@ export default function Home() {
   const [profile, setProfile] = useRecoilState(user);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    console.log('hello');
     getTenNewest()
       .then(setInstruments)
       .then(() => {

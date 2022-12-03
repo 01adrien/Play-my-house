@@ -7,8 +7,8 @@ import Footer from '../components/Footer';
 import BaseTable from '../components/tables/BaseTable';
 import UserProfile from '../components/UserProfile';
 import { user } from '../store/user';
-import { getAllUsers, getUserCount } from '../api/user';
-import { getInstruments, getInstrumentCount } from '../api/instrument';
+import { getUserAdmin, getUserCount } from '../api/user';
+import { getInstrumentAdmin, getInstrumentCount } from '../api/instrument';
 
 export default function User() {
   const [profile, setProfile] = useRecoilState(user);
@@ -38,15 +38,21 @@ export default function User() {
   };
 
   const adminHeadings = {
-    Utilisateurs: <BaseTable fn1={getUserCount} fn2={getAllUsers} />,
-    Instruments: <BaseTable fn1={getInstrumentCount} fn2={getInstruments} />,
+    Utilisateurs: (
+      <BaseTable fn1={getUserCount} fn2={getUserAdmin} view="ADMIN_USERS" />
+    ),
+    Instruments: (
+      <BaseTable
+        fn1={getInstrumentCount}
+        fn2={getInstrumentAdmin}
+        view="ADMIN_INSTRUMENTS"
+      />
+    ),
     Planning: 'planning',
     'Details du compte': <UserProfile />,
     Messages: 'Mes messages',
     Deconnexion: '',
   };
-
-  console.log('jjijij');
 
   let headings;
   if (profile?.role === 'user') headings = userHeadings;
@@ -57,10 +63,7 @@ export default function User() {
     <Layout>
       <div className="w-full h-[70vh] flex justify-center">
         <div className=" w-[85%] h-full">
-          <div className="h-24 flex items-center">
-            <p className="text-[1.8em] font-bold">Mon compte</p>
-          </div>
-          <div className="flex justify-around w-[100%] h-[100%]">
+          <div className="flex justify-around w-[100%] h-[100%] mt-14">
             <div className="flex flex-col border-r-2 border-border_color w-52">
               <div className="h-14 w-[80%] flex justify-start items-center border-b-2">
                 <p className="text-[1.2em] pl-5"> MON COMPTE</p>
