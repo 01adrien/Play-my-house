@@ -5,6 +5,12 @@
     class Instrument extends \Controller\Controller
     {
 
+        public static function delete($post)
+        {
+            $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::delete($post);
+        }
+
         public static function get_count() 
         {
             return \Model\Instrument::get_count();
@@ -157,6 +163,11 @@
 
             }
             return $types;
+        }
+
+        public static function get_admin_data($post)
+        {
+            return \Model\Instrument::get_admin_data($post['offset'], $post['limit']);
         }
     }
 

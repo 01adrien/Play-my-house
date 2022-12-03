@@ -86,6 +86,25 @@
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
+
+        public static function get_admin_data($offset, $limit)
+        {
+            $sql = "SELECT
+                    instru.`id`,
+                    users.`name` `proprietaire`,
+                    DATE(instru.`created`) `date de creation`,
+                    type.`name` `nom`,
+                    brand.`name` `marque`,
+                    family.`name` `famille`
+                    FROM `".self::$table."` instru
+                    LEFT JOIN `instruments_family` family ON family.`id` = instru.`family_id`
+                    LEFT JOIN `instruments_type` type ON type.`id` = instru.`type_id`
+                    LEFT JOIN `instruments_brand` brand ON brand.`id` = instru.`brand_id`
+                    LEFT JOIN `users` ON users.`id` = instru.`owner_id`
+                    ORDER BY instru.`id` DESC LIMIT ".$limit." OFFSET ".$offset."";
+            
+            return \My_class\App::get_DB()->prepare($sql, [], null, false);
+        }
     }
 
 ?>

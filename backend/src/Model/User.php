@@ -20,20 +20,19 @@
             return false;
         }
 
-        public static function get_all_users_safe($offset, $limit)
+        public static function get_admin_data($offset, $limit)
         {
             $sql = "SELECT
                     users.`id`,
-                    users.`name`,
-                    users.`email`,
-                    users.`address`,
+                    users.`name` nom,
+                    users.`email` email,
+                    users.`address` adresse,
                     users.`role`,
-                    city.`CP` postalCode,
-                    city.`name` cityName
+                    city.`CP` CP,
+                    city.`name` ville
                     FROM `".self::$table."`
                     LEFT JOIN `city` ON city.`id` = users.`city_id`
-                    WHERE users.`role` != 'admin'
-                    ORDER BY users.`name` DESC LIMIT ".$limit." OFFSET ".$offset."";
+                    ORDER BY users.`id` DESC LIMIT ".$limit." OFFSET ".$offset."";
 
             return \My_class\App::get_DB()->prepare($sql, [], null, false);
         }

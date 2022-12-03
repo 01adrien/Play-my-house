@@ -1,11 +1,10 @@
 <?php
 header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, Accept, Accept-Language, X-Authorization");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
 $http_origin = $_SERVER['HTTP_ORIGIN']??null;
-if ($http_origin === "http://127.0.0.1:1234" ) {
+if ($http_origin === "http://127.0.0.1:45763" || "https://no-idea-web.fr/" ) {
     header("Access-Control-Allow-Origin: $http_origin");
 }
 

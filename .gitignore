@@ -1,16 +1,10 @@
-## FRONT
 
 node_modules/
 dist/
 .parcel-cache/
 .env.*
-
-## BACK
-
-Config.php
+config.php
 vendor/
-
-## AUTRE
 .htaccess
-secret
+secret/
 .gitignore

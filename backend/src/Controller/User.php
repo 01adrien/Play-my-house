@@ -11,9 +11,9 @@
             return \Model\User::get_count();
         }
 
-        public static function get_all_users_safe($post)
+        public static function get_admin_data($post)
         {
-            return \Model\User::get_all_users_safe($post['offset'], $post['limit']);
+            return \Model\User::get_admin_data($post['offset'], $post['limit']);
         }
 
         public static function get_by_ID($post) 
