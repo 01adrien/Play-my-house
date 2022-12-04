@@ -5,6 +5,12 @@
     class Instrument extends \Controller\Controller
     {
 
+        public static function delete($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::delete($attr);
+        }
+
         public static function get_count() 
         {
             return \Model\Instrument::get_count();
@@ -23,7 +29,7 @@
 
         public static function get_all_pictures_for_one($post) 
         {   
-            $post['id'] = \Controller\Controller::formatdata($post, 'id', \Model\Table::P_INT);
+            $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $pictures = \Model\Instrument_picture::get_all_pictures_for_one($post);
             $data = [];
             if (count($pictures) > 1 )
@@ -60,7 +66,7 @@
 
         public static function get_by_family_name($post) 
         {
-            $family_name['name'] = \Controller\Controller::formatdata($post, 'name', \Model\Table::P_STRING);
+            $family_name['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
             $family = \Model\Instrument_family::find_by($family_name, true);
             $family_id['id'] = \Controller\Controller::formatdata((array)$family, 'id', \Model\Table::P_INT);
             if ($post['data'] === 'TYPE')
@@ -69,7 +75,7 @@
                 foreach ($types as $type) 
                 {   
                     $post = [];
-                    $post['id'] =  \Controller\Controller::formatdata((array)$type, 'id', \Model\Table::P_INT);
+                    $post['id'] =  self::formatdata((array)$type, 'id', \Model\Table::P_INT);
                     $count = \Model\Instrument::get_count_by($post, 'TYPE');
                     $type->count = $count;
                 }
@@ -81,7 +87,7 @@
                 foreach ($brands as $brand)
                 {
                     $post = [];
-                    $post['brand_id'] = \Controller\Controller::formatdata((array)$brand, 'id', \Model\Table::P_INT);
+                    $post['brand_id'] = self::formatdata((array)$brand, 'id', \Model\Table::P_INT);
                     $post['family_id'] = $family_id['id'];
                     $count = \Model\Instrument::get_count_by($post, 'FAMILY_&_BRAND');
                     $brand->count = $count;
@@ -94,16 +100,16 @@
 
         public static function get_by_type_name($post)
         {
-            $type_name['name'] = \Controller\Controller::formatdata($post, 'name', \Model\Table::P_STRING);
+            $type_name['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
             $type = \Model\Instrument_type::find_by($type_name, true);
-            $type_id['id'] = \Controller\Controller::formatdata((array)$type, 'id', \Model\Table::P_INT);
+            $type_id['id'] = self::formatdata((array)$type, 'id', \Model\Table::P_INT);
             if ($post['data'] === 'BRAND')
             {
                 $brands =  (array)\Model\Instrument::get_brands_by_type_id($type_id);
                 foreach ($brands as $brand)
                 {
                     $post = [];
-                    $post['brand_id'] = \Controller\Controller::formatdata((array)$brand, 'id', \Model\Table::P_INT);
+                    $post['brand_id'] = self::formatdata((array)$brand, 'id', \Model\Table::P_INT);
                     $post['type_id'] = $type_id['id'];
                     $count = \Model\Instrument::get_count_by($post, 'BRAND');
                     $brand->count = $count;
@@ -115,29 +121,30 @@
 
         public static function get_count_by_family_name($post) 
         {   
-            $family_name['name'] = \Controller\Controller::formatdata($post, 'name', \Model\Table::P_STRING);
+            $family_name['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
             $family = \Model\Instrument_family::find_by($family_name, true);
-            $family_id['id'] = \Controller\Controller::formatdata((array)$family, 'id', \Model\Table::P_INT);
+            $family_id['id'] = self::formatdata((array)$family, 'id', \Model\Table::P_INT);
 
             return \Model\Instrument::get_count_by($family_id, 'FAMILY');
         }
 
         public static function get_count_by_type_name($post)
         {
-            $type_name['name'] = \Controller\Controller::formatdata($post, 'name', \Model\Table::P_STRING);
+            $type_name['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
             $type = \Model\Instrument_type::find_by($type_name, true);
-            $type_id['id'] = \Controller\Controller::formatdata((array)$type, 'id', \Model\Table::P_INT);
+            $type_id['id'] = self::formatdata((array)$type, 'id', \Model\Table::P_INT);
 
             return \Model\Instrument::get_count_by($type_id, 'TYPE');
         }
 
-        public static function get_all_brand() {
+        public static function get_all_brand() 
+        {
             $brands =  (array)\Model\Instrument_brand::get_all();
             for ($i = 0; $i <= count($brands); $i++)
             {   
                 if ($brands[$i] !== null) 
                 {
-                    $attr['brand_id'] = \Controller\Controller::formatdata($brands[$i], 'id', \Model\Table::P_INT);
+                    $attr['brand_id'] = self::formatdata($brands[$i], 'id', \Model\Table::P_INT);
                     $brands[$i]['count'] = \Model\Instrument::get_count_by($attr, 'ALL_BRAND');
                 }
 
@@ -145,18 +152,36 @@
             return $brands;
         }
 
-        public static function get_all_type() {
+        public static function get_all_type() 
+        {
             $types =  \Model\Instrument_type::get_all();
             for ($i = 0; $i <= count($types); $i++)
             {   
                 if ($types[$i] !== null) 
                 {
-                    $attr['id'] = \Controller\Controller::formatdata($types[$i], 'id', \Model\Table::P_INT);
+                    $attr['id'] = self::formatdata($types[$i], 'id', \Model\Table::P_INT);
                     $types[$i]['count'] = \Model\Instrument::get_count_by($attr, 'TYPE');
                 }
 
             }
             return $types;
+        }
+
+        public static function get_admin_data($post)
+        {
+            return \Model\Instrument::get_admin_data($post['offset'], $post['limit']);
+        }
+
+        public static function get_owner_instrument($post)
+        {   
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::get_owner_instrument($attr, $post['offset'], $post['limit']);
+        }
+
+        public static function get_count_by_owner($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::get_count_by_owner($attr);
         }
     }
 

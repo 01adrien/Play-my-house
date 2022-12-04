@@ -102,13 +102,14 @@ export default function SignInForm() {
             }}
             value={credentials.passwordConfirm}
           />
-          <BasicCheckbox style={'pb-2'} label="remember me" />
-          <BasicButton
-            type="submit"
-            style={loading && 'border-2 border-slate-700 '}
-          >
-            <TextBtnWithLoading text={'Signin'} loading={loading} />
-          </BasicButton>
+          <div className="w-full mt-8 flex justify-center">
+            <BasicButton
+              type="submit"
+              style={`w-60 ${loading && 'border-2 border-slate-700'}`}
+            >
+              <TextBtnWithLoading text={'Signin'} loading={loading} />
+            </BasicButton>
+          </div>
         </form>
       </div>
       {credentialsErrors && <LoginErrors errors={credentialsErrors} />}

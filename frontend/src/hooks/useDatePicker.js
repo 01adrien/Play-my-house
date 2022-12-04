@@ -5,7 +5,7 @@ import {
   getReservationForOneByMonth,
 } from '../api/reservation';
 
-export function useDatePicker(id) {
+export function useDatePicker(id, reFetchResa) {
   const [weekDispos, setWeekDispos] = useState({});
   const [arrayDays, setArrayDays] = useState([]);
   const [NotEmptyDays, setNotEmptyDays] = useState([]);
@@ -32,7 +32,7 @@ export function useDatePicker(id) {
         });
       }
     );
-  }, [id, selectedMonth, selectedYear]);
+  }, [id, selectedMonth, selectedYear, reFetchResa]);
 
   return {
     weekDispos,

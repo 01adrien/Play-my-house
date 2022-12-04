@@ -10,11 +10,11 @@ export default function Pagination({ index, setCurrentPage, currentPage }) {
         key={i}
         className={`${
           page === currentPage && 'bg-slate-300'
-        } border-r-[1px] borderborder-[1px] border-slate-400 hover:bg-slate-300`}
+        } border-r-[1px] borderborder-[1px] border-slate-300 hover:bg-slate-100`}
       >
         <a
           key={page}
-          className={page === currentPage ? ' m-2' : 'm-2'}
+          className="m-2 text-slate-700"
           onClick={() => setCurrentPage(page)}
         >
           {page}
@@ -27,12 +27,12 @@ export default function Pagination({ index, setCurrentPage, currentPage }) {
     <nav className="bg-white h-16 text-slate-600 flex justify-center items-center text-lg cursor-pointer w-[250px]">
       <span
         data-cy="prev-page"
-        className="font-thin border-t-[1px] border-b-[1px] border-l-[1px] border-slate-400 h-8 w-8 text-center rounded-l hover:bg-slate-300"
+        className="font-thin border-t-[1px] border-b-[1px] border-l-[1px] text-slate-700 border-slate-300 h-8 w-8 text-center rounded-l hover:bg-slate-100"
         onClick={currentPage > 1 ? () => setCurrentPage(currentPage - 1) : null}
       >
         ❮
       </span>
-      <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-400 h-8 flex">
+      <div className="border-l-[1px] border-t-[1px] border-b-[1px] border-slate-300 h-8 flex">
         {index < 5
           ? pages.map((page, i) => {
               return pageCountComponent(page, i);
@@ -52,7 +52,7 @@ export default function Pagination({ index, setCurrentPage, currentPage }) {
       </div>
       <span
         data-cy="next-page"
-        className="font-thin h-8 w-8 text-center border-t-[1px] border-b-[1px] border-r-[1px] rounded-r border-slate-400 hover:bg-slate-300"
+        className="font-thin h-8 w-8 text-slate-700 text-center border-t-[1px] border-b-[1px] border-r-[1px] rounded-r border-slate-300 hover:bg-slate-100"
         onClick={
           currentPage < index ? () => setCurrentPage(currentPage + 1) : null
         }

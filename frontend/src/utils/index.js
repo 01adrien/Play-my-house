@@ -33,7 +33,7 @@ export const makeSuccesToast = (styles, msg) => {
 
 export const scrollUp = () => {
   window.scroll({
-    top: 0,
+    top: 100,
     behavior: 'smooth',
   });
 };

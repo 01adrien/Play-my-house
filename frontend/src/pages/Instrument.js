@@ -3,6 +3,7 @@ import { Accordion } from 'flowbite-react';
 import React, { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { HiOutlineArrowCircleDown } from 'react-icons/hi';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { getDispoSlotsByDay } from '../api/reservation';
@@ -11,7 +12,6 @@ import {
   DatePickerBtn,
   currentMonth,
   currentYear,
-  currentDay,
   isDispoDay,
   highlightDispoDay,
   daysTraduction,
@@ -43,8 +43,10 @@ export default function Instrument() {
   const location = useLocation();
   const [owner, setOwner] = useState([]);
   const [notDispoSlots, setNotDispoSlots] = useState('');
+  const [refreshResa, setRefreshResa] = useState(false);
   const { loading, pictures } = useCarousel(id);
   const { avatar, avatarLoading } = useProfilePicture(location.state.owner_id);
+
   const {
     weekDispos,
     arrayDays,
@@ -54,7 +56,7 @@ export default function Instrument() {
     setSelectedMonth,
     selectedYear,
     setSelectedYear,
-  } = useDatePicker(id);
+  } = useDatePicker(id, refreshResa);
 
   function handleDayHover(day) {
     const formatDay = day.toLocaleDateString();
@@ -101,7 +103,7 @@ export default function Instrument() {
   return (
     <Layout>
       <div className="w-[100%] flex flex-col items-center justify-center">
-        <div className="flex flex-col justify-between max-h-96 mt-8 h-[80%] max-w-[650px] w-[60%]">
+        <div className="flex flex-col justify-between  mt-8 h-[390px] max-w-[650px] w-[60%]">
           <div className="flex justify-between ">
             <div className="h-72 w-96 min-w-[300px] max-w-[300px] rounded-md border-[1px] border-border_color">
               {pictures && (
@@ -115,6 +117,7 @@ export default function Instrument() {
             </div>
             <div className="flex flex-col justify-between items-end w-72 h-72">
               <Accordion
+                arrowIcon={HiOutlineArrowCircleDown}
                 flush={true}
                 className="focus:ring-0 w-72 ml-20 shadow-md"
               >
@@ -143,7 +146,7 @@ export default function Instrument() {
                     </p>
                   </Accordion.Title>
                   <Accordion.Content>
-                    <div className="text-xs overflow-y-scroll">
+                    <div className="text-xs">
                       {weekDispos &&
                         Object.keys(weekDispos).map((day) => {
                           return (
@@ -172,6 +175,7 @@ export default function Instrument() {
           <div className="w-full flex justify-center">
             <div className="w-[80%] flex justify-center">
               <DatePicker
+                onCalendarOpen={() => setRefreshResa(!refreshResa)}
                 locale="fr"
                 minDate={new Date()}
                 selected={new Date()}
@@ -183,6 +187,7 @@ export default function Instrument() {
                 onChange={(day) => console.log(day)}
                 dayClassName={dayStyle}
                 customInput={<DatePickerBtn />}
+                popperPlacement="bottom-start"
               ></DatePicker>
               <BasicButton
                 width="72"
@@ -214,7 +219,7 @@ export default function Instrument() {
           nunc. Mauris fringilla erat sed risus pellentesque aliquam.
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </Layout>
   );
 }

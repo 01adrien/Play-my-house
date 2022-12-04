@@ -7,7 +7,7 @@ import { Picture } from '../Picture';
 
 const PictureWithLoading = withLoading(Picture);
 
-export default function InstrumentCard({ instrument, style = '' }) {
+export default function InstrumentCard({ instrument, style = '', link }) {
   const [loading, setLoading] = useState(true);
   const [picture, setPicture] = useState({ src: null });
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function InstrumentCard({ instrument, style = '' }) {
         />
       </div>
       <div className="flex justify-center h-28 w-64 border-b-2 border-r-2 border-l-2 border-border_color rounded-b">
-        <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[70%]">
+        <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[80%]">
           <div>
             <p className="text-main_color text-sm text-center">
               {instrument.type}
@@ -36,10 +36,7 @@ export default function InstrumentCard({ instrument, style = '' }) {
               {instrument.brand.slice(0, 20)}
             </p>
           </div>
-          <Link
-            to={`/instrument/${instrument.id}`}
-            state={{ ...instrument, picture: null }}
-          >
+          <Link to={link} state={{ ...instrument, picture: null }}>
             <BasicButton type="button" height="7" style="text-sm">
               <p>details</p>
             </BasicButton>

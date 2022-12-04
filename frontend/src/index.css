@@ -18,3 +18,7 @@ button {
 .DayPicker-Day--monday {
   color: #00bcd4;
 }
+
+tr {
+  height: 10px;
+}

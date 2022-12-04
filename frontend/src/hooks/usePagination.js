@@ -11,15 +11,20 @@ export default function usePagination(fnCount, fnData, ...args) {
   const limit = itemsPerPage;
 
   useEffect(() => {
-    console.log(currentPage);
-    args
-      ? fnCount(args[0]).then(setItemsNumber)
+    setCurrentPage(1);
+    args && args[0]
+      ? fnCount(args[0]).then((data) => {
+          if (typeof data === 'object') {
+            setItemsNumber(Object.values(data)[0]);
+          } else {
+            setItemsNumber(data);
+          }
+        })
       : fnCount().then(setItemsNumber);
   }, [fnCount]);
 
   useEffect(() => {
-    console.log(currentPage);
-    args
+    args && args[0]
       ? fnData(...args, offset - itemsPerPage, limit)
           .then(setData)
           .then(() => {
@@ -37,11 +42,12 @@ export default function usePagination(fnCount, fnData, ...args) {
               scrollUp();
             }, 200);
           });
-  }, [currentPage, args[0], fnData]);
+  }, [currentPage, ...args, fnData, itemsNumber]);
 
   return {
     currentPage,
     setCurrentPage,
+    setItemsNumber,
     itemsPerPage,
     itemsNumber,
     data,

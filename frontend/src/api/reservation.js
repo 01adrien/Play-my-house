@@ -30,3 +30,66 @@ export async function getDispoSlotsByDay(id, day) {
   const res = await AXIOS.post(`/reservation/get_dispo_slots_by_day`, post);
   return res.data;
 }
+
+export async function getUserReservation(id, active, offset, limit) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('offset', offset);
+  post.append('limit', limit);
+  post.append('active', active);
+  const res = await AXIOS.post(`/reservation/get_user_reservation`, post);
+  return res.data;
+}
+
+export async function getActiveCountByUser(id) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('active', 1);
+  const res = await AXIOS.post(`/reservation/get_count_by_user`, post);
+  const [count] = Object.values(res.data);
+  return count;
+}
+
+export async function getInactiveCountByUser(id) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('active', 0);
+  const res = await AXIOS.post(`/reservation/get_count_by_user`, post);
+  const [count] = Object.values(res.data);
+  return count;
+}
+
+export async function getOwnerReservation(id, active, offset, limit) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('offset', offset);
+  post.append('limit', limit);
+  post.append('active', active);
+  const res = await AXIOS.post(`/reservation/get_owner_reservation`, post);
+  return res.data;
+}
+
+export async function getActiveCountByOwner(id) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('active', 1);
+  const res = await AXIOS.post(`/reservation/get_count_by_owner`, post);
+  const [count] = Object.values(res.data);
+  return count;
+}
+
+export async function getInactiveCountByOwner(id) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('active', 0);
+  const res = await AXIOS.post(`/reservation/get_count_by_owner`, post);
+  const [count] = Object.values(res.data);
+  return count;
+}
+
+export async function deleteReservation(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/reservation/delete`, post);
+  return res.data;
+}

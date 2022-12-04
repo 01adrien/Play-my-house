@@ -1,6 +1,11 @@
-import { atom, selector } from "recoil";
+import { atom, selector } from 'recoil';
 
 export const user = atom({
-  key: "user",
+  key: 'user',
   default: {},
+});
+
+export const listToDelete = atom({
+  key: 'itemsToDelete',
+  default: [],
 });

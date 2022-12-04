@@ -37,11 +37,11 @@ export async function getUserById(id) {
   return res.data;
 }
 
-export async function getAllUsers(offset, limit) {
+export async function getUserAdmin(offset, limit) {
   const post = new FormData();
   post.append('offset', offset);
   post.append('limit', limit);
-  const res = await AXIOS.post(`/user/get_all_users_safe`, post);
+  const res = await AXIOS.post(`/user/get_admin_data`, post);
   return res.data;
 }
 
@@ -49,4 +49,11 @@ export async function getUserCount() {
   const res = await AXIOS.get(`/user/get_count`);
   const [count] = Object.values(res.data);
   return count;
+}
+
+export async function deleteUser(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/user/delete`, post);
+  return res.data;
 }

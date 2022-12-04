@@ -66,7 +66,6 @@
                 $attr = [];
                 $attr['id'] = self::formatdata($resa, $resa['day'], \Model\Table::P_INT );
                 $timeline = \Model\Timeline_day::get_by_ID($attr);
-                // foreach ($timeline as $h) if ($timeline->$h === null) unset($timeline->$h);
                 $total_slots = $timeline->total_hours;
                 $array = [];
                 $array['day'] = $resa['date'];
@@ -93,6 +92,71 @@
             }
             return ['txt' => \substr($no_dispo_txt, 0, -3), 'count' => $no_dispo_count];
             
+        }
+
+        public static function get_user_reservation($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $attr['active'] = self::formatdata($post, 'active', \Model\Table::P_INT);
+            $reservations = \Model\Reservation::get_user_reservation($attr, $post['offset'], $post['limit']);
+            $data = [];
+            foreach($reservations as $r)
+            {
+                $r = (array)$r;
+                $instru['id'] = self::formatdata($r, 'instrument_id', \Model\Table::P_INT);
+                $instrument = (array)\Model\Instrument::get_by_ID($instru);
+                $user['id'] = self::formatdata($instrument, 'owner_id', \Model\Table::P_INT);
+                $owner = (array)\Model\User::get_owner($user);
+                $data[] = [
+                    'n°' => $r['id'], 'date' => $r['date'], 'jour' => self::translate($r['day']) , 
+                    'horaires' => $r['start'].'h - '.$r['end'].'h', 'instrument' => $instrument['name'], 
+                    'nom' => $owner[0]->name, "adresse" => $owner[0]->address, 
+                    'ville' => $owner[0]->city.' '.$owner[0]->CP, 'téléphone' => $owner[0]->telephone
+                ];
+            }
+            return $data;
+        }
+
+        public static function get_count_by_user($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $attr['active'] = self::formatdata($post, 'active', \Model\Table::P_INT);
+            return \Model\Reservation::get_count_by_user($attr);
+        }
+
+        public static function get_owner_reservation($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $attr['active'] = self::formatdata($post, 'active', \Model\Table::P_INT);
+            $reservations = \Model\Reservation::get_owner_reservation($attr, $post['offset'], $post['limit']);
+            $data = [];
+            foreach ($reservations as $r)
+            {
+                $r = (array)$r;
+                $instru['id'] = self::formatdata($r, 'instrument_id', \Model\Table::P_INT);
+                $instrument = (array)\Model\Instrument::get_by_ID($instru);
+                $data[] = [
+                    'n°' => $r['n°'], 'date' => $r['date'], 'jour' => self::translate($r['day']) , 
+                    'horaires' => $r['start'].'h - '.$r['end'].'h', 'instrument' => $instrument['name'],
+                    'utilisateur' => $r['user']
+                    
+                ];
+            }
+            return $data;
+        }
+
+
+        public static function get_count_by_owner($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $attr['active'] = self::formatdata($post, 'active', \Model\Table::P_INT);
+            return \Model\Reservation::get_count_by_owner($attr);
+        }
+
+        public static function delete($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Reservation::delete($attr);
         }
     }
 ?>

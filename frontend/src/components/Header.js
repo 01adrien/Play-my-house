@@ -11,9 +11,9 @@ import Profile from './icons/Profile';
 export default function Header() {
   const [profile, setProfile] = useRecoilState(user);
   return (
-    <div className="h-46">
-      <div className="w-full h-9 bg-main_color"></div>
-      <div className="w-full h-36 flex justify-around items-center border-b-2 border-slate-200">
+    <div className="h-46 mb-6">
+      <div className="w-full h-9 bg-main_color shadow-md"></div>
+      <div className="w-full h-36 flex justify-around items-center border-slate-200">
         <Link to="/">
           <img className="h-20 w-30 rounded-full" src={logo} alt="logo" />
         </Link>
@@ -22,10 +22,10 @@ export default function Header() {
           <img className="h-20 w-30 rounded-full" src={logo} alt="logo" />
         </Link>
       </div>
-      <div className="w-full h-12 flex justify-center border-b-2 items-center border-slate-200">
+      <div className="w-full h-12 flex justify-center items-center shadow-inner border-main_color bg-slate-100">
         <div
           onClick={() => <Navigate to={'/instrument-all'} replace />}
-          className="w-[80%] flex justify-between items-center"
+          className="w-[80%] h-12 flex justify-between items-center"
         >
           <DropdownMenu />
           <div>
@@ -38,7 +38,7 @@ export default function Header() {
                       logout();
                       setProfile({ default: 'user' });
                     }}
-                    className="hover:text-slate-500 cursor-pointer mr-5"
+                    className="hover:text-main_color text-sm  cursor-pointer mr-5"
                     data-cy="logout"
                   >
                     SE DECONNECTER
@@ -50,7 +50,7 @@ export default function Header() {
               </div>
             ) : (
               <Link to="/login">
-                <p className="hover:text-slate-500 cursor-pointer">
+                <p className="hover:text-main_color text-sm  cursor-pointer">
                   SE CONNECTER<span className="ml-2 mr-2">|</span>S'ENREGISTRER
                 </p>
               </Link>

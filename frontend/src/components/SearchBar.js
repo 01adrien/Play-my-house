@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 export default function SearchBar() {
   function onSubmit(e) {
     e.preventDefault();
-    console.log("submit");
+    console.log('submit');
   }
 
   return (
@@ -30,14 +30,14 @@ export default function SearchBar() {
         <input
           type="text"
           id="simple-search"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded block w-full pl-10 p-2.5 "
+          className="bg-gray-50 border shadow-md border-gray-300 text-gray-900 text-sm rounded block w-full pl-10 p-2.5 "
           placeholder="Search"
           required
         />
       </div>
       <button
         type="submit"
-        className="p-2.5 ml-2 text-sm font-medium text-white bg-main_color rounded-lg border border-main_color hover:bg-main_color_hover focus:bg-main_color_light"
+        className="p-2.5 ml-2 text-sm font-medium text-white bg-main_color shadow-md rounded-lg border border-main_color hover:bg-main_color_hover focus:bg-main_color_light"
       >
         <svg
           className="w-5 h-5"
