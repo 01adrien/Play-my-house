@@ -15,7 +15,7 @@ export default function usePagination(fnCount, fnData, ...args) {
     args && args[0]
       ? fnCount(args[0]).then((data) => {
           if (typeof data === 'object') {
-            setItemsNumber(Object.values(data));
+            setItemsNumber(Object.values(data)[0]);
           } else {
             setItemsNumber(data);
           }

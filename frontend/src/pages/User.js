@@ -9,10 +9,12 @@ import { user } from '../store/user';
 import { getUserAdmin, getUserCount } from '../api/user';
 import { getInstrumentAdmin, getInstrumentCount } from '../api/instrument';
 import {
-  getActiveUserReservation,
+  getUserReservation,
   getActiveCountByUser,
   getInactiveCountByUser,
-  getInactiveUserReservation,
+  getOwnerReservation,
+  getActiveCountByOwner,
+  getInactiveCountByOwner,
 } from '../api/reservation';
 import { listToDelete } from '../store/user';
 import { useSetRecoilState, useRecoilState } from 'recoil';
@@ -38,17 +40,21 @@ export default function User() {
     'Reservation a venir': (
       <BaseTable
         fn1={getActiveCountByUser}
-        fn2={getActiveUserReservation}
+        fn2={getUserReservation}
         id={profile.id}
         view="USER_RESERVATION"
+        title="Mes reservations à venir"
+        resaStatus={1}
       />
     ),
     'Reservation passes': (
       <BaseTable
         fn1={getInactiveCountByUser}
-        fn2={getInactiveUserReservation}
+        fn2={getUserReservation}
         id={profile.id}
         view="USER_RESERVATION"
+        title="Mes reservations passées"
+        resaStatus={0}
       />
     ),
     'Details du compte': <UserProfile />,
@@ -58,8 +64,26 @@ export default function User() {
 
   const ownerHeadings = {
     'Mes instruments': 'mes instruments',
-    'Reservation a venir': 'mes rervations a venir',
-    'Reservation passes': 'mes rervations passees',
+    'Reservation a venir': (
+      <BaseTable
+        fn1={getActiveCountByOwner}
+        fn2={getOwnerReservation}
+        id={profile.id}
+        view="OWNER_RESERVATION"
+        title="Mes reservations à venir"
+        resaStatus={1}
+      />
+    ),
+    'Reservation passes': (
+      <BaseTable
+        fn1={getInactiveCountByOwner}
+        fn2={getOwnerReservation}
+        id={profile.id}
+        view="OWNER_RESERVATION"
+        title="Mes reservations passées"
+        resaStatus={0}
+      />
+    ),
     'Details du compte': <UserProfile />,
     Messages: 'Mes messages',
     Deconnexion: '',
@@ -67,13 +91,19 @@ export default function User() {
 
   const adminHeadings = {
     Utilisateurs: (
-      <BaseTable fn1={getUserCount} fn2={getUserAdmin} view="ADMIN_USERS" />
+      <BaseTable
+        fn1={getUserCount}
+        fn2={getUserAdmin}
+        view="ADMIN_USERS"
+        title="Tous les utilisateurs"
+      />
     ),
     Instruments: (
       <BaseTable
         fn1={getInstrumentCount}
         fn2={getInstrumentAdmin}
         view="ADMIN_INSTRUMENTS"
+        title="Tous les utilisateurs"
       />
     ),
     Planning: 'planning',
@@ -102,7 +132,7 @@ export default function User() {
                     key={head}
                     onClick={() => handleSelectHeading(head)}
                     className={`h-10 w-[80%] flex hover:text-main_color ${
-                      activeHeading === head && 'bg-slate-200 text-main_color'
+                      activeHeading === head && 'bg-slate-100 text-main_color'
                     } cursor-pointer justify-start items-center`}
                   >
                     <p
@@ -116,8 +146,8 @@ export default function User() {
                 );
               })}
             </div>
-            <div className=" w-[80%] flex justify-center">
-              <div className="w-[90%]">{headings[activeHeading]}</div>
+            <div className=" w-[80%] flex justify-center h-[100%]">
+              <div className="w-[90%] h-[100%]">{headings[activeHeading]}</div>
             </div>
           </div>
         </div>

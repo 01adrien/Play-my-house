@@ -53,6 +53,7 @@ export default function Home() {
                 key={instrument.id}
                 style={'hover:scale-110'}
                 instrument={instrument}
+                link={`/instrument/${instrument.id}`}
               />
             ))}
           </div>

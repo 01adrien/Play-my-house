@@ -1,13 +1,14 @@
 import React from 'react';
 import { Table, Checkbox } from 'flowbite-react';
 import Spinner from '../icons/Spinner';
+import { SiApplemusic } from 'react-icons/si';
 import usePagination from '../../hooks/usePagination';
 import Pagination from '../Pagination';
 import BasicButton from '../button/BasicButton';
 import ModalDelete from '../modal/ModalDelete';
 import { useDeleteItems, viewTolabel } from '../../hooks/useDeleteItems';
 
-export default function BaseTable({ fn1, fn2, view, id }) {
+export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
   const {
     currentPage,
     setCurrentPage,
@@ -16,7 +17,7 @@ export default function BaseTable({ fn1, fn2, view, id }) {
     setItemsNumber,
     data,
     loading,
-  } = usePagination(fn1, fn2, id);
+  } = usePagination(fn1, fn2, id, resaStatus);
 
   const {
     handleConfirm,
@@ -30,8 +31,9 @@ export default function BaseTable({ fn1, fn2, view, id }) {
   return (
     <>
       {!loading ? (
-        <div className="flex flex-col min-w-[700px]">
-          <div className="flex justify-around w-full text-sm h-18 items-center">
+        <div className="flex flex-col min-w-[700px] mb-8 h-[100%]">
+          <div className="text-center mb-8">{title.toUpperCase()}</div>
+          <div className="flex justify-around w-full text-sm h-10 items-center mb-8">
             <BasicButton
               onClick={openModal}
               width="40"
@@ -39,16 +41,18 @@ export default function BaseTable({ fn1, fn2, view, id }) {
             >
               <p className="self-center">supprimer</p>
             </BasicButton>
-            {Math.ceil(itemsNumber / itemsPerPage) > 0 && data.length && (
-              <Pagination
-                index={Math.ceil(itemsNumber / itemsPerPage)}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-              />
-            )}
+            <SiApplemusic className="text-2xl" />
+            <p className="text-base text-thin">
+              {typeof itemsNumber !== 'object' ? itemsNumber : ''}{' '}
+              {viewTolabel[view]}
+            </p>
           </div>
-          <Table hoverable={true} striped={true} className="min-w-[500px] mt-6">
-            <Table.Head>
+          <Table
+            hoverable={true}
+            striped={true}
+            className="min-w-[500px] !focus:ring-0 mt-6"
+          >
+            <Table.Head className="sticky top-0">
               <Table.HeadCell className="!p-4">
                 <p>🎶</p>
               </Table.HeadCell>
@@ -65,16 +69,22 @@ export default function BaseTable({ fn1, fn2, view, id }) {
                   key={d.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
                 >
-                  <Table.Cell className="focus:ring-0 !p-4 text-sm">
+                  <Table.Cell key={d.id} className="!focus:ring-0 !p-4 text-sm">
                     <Checkbox
+                      key={d.id}
                       checked={isChecked(d, view)}
                       onChange={(e) => handleSelectItem(e, d)}
-                      className="focus:ring-0"
+                      className="!focus:ring-0"
                     />
                   </Table.Cell>
-                  {Object.keys(d).map((cell) => (
-                    <Table.Cell className="text-xs !px-2" key={cell}>
-                      {d[cell] || '--'}
+                  {Object.keys(d).map((cell, i) => (
+                    <Table.Cell
+                      className={`text-xs !px-2 ${
+                        i % 2 === 0 && 'text-main_color'
+                      }`}
+                      key={cell}
+                    >
+                      {d[cell] || '*'}
                     </Table.Cell>
                   ))}
                 </Table.Row>
@@ -87,6 +97,15 @@ export default function BaseTable({ fn1, fn2, view, id }) {
               onClose={closeModal}
               label={viewTolabel[view]}
             />
+          )}
+          {itemsNumber > 12 && (
+            <div className={`w-full flex justify-center mt-4`}>
+              <Pagination
+                index={Math.ceil(itemsNumber / itemsPerPage)}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              />
+            </div>
           )}
         </div>
       ) : (

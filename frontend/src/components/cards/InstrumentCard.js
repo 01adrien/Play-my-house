@@ -7,7 +7,7 @@ import { Picture } from '../Picture';
 
 const PictureWithLoading = withLoading(Picture);
 
-export default function InstrumentCard({ instrument, style = '' }) {
+export default function InstrumentCard({ instrument, style = '', link }) {
   const [loading, setLoading] = useState(true);
   const [picture, setPicture] = useState({ src: null });
   useEffect(() => {
@@ -36,10 +36,7 @@ export default function InstrumentCard({ instrument, style = '' }) {
               {instrument.brand.slice(0, 20)}
             </p>
           </div>
-          <Link
-            to={`/instrument/${instrument.id}`}
-            state={{ ...instrument, picture: null }}
-          >
+          <Link to={link} state={{ ...instrument, picture: null }}>
             <BasicButton type="button" height="7" style="text-sm">
               <p>details</p>
             </BasicButton>

@@ -16,11 +16,11 @@ export default function ModalDelete({ onClose, onConfirm, label }) {
             {items.length ? (
               <div className="text-sm">
                 <p>Voulez-vous vraiment supprimmer ces ou cet {label}:</p>
-                <div className="font-bold pt-2">
+                {/* <div className="font-bold pt-2">
                   {items?.map((i) => (
                     <p key={i.id}>- {i.nom}</p>
                   ))}
-                </div>
+                </div> */}
               </div>
             ) : (
               <p>Vous n'avez rien selectionné !</p>

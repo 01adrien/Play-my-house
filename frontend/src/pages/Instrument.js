@@ -44,8 +44,10 @@ export default function Instrument() {
   const location = useLocation();
   const [owner, setOwner] = useState([]);
   const [notDispoSlots, setNotDispoSlots] = useState('');
+  const [refreshResa, setRefreshResa] = useState(false);
   const { loading, pictures } = useCarousel(id);
   const { avatar, avatarLoading } = useProfilePicture(location.state.owner_id);
+
   const {
     weekDispos,
     arrayDays,
@@ -55,7 +57,7 @@ export default function Instrument() {
     setSelectedMonth,
     selectedYear,
     setSelectedYear,
-  } = useDatePicker(id);
+  } = useDatePicker(id, refreshResa);
 
   function handleDayHover(day) {
     const formatDay = day.toLocaleDateString();
@@ -174,6 +176,7 @@ export default function Instrument() {
           <div className="w-full flex justify-center">
             <div className="w-[80%] flex justify-center">
               <DatePicker
+                onCalendarOpen={() => setRefreshResa(!refreshResa)}
                 locale="fr"
                 minDate={new Date()}
                 selected={new Date()}

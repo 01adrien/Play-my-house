@@ -31,40 +31,63 @@ export async function getDispoSlotsByDay(id, day) {
   return res.data;
 }
 
-export async function getActiveUserReservation(id, offset, limit) {
+export async function getUserReservation(id, active, offset, limit) {
   const post = new FormData();
   post.append('id', id);
   post.append('offset', offset);
   post.append('limit', limit);
-  const res = await AXIOS.post(
-    `/reservation/get_active_user_reservation`,
-    post
-  );
+  post.append('active', active);
+  const res = await AXIOS.post(`/reservation/get_user_reservation`, post);
   return res.data;
 }
 
 export async function getActiveCountByUser(id) {
   const post = new FormData();
   post.append('id', id);
-  const res = await AXIOS.post(`/reservation/get_active_count_by_user`, post);
-  return res.data;
-}
-
-export async function getInactiveUserReservation(id, offset, limit) {
-  const post = new FormData();
-  post.append('id', id);
-  post.append('offset', offset);
-  post.append('limit', limit);
-  const res = await AXIOS.post(
-    `/reservation/get_inactive_user_reservation`,
-    post
-  );
+  post.append('active', 1);
+  const res = await AXIOS.post(`/reservation/get_count_by_user`, post);
   return res.data;
 }
 
 export async function getInactiveCountByUser(id) {
   const post = new FormData();
   post.append('id', id);
-  const res = await AXIOS.post(`/reservation/get_inactive_count_by_user`, post);
+  post.append('active', 0);
+  const res = await AXIOS.post(`/reservation/get_count_by_user`, post);
+  return res.data;
+}
+
+export async function getOwnerReservation(id, active, offset, limit) {
+  console.log(limit);
+  console.log(offset);
+  const post = new FormData();
+  post.append('id', id);
+  post.append('offset', offset);
+  post.append('limit', limit);
+  post.append('active', active);
+  const res = await AXIOS.post(`/reservation/get_owner_reservation`, post);
+  return res.data;
+}
+
+export async function getActiveCountByOwner(id) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('active', 1);
+  const res = await AXIOS.post(`/reservation/get_count_by_owner`, post);
+  return res.data;
+}
+
+export async function getInactiveCountByOwner(id) {
+  const post = new FormData();
+  post.append('id', id);
+  post.append('active', 0);
+  const res = await AXIOS.post(`/reservation/get_count_by_owner`, post);
+  return res.data;
+}
+
+export async function deleteReservation(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/reservation/delete`, post);
   return res.data;
 }

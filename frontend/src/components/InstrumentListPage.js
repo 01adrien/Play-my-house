@@ -42,6 +42,7 @@ export default function InstrumentListPage({
                     <InstrumentCard
                       key={instrument.id}
                       instrument={instrument}
+                      link={`/instrument/${instrument.id}`}
                     />
                   );
                 })
