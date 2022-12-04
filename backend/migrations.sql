@@ -1,0 +1,1 @@
+ALTER TABLE `instruments` ADD `is_valid` TINYINT NOT NULL DEFAULT '0' AFTER `created`; 

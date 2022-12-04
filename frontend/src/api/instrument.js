@@ -92,3 +92,23 @@ export async function deleteInstrument(id) {
   const res = await AXIOS.post(`/instrument/delete`, post);
   return res.data;
 }
+
+export async function getOwnerInstrument(id, nullArg, offset, limit) {
+  const post = new FormData();
+  post.append('null', nullArg);
+  post.append('offset', offset);
+  post.append('limit', limit);
+
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/get_owner_instrument`, post);
+  console.log(res.data);
+  return res.data;
+}
+
+export async function getOwnerCount(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/get_count_by_owner`, post);
+  const [count] = Object.values(res.data);
+  return count;
+}

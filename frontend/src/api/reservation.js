@@ -46,7 +46,8 @@ export async function getActiveCountByUser(id) {
   post.append('id', id);
   post.append('active', 1);
   const res = await AXIOS.post(`/reservation/get_count_by_user`, post);
-  return res.data;
+  const [count] = Object.values(res.data);
+  return count;
 }
 
 export async function getInactiveCountByUser(id) {
@@ -54,12 +55,11 @@ export async function getInactiveCountByUser(id) {
   post.append('id', id);
   post.append('active', 0);
   const res = await AXIOS.post(`/reservation/get_count_by_user`, post);
-  return res.data;
+  const [count] = Object.values(res.data);
+  return count;
 }
 
 export async function getOwnerReservation(id, active, offset, limit) {
-  console.log(limit);
-  console.log(offset);
   const post = new FormData();
   post.append('id', id);
   post.append('offset', offset);
@@ -74,7 +74,8 @@ export async function getActiveCountByOwner(id) {
   post.append('id', id);
   post.append('active', 1);
   const res = await AXIOS.post(`/reservation/get_count_by_owner`, post);
-  return res.data;
+  const [count] = Object.values(res.data);
+  return count;
 }
 
 export async function getInactiveCountByOwner(id) {
@@ -82,7 +83,8 @@ export async function getInactiveCountByOwner(id) {
   post.append('id', id);
   post.append('active', 0);
   const res = await AXIOS.post(`/reservation/get_count_by_owner`, post);
-  return res.data;
+  const [count] = Object.values(res.data);
+  return count;
 }
 
 export async function deleteReservation(id) {

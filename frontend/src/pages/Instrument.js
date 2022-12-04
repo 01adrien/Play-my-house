@@ -12,7 +12,6 @@ import {
   DatePickerBtn,
   currentMonth,
   currentYear,
-  currentDay,
   isDispoDay,
   highlightDispoDay,
   daysTraduction,
@@ -188,6 +187,7 @@ export default function Instrument() {
                 onChange={(day) => console.log(day)}
                 dayClassName={dayStyle}
                 customInput={<DatePickerBtn />}
+                popperPlacement="bottom-start"
               ></DatePicker>
               <BasicButton
                 width="72"

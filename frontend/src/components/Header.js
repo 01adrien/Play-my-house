@@ -38,7 +38,7 @@ export default function Header() {
                       logout();
                       setProfile({ default: 'user' });
                     }}
-                    className="hover:text-main_color hover:scale-105 cursor-pointer mr-5"
+                    className="hover:text-main_color text-sm hover:scale-105 cursor-pointer mr-5"
                     data-cy="logout"
                   >
                     SE DECONNECTER
@@ -50,7 +50,7 @@ export default function Header() {
               </div>
             ) : (
               <Link to="/login">
-                <p className="hover:text-slate-500 cursor-pointer">
+                <p className="hover:text-main_color text-sm  hover:scale-105 cursor-pointer">
                   SE CONNECTER<span className="ml-2 mr-2">|</span>S'ENREGISTRER
                 </p>
               </Link>

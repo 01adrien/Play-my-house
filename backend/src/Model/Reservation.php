@@ -42,61 +42,67 @@
 
             $reservations =  \My_class\App::get_DB()->prepare($sql, $post, null, false);
 
-            foreach ($reservations as $r)
-            {
-                $r->reservation_slot = count(range($r->start, $r->end)) - 1;
-            }
+            foreach ($reservations as $r) $r->reservation_slot = count(range($r->start, $r->end)) - 1;
+            
             return $reservations;
         }
-
-        public static function get_active_user_reservation($post, $offset, $limit)
+        
+        public static function get_user_reservation($post, $offset, $limit)
         {
             $sql = "SELECT
+                    resa.`id` `n°`,
                     DATE(resa.`start`) `date`,
                     LOWER(DAYNAME(resa.`start`)) `day`,
                     HOUR(resa.`start`) `start`,
                     HOUR(resa.`end`) `end`,
                     resa.`instrument_id`
                     FROM `".self::$table."` resa
-                    WHERE resa.`user_id` =:id AND resa.`active` = 1
-                    ORDER BY resa.`start` DESC LIMIT ".$limit." OFFSET ".$offset."";
+                    WHERE resa.`user_id` =:id AND resa.`active` =:active
+                    ORDER BY DATE(resa.`start`) ASC LIMIT ".$limit." OFFSET ".$offset."";
 
             
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 
-        public static function get_active_count_by_user($post)
+        public static function get_count_by_user($post)
         {
-            $sql = "SELECT COUNT(*) FROM `".self::$table."` resa
-                    WHERE resa.`user_id` =:id AND resa.`active` = 1";
+            $sql = "SELECT COUNT(*) 
+                    FROM `".self::$table."` resa
+                    WHERE resa.`user_id` =:id AND resa.`active` =:active";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 
-        public static function get_inactive_user_reservation($post, $offset, $limit)
+        public static function get_owner_reservation($post, $offset, $limit)
         {
-            $sql = "SELECT
+            $sql = "SELECT DISTINCT
+                    resa.`id` `n°`,
                     DATE(resa.`start`) `date`,
                     LOWER(DAYNAME(resa.`start`)) `day`,
                     HOUR(resa.`start`) `start`,
                     HOUR(resa.`end`) `end`,
-                    resa.`instrument_id`
+                    resa.`instrument_id`,
+                    users.`name` `user`
                     FROM `".self::$table."` resa
-                    WHERE resa.`user_id` =:id AND resa.`active` = 0
-                    ORDER BY resa.`start` DESC LIMIT ".$limit." OFFSET ".$offset."";
+                    LEFT JOIN `instruments` instru ON instru.`owner_id` =:id
+                    LEFT JOIN `users` ON users.`id` = resa.`user_id`
+                    WHERE resa.`active` =:active
+                    ORDER BY DATE(resa.`start`) ASC LIMIT ".$limit." OFFSET ".$offset."";
 
-            
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
-
         }
 
-        public static function get_inactive_count_by_user($post)
+
+        public static function get_count_by_owner($post)
         {
-            $sql = "SELECT COUNT(*) FROM `".static::get_table()."` resa
-                    WHERE resa.`user_id` =:id AND resa.`active` = 0";
+            $sql = "SELECT COUNT(*)
+                    FROM `".self::$table."` resa
+                    LEFT JOIN `instruments` instru ON instru.`id` = resa.`instrument_id`
+                    WHERE instru.`owner_id` =:id AND resa.`active` =:active";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
+
 
     }   
 

@@ -28,6 +28,10 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
     isChecked,
   } = useDeleteItems(view, fn1, setItemsNumber);
 
+  console.log(itemsNumber);
+
+  const isOwnerInstrumentView = () => view === 'OWNER_INSTRUMENT';
+
   return (
     <>
       {!loading ? (
@@ -43,8 +47,7 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
             </BasicButton>
             <SiApplemusic className="text-2xl" />
             <p className="text-base text-thin">
-              {typeof itemsNumber !== 'object' ? itemsNumber : ''}{' '}
-              {viewTolabel[view]}
+              {itemsNumber + ' ' + viewTolabel[view]}
             </p>
           </div>
           <Table
@@ -56,6 +59,9 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
               <Table.HeadCell className="!p-4">
                 <p>🎶</p>
               </Table.HeadCell>
+              {view === 'OWNER_INSTRUMENT' && (
+                <Table.HeadCell>editer</Table.HeadCell>
+              )}
               {data[0] &&
                 Object.keys(data[0]).map((h) => (
                   <Table.HeadCell className="!px-2 text-xs" key={h}>
@@ -77,6 +83,10 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
                       className="!focus:ring-0"
                     />
                   </Table.Cell>
+                  {view === 'OWNER_INSTRUMENT' && (
+                    <Table.Cell>editer</Table.Cell>
+                  )}
+
                   {Object.keys(d).map((cell, i) => (
                     <Table.Cell
                       className={`text-xs !px-2 ${

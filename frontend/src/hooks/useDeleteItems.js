@@ -11,6 +11,7 @@ export const viewTolabel = {
   ADMIN_INSTRUMENTS: 'instrument(s)',
   USER_RESERVATION: 'reservation(s)',
   OWNER_RESERVATION: 'reservation(s)',
+  OWNER_INSTRUMENT: 'instrument(s)',
 };
 
 const viewToFunction = {

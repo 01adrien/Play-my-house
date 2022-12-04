@@ -7,7 +7,12 @@ import BaseTable from '../components/tables/BaseTable';
 import UserProfile from '../components/UserProfile';
 import { user } from '../store/user';
 import { getUserAdmin, getUserCount } from '../api/user';
-import { getInstrumentAdmin, getInstrumentCount } from '../api/instrument';
+import {
+  getInstrumentAdmin,
+  getInstrumentCount,
+  getOwnerInstrument,
+  getOwnerCount,
+} from '../api/instrument';
 import {
   getUserReservation,
   getActiveCountByUser,
@@ -63,7 +68,16 @@ export default function User() {
   };
 
   const ownerHeadings = {
-    'Mes instruments': 'mes instruments',
+    'Mes instruments': (
+      <BaseTable
+        fn1={getOwnerCount}
+        fn2={getOwnerInstrument}
+        id={profile.id}
+        view="OWNER_INSTRUMENT"
+        title="Mes instruments"
+        resaStatus={null}
+      />
+    ),
     'Reservation a venir': (
       <BaseTable
         fn1={getActiveCountByOwner}
@@ -103,7 +117,7 @@ export default function User() {
         fn1={getInstrumentCount}
         fn2={getInstrumentAdmin}
         view="ADMIN_INSTRUMENTS"
-        title="Tous les utilisateurs"
+        title="Tous les instruments"
       />
     ),
     Planning: 'planning',
