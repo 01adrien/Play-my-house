@@ -1,9 +1,9 @@
 import React from 'react';
 import { Carousel } from 'flowbite-react';
 
-export default function Caroussel({ data, Component }) {
+export default function Caroussel({ data, Component, slide = false }) {
   return (
-    <Carousel slide={false}>
+    <Carousel slide={slide}>
       {data &&
         data.map((src, i) => (
           <Component key={i} src={src} alt={`picture-${i + 1}`} />

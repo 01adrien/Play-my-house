@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { getTenNewest } from '../api/instrument';
-import banner from '../assets/home_banner1.jpg';
+import img1 from '../assets/home_banner1.jpg';
+import img2 from '../assets/home_banner2.jpeg';
+import img3 from '../assets/home_banner3.jpg';
 import InstrumentCard from '../components/cards/InstrumentCard';
 import { useRecoilState } from 'recoil';
 import { user } from '../store/user';
 import Footer from '../components/Footer';
+import { Picture } from '../components/Picture';
+import Caroussel from '../components/Caroussel';
 
 export default function Home() {
   const [instruments, setInstruments] = useState([]);
   const [profile, setProfile] = useRecoilState(user);
   const [loading, setLoading] = useState(true);
+  const pictures = [img1, img2, img3];
   useEffect(() => {
     getTenNewest()
       .then(setInstruments)
@@ -24,11 +29,16 @@ export default function Home() {
   return (
     <Layout>
       <div className="flex flex-col h-full">
-        <img
-          className="object-contain rounded h-80"
-          src={banner}
-          alt="home-banner"
-        />
+        <div className="w-full h-80 flex justify-center">
+          <div className="h-80 w-[40%]">
+            <Caroussel
+              slideInterval={3000}
+              data={pictures}
+              Component={Picture}
+              slide={true}
+            />
+          </div>
+        </div>
         <div className="mt-8 flex items-center justify-center">
           <div className="w-[75%] flex flex-col items-center text-center justify-center border-t-2 border-border_color">
             <p className="text-main_color text-xl mt-6">

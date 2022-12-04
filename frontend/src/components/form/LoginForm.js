@@ -60,14 +60,15 @@ export default function LoginForm() {
             }}
             value={credentials.password}
           />
-          <BasicCheckbox label="remember me" style={'pb-2'} />
-          <BasicButton
-            testId="submit-login"
-            style={loading && 'border-2 border-slate-700 '}
-            type="submit"
-          >
-            <TextBtnWithLoading text={'Login'} loading={loading} />
-          </BasicButton>
+          <div className="w-full mt-8 flex justify-center">
+            <BasicButton
+              testId="submit-login"
+              style={`w-60 ${loading && 'border-2 border-slate-700'}`}
+              type="submit"
+            >
+              <TextBtnWithLoading text={'Login'} loading={loading} />
+            </BasicButton>
+          </div>
         </form>
       </div>
       {credentialsErrors && <LoginErrors errors={credentialsErrors} />}

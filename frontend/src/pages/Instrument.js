@@ -146,7 +146,7 @@ export default function Instrument() {
                     </p>
                   </Accordion.Title>
                   <Accordion.Content>
-                    <div className="text-xs overflow-y-scroll">
+                    <div className="text-xs">
                       {weekDispos &&
                         Object.keys(weekDispos).map((day) => {
                           return (
