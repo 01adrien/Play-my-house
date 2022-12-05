@@ -1,19 +1,20 @@
-import { AXIOS } from "./Axios";
+import { AXIOS } from './Axios';
 
 export async function signin(credentials) {
-  const { email, password, name } = credentials;
+  const { email, password, name, role } = credentials;
   const post = new FormData();
-  post.append("name", name);
-  post.append("email", email);
-  post.append("password", password);
+  post.append('name', name);
+  post.append('email', email);
+  post.append('password', password);
+  post.append('role', role);
   return await AXIOS.post(`/user/signin`, post);
 }
 
 export async function login(credentials) {
   const { email, password } = credentials;
   const post = new FormData();
-  post.append("email", email);
-  post.append("password", password);
+  post.append('email', email);
+  post.append('password', password);
   return await AXIOS.post(`/user/login`, post);
 }
 

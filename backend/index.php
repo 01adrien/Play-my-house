@@ -4,7 +4,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, Accept, Accep
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
 $http_origin = $_SERVER['HTTP_ORIGIN']??null;
-if ($http_origin === "http://127.0.0.1:45763" || "https://no-idea-web.fr/" ) {
+if ($http_origin === "http://127.0.0.1:1234" || "https://no-idea-web.fr/" ) {
     header("Access-Control-Allow-Origin: $http_origin");
 }
 

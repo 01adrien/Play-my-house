@@ -17,16 +17,7 @@ export default function InstrumentListPage({
     <div className={`w-full flex flex-col space-between items-center`}>
       <div className="w-[85%] h-[100%]">
         <div className="flex flex-col items-center justify-center border-b-2 border-border_color">
-          <p className="font-medium pt-3">{name.toUpperCase()}</p>
-          <p className="w-[65%] py-5 text-center">
-            Etiam consectetur, felis sit amet scelerisque consectetur, ligula
-            metus condimentum sapien, ut dignissim tellus mauris quis orci. In
-            magna massa, posuere ut eros id, efficitur pellentesque ipsum. Duis
-            scelerisque suscipit dolor, non convallis diam. Donec ut mauris a ex
-            aliquam pellentesque. Pellentesque vitae sapien eget nulla
-            condimentum dictum. Fusce nec dolor sed risus maximus tincidunt.
-            Nulla pretium{' '}
-          </p>
+          <p className="font-medium text-xl pb-4">{name.toUpperCase()}</p>
         </div>
         <div className="flex pt-3 min-h-[500px]">
           <div className="flex min-w-[250px]">

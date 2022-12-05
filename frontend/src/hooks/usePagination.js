@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { scrollUp } from '../utils';
 
 export default function usePagination(fnCount, fnData, ...args) {
   const [loading, setLoading] = useState(true);
@@ -27,21 +26,10 @@ export default function usePagination(fnCount, fnData, ...args) {
     args && args[0]
       ? fnData(...args, offset - itemsPerPage, limit)
           .then(setData)
-          .then(() => {
-            setLoading(false);
-            setTimeout(() => {
-              scrollUp();
-            }, 200);
-          })
-          .then()
+          .then(() => setLoading(false))
       : fnData(offset - itemsPerPage, limit)
           .then(setData)
-          .then(() => {
-            setLoading(false);
-            setTimeout(() => {
-              scrollUp();
-            }, 200);
-          });
+          .then(() => setLoading(false));
   }, [currentPage, ...args, fnData, itemsNumber]);
 
   return {

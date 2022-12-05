@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import FormInput from '../input/FormInput';
-import BasicCheckbox from '../checkbox/BasicCheckbox';
 import Spinner from '../icons/Spinner';
+import { RxCrossCircled } from 'react-icons/rx';
 import LoginErrors from '../LoginErrors';
 import BasicButton from '../button/BasicButton';
 import { signin } from '../../api/auth';
@@ -15,7 +15,7 @@ import Text from '../Text';
 
 const TextBtnWithLoading = withLoading(Text);
 
-export default function SignInForm() {
+export default function SigninFormOwner({ close }) {
   const setProfile = useSetRecoilState(user);
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
@@ -25,6 +25,9 @@ export default function SignInForm() {
     email: '',
     name: '',
     passwordConfirm: '',
+    telephone: '',
+    address: '',
+    city: '',
   });
 
   async function handleSubmit(e) {
@@ -38,7 +41,7 @@ export default function SignInForm() {
       return setLoading(false);
     }
     if (true) {
-      useAuth(credentials, signin).then(
+      useAuth({ role: 'owner', ...credentials }, signin).then(
         ({ profile, loading, credentialsErrors }) => {
           setLoading(loading);
           setProfile(profile);
@@ -57,18 +60,38 @@ export default function SignInForm() {
 
   return (
     <div className="flex-col items-center justify-center w-[50%]">
-      <div className="w-[100%] flex items-center justify-center border-r-2 border-slate-200">
+      <div className="w-[100%] flex items-center justify-center">
         <form className="w-[50%] flex-col" onSubmit={(e) => handleSubmit(e)}>
-          <FormInput
-            name="nom*"
-            type="text"
-            id="name-signin"
-            fn={(e) => {
-              setCredentials({ ...credentials, name: e.target.value });
-              setCredentialsErrors({});
-            }}
-            value={credentials.name}
-          />
+          <div className="w-full flex justify-end pr-4">
+            <RxCrossCircled
+              onClick={() => close('MENU')}
+              className="bg-red-600 text-white cursor-pointer rounded-full text-2xl"
+            />
+          </div>
+          <div className="flex justify-between">
+            <FormInput
+              name="nom*"
+              type="text"
+              id="name-signin"
+              style="w-32"
+              fn={(e) => {
+                setCredentials({ ...credentials, name: e.target.value });
+                setCredentialsErrors({});
+              }}
+              value={credentials.name}
+            />
+            <FormInput
+              name="telephone*"
+              type="text"
+              id=""
+              style="w-40"
+              fn={(e) => {
+                setCredentialsErrors({});
+                setCredentials({ ...credentials, telephone: e.target.value });
+              }}
+              value={credentials.telephone}
+            />
+          </div>
           <FormInput
             name="email*"
             type="email"
@@ -79,6 +102,30 @@ export default function SignInForm() {
             }}
             value={credentials.email}
           />
+          <div className="flex justify-between">
+            <FormInput
+              name="ville*"
+              type="text"
+              id="email-signin"
+              style="w-32"
+              fn={(e) => {
+                setCredentialsErrors({});
+                setCredentials({ ...credentials, city: e.target.value });
+              }}
+              value={credentials.city}
+            />
+            <FormInput
+              name="adresse*"
+              type="text"
+              id=""
+              style="w-40"
+              fn={(e) => {
+                setCredentialsErrors({});
+                setCredentials({ ...credentials, address: e.target.value });
+              }}
+              value={credentials.address}
+            />
+          </div>
           <FormInput
             name="mot de passe*"
             type="password"
