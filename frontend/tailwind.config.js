@@ -15,8 +15,8 @@ module.exports = {
       keyframes: {
         appearSmoothLeft: {
           '0%': { width: '0%' },
-          '50%': { width: '50vw' },
-          '100%': { width: '100vw' },
+          '50%': { width: '50%' },
+          '100%': { width: '100%' },
         },
         disappearSmoothLeft: {
           '0%': { width: '65%' },

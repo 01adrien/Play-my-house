@@ -26,7 +26,7 @@ export default function NavMobile({ profile, open }) {
     });
     setTimeout(() => {
       open(false);
-    }, 290);
+    }, 0);
   }
 
   function handleSelectItem(item) {
@@ -35,21 +35,15 @@ export default function NavMobile({ profile, open }) {
 
   return (
     <div
-      className={`fixed top-0 bg-slate-200 h-[100vh] ${
-        navBarClose && 'animate-[disappearSmoothLeft_0.3_linear]'
-      } ${
-        open
-          ? 'z-10 w-[100vw] animate-[appearSmoothLeft_0.3s_linear]'
-          : 'hidden'
+      className={`fixed top-0 bg-slate-200 h-[100vh] ${navBarClose && ''} ${
+        open ? 'z-10 w-[100vw] ' : 'hidden'
       } `}
     >
       <div className="bg-white">
         <div className="w-full bg-white h-[25%] border-8 border-border_color flex justify-center items-center">
           <Link to={'/'}>
             <img
-              className={`h-44 w-52 rounded-full animate-[appearAfter_0.4s_ease-in-out]${
-                navBarClose && 'hidden'
-              }`}
+              className={`h-44 w-52 rounded-full ${navBarClose && 'hidden'}`}
               src={logo}
               alt="logo"
             />
@@ -58,16 +52,18 @@ export default function NavMobile({ profile, open }) {
         <ul>
           <li>
             <div
-              className={`flex justify-between animate-[appearAfter_0.6s_ease-in-out] items-center border-b-[1px] border-r-[1px] cursor-pointer  pl-2 h-10 border-border_color ${
+              className={`flex justify-between  items-center border-b-[1px] border-r-[1px] cursor-pointer  pl-2 h-10 border-border_color ${
                 navBarClose && 'hidden'
               }`}
             >
-              <span>MENU</span>
+              <Link to={'/instrument-all'}>
+                <span>INSTRUMENTS</span>
+              </Link>
               <span className="w-10 h-10 flex justify-center items-center">
                 {
                   <RxCrossCircled
                     onClick={handleCloseNavbar}
-                    className="bg-red-600 text-white cursor-pointer rounded-full text-2xl"
+                    className="bg-red-600 text-white cursor-pointer rounded-full text-xl"
                   />
                 }
               </span>
@@ -126,7 +122,7 @@ export default function NavMobile({ profile, open }) {
             })}
           <Link to={'/login'} onClick={handleCloseNavbar}>
             <li
-              className={`flex animate-[appearAfter_0.4s_ease-in-out] justify-between items-center border-r-[1px] border-b-[1px] cursor-pointer hover:bg-slate-100 pl-2 h-10 border-border_color ${
+              className={`flex  justify-between items-center border-r-[1px] border-b-[1px] cursor-pointer hover:bg-slate-100 pl-2 h-10 border-border_color ${
                 navBarClose && 'hidden'
               }`}
             >
@@ -141,7 +137,7 @@ export default function NavMobile({ profile, open }) {
           {profile && (
             <Link to={'/user'} onClick={handleCloseNavbar}>
               <li
-                className={`flex justify-between animate-[appearAfter_0.4s_ease-in-out] items-center border-r-[1px] border-b-[1px] cursor-pointer hover:bg-slate-100 pl-2 h-10 border-border_color ${
+                className={`flex justify-between  items-center border-r-[1px] border-b-[1px] cursor-pointer hover:bg-slate-100 pl-2 h-10 border-border_color ${
                   navBarClose && 'hidden'
                 }`}
               >

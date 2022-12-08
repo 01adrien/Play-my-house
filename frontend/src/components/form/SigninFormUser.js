@@ -51,10 +51,10 @@ export default function SigninFormUser() {
   }
 
   return (
-    <div className="flex-col items-center justify-center w-[50%] min-w-[250px]">
+    <div className="flex-col items-center justify-center w-[50%] min-w-[200px]">
       <div className="w-[100%] flex items-center justify-center ">
         <form
-          className="w-[50%] min-w-[250px] flex-col"
+          className="w-[50%] min-w-[200px] flex-col"
           onSubmit={(e) => handleSubmit(e)}
         >
           <FormInput

@@ -49,7 +49,7 @@ export default function FormCarousel({ children }) {
     );
 
   return (
-    <div className="flex justify-around w-96">
+    <div className="flex justify-around min-w-[300px]">
       <ButtonPrev />
       {currentForm}
       <ButtonNext />

@@ -8,6 +8,7 @@ import Pagination from '../Pagination';
 import BasicButton from '../button/BasicButton';
 import ModalDelete from '../modal/ModalDelete';
 import { useDeleteItems, viewTolabel } from '../../hooks/useDeleteItems';
+import useMediaQuery from '../../hooks/useMediaQuery';
 
 export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
   const {
@@ -29,6 +30,8 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
     isChecked,
   } = useDeleteItems(view, fn1, setItemsNumber);
 
+  const isMobile = useMediaQuery('(max-width: 700px)');
+
   const displayStatus = (value) => {
     const status = (color) => {
       return (
@@ -47,18 +50,20 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
   return (
     <>
       {!loading ? (
-        <div className="flex flex-col min-w-[700px] mb-8">
+        <div className="flex flex-col mb-8">
           <div className="text-center mb-8">{title.toUpperCase()}</div>
-          <div className="flex justify-around w-full text-sm h-10 items-center mb-8">
+          <div
+            className={`flex justify-around w-full text-sm h-10 items-center mb-8`}
+          >
             <BasicButton
               onClick={openModal}
-              width="40"
-              style="h-10 bg-red-600 hover:bg-red-700 hover:scale-105"
+              width={isMobile ? '16' : '40'}
+              style="h-10 bg-red-600 hover:bg-red-700 hover:scale-105 text-xs"
             >
               <p className="self-center">supprimer</p>
             </BasicButton>
             <SiApplemusic className="text-2xl" />
-            <p className="text-base text-thin">
+            <p className={`${isMobile ? 'text-xs' : 'text-base'} text-thin`}>
               {itemsNumber + ' ' + viewTolabel[view]}
             </p>
           </div>

@@ -74,7 +74,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="w-[90%] flex flex-wrap justify-center mb-4">
+          <div className="flex flex-wrap justify-center mb-4">
             {instruments?.map((instrument) => (
               <InstrumentCard
                 key={instrument.id}

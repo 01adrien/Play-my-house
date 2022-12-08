@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import BaseTable from '../components/tables/BaseTable';
 import UserProfile from '../components/UserProfile';
+import useMediaQuery from '../hooks/useMediaQuery';
 import { user } from '../store/user';
 import { getUserAdmin, getUserCount } from '../api/user';
 import {
@@ -23,12 +24,15 @@ import {
 } from '../api/reservation';
 import { listToDelete } from '../store/user';
 import { useSetRecoilState, useRecoilState } from 'recoil';
+import { VscSettings } from 'react-icons/vsc';
+import { RxCrossCircled } from 'react-icons/rx';
 
 export default function User() {
   const setItemsToDelete = useSetRecoilState(listToDelete);
   const [profile, setProfile] = useRecoilState(user);
   const [activeHeading, setActiveHeading] = useState('Details du compte');
-
+  const isMobile = useMediaQuery('(max-width: 640px)');
+  const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
   const disconnect = () => {
     logout(user);
@@ -37,7 +41,13 @@ export default function User() {
   };
 
   const handleSelectHeading = (h) => {
-    h === 'Deconnexion' ? disconnect() : setActiveHeading(h);
+    if (h === 'Deconnexion') {
+      disconnect();
+    } else {
+      setActiveHeading(h);
+      setOpenSettings(false);
+    }
+
     setItemsToDelete([]);
   };
 
@@ -133,12 +143,40 @@ export default function User() {
 
   return (
     <Layout>
-      <div className="w-full h-[70vh] flex justify-center">
+      <div className="w-full flex flex-col justify-center items-center mt-4">
+        {isMobile && (
+          <div className="flex w-full items-center justify-end">
+            {
+              <VscSettings
+                onClick={() => setOpenSettings(!openSettings)}
+                className="pr-4 text-5xl cursor-pointer"
+              />
+            }
+          </div>
+        )}
         <div className=" w-[85%] h-full">
-          <div className="flex justify-around w-[100%] h-[100%] mt-14">
-            <div className="flex flex-col border-r-2 border-border_color w-52">
-              <div className="h-14 w-[80%] flex justify-start items-center border-b-2">
-                <p className="text-[1.2em] pl-5"> MON COMPTE</p>
+          <div className="flex justify-around w-[100%] h-[100%]">
+            <div
+              className={`flex flex-col border-r-2 border-border_color w-52 min-w-[200px] ${
+                openSettings
+                  ? 'fixed top-0 left-0 h-[100vh] z-20 bg-white'
+                  : isMobile
+                  ? 'hidden'
+                  : ''
+              }`}
+            >
+              <div className="h-14 w-[95%] flex justify-between items-center border-b-2">
+                <p className="text-[1.2em] pl-2"> MON COMPTE</p>
+                {isMobile && (
+                  <span>
+                    {
+                      <RxCrossCircled
+                        onClick={() => setOpenSettings(false)}
+                        className="bg-red-600 text-white cursor-pointer rounded-full text-xl"
+                      />
+                    }
+                  </span>
+                )}
               </div>
               {Object.keys(headings).map((head) => {
                 return (
@@ -161,7 +199,7 @@ export default function User() {
                 );
               })}
             </div>
-            <div className=" w-[80%] flex justify-center h-[100%]">
+            <div className=" w-[100%] flex justify-center h-[100%]">
               <div className="w-[90%] h-[100%]">{headings[activeHeading]}</div>
             </div>
           </div>

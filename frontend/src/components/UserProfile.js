@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil';
 import withLoading from '../HOC/withLoading';
 import { Picture } from './Picture';
 import Upload from './icons/Upload';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 const PictureWithLoading = withLoading(Picture);
 
@@ -22,6 +23,7 @@ export default function UserProfile() {
   const [isUploadImg, setIsUploadImg] = useState(false);
   const [credentials, setCredentials] = useState({});
   const [profile, setProfile] = useRecoilState(user);
+  const isSmallScreen = useMediaQuery('(max-width: 640px)');
 
   const { name, email, picture_id, id, role, picture_name } = profile;
   useEffect(() => {
@@ -46,9 +48,16 @@ export default function UserProfile() {
     });
   }
   return (
-    <div className="flex flex-row justify-between items-center w-[100%]">
-      <div className="flex flex-col pl-12 w-[55%]">
-        <form onSubmit={(e) => handleSubmit(e)} className="w-[100%]">
+    <div
+      className={`flex justify-between sm:flex-col-reverse md:flex-col-reverse lg:flex-row xl:flex-row items-center w-[100%] ${
+        isSmallScreen ? 'flex-col-reverse' : ''
+      }`}
+    >
+      <div className="flex flex-col w-[55%] min-w-[200px]">
+        <form
+          onSubmit={(e) => handleSubmit(e)}
+          className="w-[100%] max-w-[400px] min-w-[200px] mt-6"
+        >
           <FormInput
             required={false}
             name="nom"
@@ -111,7 +120,7 @@ export default function UserProfile() {
       </div>
       <form
         onSubmit={(e) => hamdleSubmitUpload(e)}
-        className=" w-[60%] h-[45vh] flex flex-col justify-between items-center"
+        className=" w-[60%] h-[45vh] min-w-[300px] flex flex-col justify-between items-center"
       >
         <FileInput setSelectedFile={setSelectedFile} />
 

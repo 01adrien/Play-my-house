@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CheckBoxContainer from './CheckBoxContainer';
 import InstrumentCard from './cards/InstrumentCard';
 import Pagination from './Pagination';
 import Footer from './Footer';
+import useMediaQuery from '../hooks/useMediaQuery';
+import { BsFilterSquareFill } from 'react-icons/bs';
 
 export default function InstrumentListPage({
   types,
@@ -13,16 +15,41 @@ export default function InstrumentListPage({
   currentPage,
   setCurrentPage,
 }) {
+  const isMobile = useMediaQuery('(max-width: 700px)');
+  const [openFilters, setOpenFilters] = useState(false);
   return (
     <div className={`w-full flex flex-col space-between items-center mt-6`}>
       <div className="w-[85%] h-[100%]">
-        <div className="flex flex-col items-center justify-center border-b-2 border-border_color">
-          <p className="font-medium text-xl pb-4">{name.toUpperCase()}</p>
+        <div className="flex items-center justify-between border-b-2 pb-2 border-border_color">
+          <p className="opacity-0">left</p>
+          <p className="font-medium text-xl">{name.toUpperCase()}</p>
+          {(isMobile && types) || (isMobile && brands.length) ? (
+            <BsFilterSquareFill
+              onClick={() => setOpenFilters(!openFilters)}
+              className="text-xl cursor-pointer text-main_color"
+            />
+          ) : (
+            <p className="opacity-0">riht</p>
+          )}
         </div>
         <div className="flex pt-3 min-h-[500px]">
-          <div className="flex min-w-[250px]">
-            <div className="border-r-2 border-border_color w-[90%] h-[100%] flex ">
-              <CheckBoxContainer types={types} brands={brands} />
+          <div
+            className={` ${
+              openFilters
+                ? 'fixed top-0 left-0 h-[100vh] z-20  bg-white'
+                : isMobile
+                ? 'hidden'
+                : ''
+            } flex min-w-[250px]`}
+          >
+            <div
+              className={`border-r-2 ml-4 border-border_color w-[100%] h-[100%] flex overflow-y-scroll`}
+            >
+              <CheckBoxContainer
+                types={types}
+                brands={brands}
+                closeFilters={setOpenFilters}
+              />
             </div>
           </div>
           <div className="flex flex-col h-full w-[100%]">

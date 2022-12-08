@@ -54,10 +54,10 @@ export default function SigninFormOwner() {
   }
 
   return (
-    <div className="flex-col items-center justify-center w-[50%] min-w-[250px] mt-4">
+    <div className="flex-col items-center justify-center w-[50%] min-w-[200px] mt-4">
       <div className="w-[100%] flex items-center justify-center ">
         <form
-          className="w-[50%] min-w-[250px] flex-col "
+          className="w-[50%] min-w-[200px] flex-col "
           onSubmit={(e) => handleSubmit(e)}
         >
           <div className="flex justify-between">

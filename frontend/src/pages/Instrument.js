@@ -28,6 +28,7 @@ import useProfilePicture from '../hooks/useProfilePicture';
 import Footer from '../components/Footer';
 import { user } from '../store/user';
 import { compose } from '../utils';
+import useMediaQuery from '../hooks/useMediaQuery';
 registerLocale('fr', fr);
 
 const PictureWithCarouselAndLoading = compose(
@@ -46,6 +47,7 @@ export default function Instrument() {
   const [refreshResa, setRefreshResa] = useState(false);
   const { loading, pictures } = useCarousel(id);
   const { avatar, avatarLoading } = useProfilePicture(location.state.owner_id);
+  const isMobile = useMediaQuery('(max-width: 640px)');
 
   const {
     weekDispos,
@@ -103,8 +105,12 @@ export default function Instrument() {
   return (
     <Layout>
       <div className="w-[100%] flex flex-col items-center justify-center mt-6">
-        <div className="flex flex-col justify-between  mt-8 h-[390px] max-w-[650px] w-[60%]">
-          <div className="flex justify-between ">
+        <div className="flex flex-col justify-around mt-8 max-w-[700px] w-[60%]">
+          <div
+            className={`flex sm:flex-col md:flex-col lg:flex-row xl:flex-row justify-between items-center ${
+              isMobile && 'flex-col'
+            }`}
+          >
             <div className="h-72 w-96 min-w-[300px] max-w-[300px] rounded-md border-[1px] border-border_color">
               {pictures && (
                 <PictureWithCarouselAndLoading
@@ -115,7 +121,7 @@ export default function Instrument() {
                 />
               )}
             </div>
-            <div className="flex flex-col justify-between items-end w-72 h-72">
+            <div className="flex flex-col justify-center items-end w-72 h-72">
               <Accordion
                 arrowIcon={HiOutlineArrowCircleDown}
                 flush={true}
@@ -165,32 +171,38 @@ export default function Instrument() {
           </div>
           <div className="w-full h-8 flex justify-center">
             {notDispoSlots && (
-              <div className="text-sm w-full flex justify-center text-center items-center">
+              <div className="text-sm w-full flex justify-center text-center items-center py-2">
                 <p className="pr-2 text-base">⚠️</p>
-                <p className="text-red-600 pr-2">{notDispoSlots.slots.txt}</p>
+                <p className="text-red-600 pr-2 ">{notDispoSlots.slots.txt}</p>
                 <p>non disponible(s) pour le {notDispoSlots.date} </p>
               </div>
             )}
           </div>
-          <div className="w-full flex justify-center">
-            <div className="w-[80%] flex justify-center">
-              <DatePicker
-                onCalendarOpen={() => setRefreshResa(!refreshResa)}
-                locale="fr"
-                minDate={new Date()}
-                selected={new Date()}
-                disabledKeyboardNavigation
-                onCalendarClose={handleCloseCalendar}
-                filterDate={daysToShow}
-                onDayMouseEnter={handleDayHover}
-                onMonthChange={handleChangeMonth}
-                onChange={(day) => console.log(day)}
-                dayClassName={dayStyle}
-                customInput={<DatePickerBtn />}
-                popperPlacement="bottom-start"
-              ></DatePicker>
+          <div className="w-full flex justify-around">
+            <div
+              className={`w-full flex justify-around items-center sm:flex-col-reverse md:flex-row ${
+                isMobile && 'flex-col-reverse'
+              }`}
+            >
+              <div className="w-60">
+                <DatePicker
+                  onCalendarOpen={() => setRefreshResa(!refreshResa)}
+                  locale="fr"
+                  minDate={new Date()}
+                  selected={new Date()}
+                  disabledKeyboardNavigation
+                  onCalendarClose={handleCloseCalendar}
+                  filterDate={daysToShow}
+                  onDayMouseEnter={handleDayHover}
+                  onMonthChange={handleChangeMonth}
+                  onChange={(day) => console.log(day)}
+                  dayClassName={dayStyle}
+                  customInput={<DatePickerBtn />}
+                  popperPlacement="bottom-start"
+                ></DatePicker>
+              </div>
               <BasicButton
-                width="72"
+                width="60"
                 style="bg-slate-400 hover:bg-slate-500 hover:scale-105 shadow-md"
               >
                 <p className="text-center">
@@ -209,14 +221,6 @@ export default function Instrument() {
           ultrices. Nunc sit amet eleifend ipsum. Cras tellus ante, vestibulum
           vestibulum porta vitae, posuere sed ante. Cras in feugiat est. Vivamus
           id fermentum odio, sed pharetra nunc. Mauris fringilla erat sed risus
-          pellentesque aliquam. Ut volutpat id massa in auctor. Pellentesque
-          habitant morbi tristique senectus et netus et malesuada fames ac
-          turpis egestas. Vivamus egestas sed nulla non condimentum.
-          Pellentesque tristique viverra turpis, in luctus quam luctus a.
-          Praesent id urna vel enim luctus ultrices. Nunc sit amet eleifend
-          ipsum. Cras tellus ante, vestibulum vestibulum porta vitae, posuere
-          sed ante. Cras in feugiat est. Vivamus id fermentum odio, sed pharetra
-          nunc. Mauris fringilla erat sed risus pellentesque aliquam.
         </div>
       </div>
       {/* <Footer /> */}

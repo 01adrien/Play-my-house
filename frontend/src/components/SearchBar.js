@@ -7,7 +7,10 @@ export default function SearchBar() {
   }
 
   return (
-    <form className="flex items-center w-[80%]" onSubmit={(e) => onSubmit(e)}>
+    <form
+      className="flex items-center w-[80%] max-w-2xl"
+      onSubmit={(e) => onSubmit(e)}
+    >
       <label htmlFor="simple-search" className="sr-only">
         Search
       </label>

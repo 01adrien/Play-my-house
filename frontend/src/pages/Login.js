@@ -12,7 +12,7 @@ export default function Login() {
   const profile = useRecoilValue(user);
   return (
     <Layout>
-      <div className="flex flex-col justify-center items-center h-[70vh] w-full">
+      <div className="flex flex-col justify-center items-center h-[70vh] w-full min-w-[300px]">
         <FormCarousel>
           <SigninFormUser />
           <SigninFormOwner />

@@ -31,10 +31,10 @@ export default function LoginForm() {
     }
   }
   return (
-    <div className="flex-col items-center justify-center w-[50%] min-w-[250px]">
+    <div className="flex-col items-center justify-center w-[50%] min-w-[200px]">
       <div className="w-[100%] flex items-center justify-center ">
         <form
-          className="w-[50%] flex-col min-w-[250px]"
+          className="w-[50%] flex-col min-w-[200px]"
           onSubmit={(e) => handleSubmit(e)}
         >
           <FormInput
