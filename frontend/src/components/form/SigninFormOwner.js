@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FormInput from '../input/FormInput';
 import Spinner from '../icons/Spinner';
-import { RxCrossCircled } from 'react-icons/rx';
 import LoginErrors from '../LoginErrors';
 import BasicButton from '../button/BasicButton';
 import { signin } from '../../api/auth';
@@ -10,12 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { user } from '../../store/user';
 import useAuth from '../../hooks/useAuth';
-import withLoading from '../../HOC/withLoading';
-import Text from '../Text';
 
-const TextBtnWithLoading = withLoading(Text);
-
-export default function SigninFormOwner({ close }) {
+export default function SigninFormOwner() {
   const setProfile = useSetRecoilState(user);
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
@@ -59,21 +54,18 @@ export default function SigninFormOwner({ close }) {
   }
 
   return (
-    <div className="flex-col items-center justify-center w-[50%]">
-      <div className="w-[100%] flex items-center justify-center">
-        <form className="w-[50%] flex-col" onSubmit={(e) => handleSubmit(e)}>
-          <div className="w-full flex justify-end pr-4">
-            <RxCrossCircled
-              onClick={() => close('MENU')}
-              className="bg-red-600 text-white cursor-pointer rounded-full text-2xl"
-            />
-          </div>
+    <div className="flex-col items-center justify-center w-[50%] min-w-[250px] mt-4">
+      <div className="w-[100%] flex items-center justify-center ">
+        <form
+          className="w-[50%] min-w-[250px] flex-col "
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <div className="flex justify-between">
             <FormInput
               name="nom*"
               type="text"
               id="name-signin"
-              style="w-32"
+              style="w-20"
               fn={(e) => {
                 setCredentials({ ...credentials, name: e.target.value });
                 setCredentialsErrors({});
@@ -84,7 +76,7 @@ export default function SigninFormOwner({ close }) {
               name="telephone*"
               type="text"
               id=""
-              style="w-40"
+              style="w-36"
               fn={(e) => {
                 setCredentialsErrors({});
                 setCredentials({ ...credentials, telephone: e.target.value });
@@ -107,7 +99,7 @@ export default function SigninFormOwner({ close }) {
               name="ville*"
               type="text"
               id="email-signin"
-              style="w-32"
+              style="w-20"
               fn={(e) => {
                 setCredentialsErrors({});
                 setCredentials({ ...credentials, city: e.target.value });
@@ -118,7 +110,7 @@ export default function SigninFormOwner({ close }) {
               name="adresse*"
               type="text"
               id=""
-              style="w-40"
+              style="w-36"
               fn={(e) => {
                 setCredentialsErrors({});
                 setCredentials({ ...credentials, address: e.target.value });
@@ -154,7 +146,7 @@ export default function SigninFormOwner({ close }) {
               type="submit"
               style={`w-60 ${loading && 'border-2 border-slate-700'}`}
             >
-              <TextBtnWithLoading text={'Signin'} loading={loading} />
+              <p>{loading ? <Spinner /> : 'signin'}</p>
             </BasicButton>
           </div>
         </form>

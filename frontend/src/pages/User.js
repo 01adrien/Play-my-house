@@ -146,7 +146,8 @@ export default function User() {
                     key={head}
                     onClick={() => handleSelectHeading(head)}
                     className={`h-10 w-[80%] flex hover:text-main_color ${
-                      activeHeading === head && 'bg-slate-100 text-main_color'
+                      activeHeading === head &&
+                      'bg-slate-100 shadow-inner text-main_color'
                     } cursor-pointer justify-start items-center`}
                   >
                     <p

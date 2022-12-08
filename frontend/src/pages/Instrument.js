@@ -102,7 +102,7 @@ export default function Instrument() {
 
   return (
     <Layout>
-      <div className="w-[100%] flex flex-col items-center justify-center">
+      <div className="w-[100%] flex flex-col items-center justify-center mt-6">
         <div className="flex flex-col justify-between  mt-8 h-[390px] max-w-[650px] w-[60%]">
           <div className="flex justify-between ">
             <div className="h-72 w-96 min-w-[300px] max-w-[300px] rounded-md border-[1px] border-border_color">

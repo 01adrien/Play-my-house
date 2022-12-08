@@ -68,11 +68,17 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
             className="min-w-[500px] !focus:ring-0 mt-6"
           >
             <Table.Head className="sticky top-0">
-              <Table.HeadCell className="text-center !p-4">
-                <p>🎶</p>
-              </Table.HeadCell>
-              {view === 'OWNER_INSTRUMENT' && (
-                <Table.HeadCell>editer</Table.HeadCell>
+              {data.length ? (
+                <>
+                  <Table.HeadCell className="text-center !p-4">
+                    <p>🎶</p>
+                  </Table.HeadCell>
+                  {view === 'OWNER_INSTRUMENT' && (
+                    <Table.HeadCell>editer</Table.HeadCell>
+                  )}
+                </>
+              ) : (
+                ''
               )}
               {data[0] &&
                 Object.keys(data[0]).map((h) => (

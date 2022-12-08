@@ -14,7 +14,7 @@ export default function InstrumentListPage({
   setCurrentPage,
 }) {
   return (
-    <div className={`w-full flex flex-col space-between items-center`}>
+    <div className={`w-full flex flex-col space-between items-center mt-6`}>
       <div className="w-[85%] h-[100%]">
         <div className="flex flex-col items-center justify-center border-b-2 border-border_color">
           <p className="font-medium text-xl pb-4">{name.toUpperCase()}</p>

@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import { login } from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { RxCrossCircled } from 'react-icons/rx';
 import { user } from '../../store/user';
 import FormInput from '../input/FormInput';
 import BasicButton from '../button/BasicButton';
 import LoginErrors from '../LoginErrors';
 import useAuth from '../../hooks/useAuth';
-import withLoading from '../../HOC/withLoading';
-import Text from '../Text';
+import Spinner from '../icons/Spinner';
 
-const TextBtnWithLoading = withLoading(Text);
-
-export default function LoginForm({ close }) {
+export default function LoginForm() {
   const setProfile = useSetRecoilState(user);
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
@@ -35,15 +31,12 @@ export default function LoginForm({ close }) {
     }
   }
   return (
-    <div className="flex-col items-center justify-center w-[50%]">
-      <div className="w-[100%] flex items-center justify-center">
-        <form className="w-[50%] flex-col" onSubmit={(e) => handleSubmit(e)}>
-          <div className="w-full flex justify-end pr-4">
-            <RxCrossCircled
-              onClick={() => close('MENU')}
-              className="bg-red-600 text-white cursor-pointer rounded-full text-2xl"
-            />
-          </div>
+    <div className="flex-col items-center justify-center w-[50%] min-w-[250px]">
+      <div className="w-[100%] flex items-center justify-center ">
+        <form
+          className="w-[50%] flex-col min-w-[250px]"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <FormInput
             testId="email-login"
             name="email"
@@ -72,7 +65,7 @@ export default function LoginForm({ close }) {
               style={`w-60 ${loading && 'border-2 border-slate-700'}`}
               type="submit"
             >
-              <TextBtnWithLoading text={'Login'} loading={loading} />
+              <p>{loading ? <Spinner /> : 'login'}</p>
             </BasicButton>
           </div>
         </form>
