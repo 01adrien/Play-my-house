@@ -5,13 +5,9 @@ import { useSetRecoilState } from 'recoil';
 import { user } from '../../store/user';
 import FormInput from '../input/FormInput';
 import BasicButton from '../button/BasicButton';
-import BasicCheckbox from '../checkbox/BasicCheckbox';
 import LoginErrors from '../LoginErrors';
 import useAuth from '../../hooks/useAuth';
-import withLoading from '../../HOC/withLoading';
-import Text from '../Text';
-
-const TextBtnWithLoading = withLoading(Text);
+import Spinner from '../icons/Spinner';
 
 export default function LoginForm() {
   const setProfile = useSetRecoilState(user);
@@ -35,9 +31,12 @@ export default function LoginForm() {
     }
   }
   return (
-    <div className="flex-col items-center justify-center w-[50%]">
-      <div className="w-[100%] flex items-center justify-center border-r-2 border-slate-200">
-        <form className="w-[50%] flex-col" onSubmit={(e) => handleSubmit(e)}>
+    <div className="flex-col items-center justify-center w-[50%] min-w-[200px]">
+      <div className="w-[100%] flex items-center justify-center ">
+        <form
+          className="w-[50%] flex-col min-w-[200px]"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <FormInput
             testId="email-login"
             name="email"
@@ -66,7 +65,7 @@ export default function LoginForm() {
               style={`w-60 ${loading && 'border-2 border-slate-700'}`}
               type="submit"
             >
-              <TextBtnWithLoading text={'Login'} loading={loading} />
+              <p>{loading ? <Spinner /> : 'login'}</p>
             </BasicButton>
           </div>
         </form>

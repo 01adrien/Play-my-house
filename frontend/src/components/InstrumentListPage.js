@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CheckBoxContainer from './CheckBoxContainer';
 import InstrumentCard from './cards/InstrumentCard';
 import Pagination from './Pagination';
 import Footer from './Footer';
+import { BsFilterCircleFill } from 'react-icons/bs';
+import { motion } from 'framer-motion';
 
 export default function InstrumentListPage({
   types,
@@ -13,25 +15,38 @@ export default function InstrumentListPage({
   currentPage,
   setCurrentPage,
 }) {
+  const [openFilters, setOpenFilters] = useState(false);
   return (
-    <div className={`w-full flex flex-col space-between items-center`}>
+    <div className={`w-full flex flex-col space-between items-center mt-6`}>
       <div className="w-[85%] h-[100%]">
-        <div className="flex flex-col items-center justify-center border-b-2 border-border_color">
-          <p className="font-medium pt-3">{name.toUpperCase()}</p>
-          <p className="w-[65%] py-5 text-center">
-            Etiam consectetur, felis sit amet scelerisque consectetur, ligula
-            metus condimentum sapien, ut dignissim tellus mauris quis orci. In
-            magna massa, posuere ut eros id, efficitur pellentesque ipsum. Duis
-            scelerisque suscipit dolor, non convallis diam. Donec ut mauris a ex
-            aliquam pellentesque. Pellentesque vitae sapien eget nulla
-            condimentum dictum. Fusce nec dolor sed risus maximus tincidunt.
-            Nulla pretium{' '}
-          </p>
+        <div className="flex items-center justify-between border-b-2 pb-2 border-border_color">
+          <p className="opacity-0">left</p>
+          <p className="font-medium text-xl">{name.toUpperCase()}</p>
+          {types || brands.length ? (
+            <BsFilterCircleFill
+              onClick={() => setOpenFilters(!openFilters)}
+              className={`text-xl cursor-pointer sm:hidden ${
+                openFilters && 'text-main_color'
+              }`}
+            />
+          ) : (
+            <p className="opacity-0">riht</p>
+          )}
         </div>
         <div className="flex pt-3 min-h-[500px]">
-          <div className="flex min-w-[250px]">
-            <div className="border-r-2 border-border_color w-[90%] h-[100%] flex ">
-              <CheckBoxContainer types={types} brands={brands} />
+          <div
+            className={` ${
+              !openFilters ? 'xs:hidden 2xs:hidden 3xs:hidden' : ''
+            }`}
+          >
+            <div
+              className={`border-r-2 border-border_color min-w-[250px] xs:w-[60%] sm:w-[100%] h-[100%] bg-white flex overflow-y-scroll z-20 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0`}
+            >
+              <CheckBoxContainer
+                types={types}
+                brands={brands}
+                closeFilters={setOpenFilters}
+              />
             </div>
           </div>
           <div className="flex flex-col h-full w-[100%]">

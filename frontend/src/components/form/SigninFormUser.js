@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import FormInput from '../input/FormInput';
-import BasicCheckbox from '../checkbox/BasicCheckbox';
 import Spinner from '../icons/Spinner';
 import LoginErrors from '../LoginErrors';
 import BasicButton from '../button/BasicButton';
@@ -10,12 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { user } from '../../store/user';
 import useAuth from '../../hooks/useAuth';
-import withLoading from '../../HOC/withLoading';
-import Text from '../Text';
 
-const TextBtnWithLoading = withLoading(Text);
-
-export default function SignInForm() {
+export default function SigninFormUser() {
   const setProfile = useSetRecoilState(user);
   const [loading, setLoading] = useState(false);
   const [credentialsErrors, setCredentialsErrors] = useState({});
@@ -38,7 +33,7 @@ export default function SignInForm() {
       return setLoading(false);
     }
     if (true) {
-      useAuth(credentials, signin).then(
+      useAuth({ role: 'user', ...credentials }, signin).then(
         ({ profile, loading, credentialsErrors }) => {
           setLoading(loading);
           setProfile(profile);
@@ -56,9 +51,12 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="flex-col items-center justify-center w-[50%]">
-      <div className="w-[100%] flex items-center justify-center border-r-2 border-slate-200">
-        <form className="w-[50%] flex-col" onSubmit={(e) => handleSubmit(e)}>
+    <div className="flex-col items-center justify-center w-[50%] min-w-[200px]">
+      <div className="w-[100%] flex items-center justify-center ">
+        <form
+          className="w-[50%] min-w-[200px] flex-col"
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <FormInput
             name="nom*"
             type="text"
@@ -107,7 +105,7 @@ export default function SignInForm() {
               type="submit"
               style={`w-60 ${loading && 'border-2 border-slate-700'}`}
             >
-              <TextBtnWithLoading text={'Signin'} loading={loading} />
+              <p>{loading ? <Spinner /> : 'signin'}</p>
             </BasicButton>
           </div>
         </form>

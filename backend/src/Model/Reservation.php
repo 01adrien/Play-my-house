@@ -47,36 +47,44 @@
             return $reservations;
         }
         
-        public static function get_user_reservation($post, $offset, $limit)
-        {
+        public static function get_user_reservation($post, $offset, $limit, $active)
+        {   
+            if ($active == 1) $and = "AND resa.`start` >= CURRENT_TIMESTAMP()"; 
+            if ($active == 0) $and = "AND resa.`start` < CURRENT_TIMESTAMP()"; 
+
             $sql = "SELECT
-                    resa.`id` `n°`,
+                    resa.`id`,
                     DATE(resa.`start`) `date`,
                     LOWER(DAYNAME(resa.`start`)) `day`,
                     HOUR(resa.`start`) `start`,
                     HOUR(resa.`end`) `end`,
                     resa.`instrument_id`
                     FROM `".self::$table."` resa
-                    WHERE resa.`user_id` =:id AND resa.`active` =:active
+                    WHERE resa.`user_id` =:id ".$and."
                     ORDER BY DATE(resa.`start`) ASC LIMIT ".$limit." OFFSET ".$offset."";
 
             
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 
-        public static function get_count_by_user($post)
+        public static function get_count_by_user($post, $active)
         {
+            if ($active == 1) $and = "AND resa.`start` >= CURRENT_TIMESTAMP()";
+            if ($active == 0) $and = "AND resa.`start` < CURRENT_TIMESTAMP()";
+
             $sql = "SELECT COUNT(*) 
                     FROM `".self::$table."` resa
-                    WHERE resa.`user_id` =:id AND resa.`active` =:active";
+                    WHERE resa.`user_id` =:id ".$and."";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 
-        public static function get_owner_reservation($post, $offset, $limit)
+        public static function get_owner_reservation($post, $offset, $limit, $active)
         {
+            if ($active == 1) $where = "WHERE resa.`start` >= CURRENT_TIMESTAMP() AND resa.`owner_id` =:id"; 
+            if ($active == 0) $where = "WHERE resa.`start` < CURRENT_TIMESTAMP() AND resa.`owner_id` =:id"; 
             $sql = "SELECT DISTINCT
-                    resa.`id` `n°`,
+                    resa.`id`,
                     DATE(resa.`start`) `date`,
                     LOWER(DAYNAME(resa.`start`)) `day`,
                     HOUR(resa.`start`) `start`,
@@ -84,21 +92,23 @@
                     resa.`instrument_id`,
                     users.`name` `user`
                     FROM `".self::$table."` resa
-                    LEFT JOIN `instruments` instru ON instru.`owner_id` =:id
                     LEFT JOIN `users` ON users.`id` = resa.`user_id`
-                    WHERE resa.`active` =:active
+                    ".$where."
                     ORDER BY DATE(resa.`start`) ASC LIMIT ".$limit." OFFSET ".$offset."";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 
 
-        public static function get_count_by_owner($post)
-        {
+        public static function get_count_by_owner($post, $active)
+        {   
+            if ($active == 1) $and = "AND resa.`start` >= CURRENT_TIMESTAMP()";
+            if ($active == 0) $and = "AND resa.`start` < CURRENT_TIMESTAMP()";
+
             $sql = "SELECT COUNT(*)
                     FROM `".self::$table."` resa
                     LEFT JOIN `instruments` instru ON instru.`id` = resa.`instrument_id`
-                    WHERE instru.`owner_id` =:id AND resa.`active` =:active";
+                    WHERE instru.`owner_id` =:id ".$and."";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }

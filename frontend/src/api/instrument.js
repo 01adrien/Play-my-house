@@ -98,10 +98,8 @@ export async function getOwnerInstrument(id, nullArg, offset, limit) {
   post.append('null', nullArg);
   post.append('offset', offset);
   post.append('limit', limit);
-
   post.append('id', id);
   const res = await AXIOS.post(`/instrument/get_owner_instrument`, post);
-  console.log(res.data);
   return res.data;
 }
 

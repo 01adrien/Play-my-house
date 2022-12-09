@@ -1,4 +1,4 @@
-import { getProfile } from "../api/user";
+import { getProfile } from '../api/user';
 
 export default async function useAuth(credentials, func) {
   let credentialsErrors;

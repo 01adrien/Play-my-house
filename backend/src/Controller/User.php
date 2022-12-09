@@ -32,11 +32,12 @@
 
         public static function create_update($post, $action) 
         {
+            $post['role'] = self::formatdata($post, 'role', \Model\Table::P_STRING);
             $post['email'] = self::formatdata($post, 'email', \Model\Table::P_STRING);
             $post['picture_id'] = self::formatdata($post, 'picture_id', \Model\Table::P_STRING);
             $post['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
             $post['password'] = self::formatdata($post, 'password', \Model\Table::P_STRING);
-            if ([isset($post['id'])]) $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            if (isset($post['id'])) $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             return \Model\User::create_update($post, $action);
         }
 
@@ -47,7 +48,7 @@
             {
                 $errors['missing_err'] = true;
             }
-            $post = \My_class\String_format::sanitize_input($post);
+            $post = self::sanitize_input($post);
             $passwordRegex = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/";
             $nameRegex = "/^[a-zA-Z-' ]*$/";
             if (!preg_match($passwordRegex, $post['password'])) $errors['password_err'] = true;
@@ -69,6 +70,7 @@
             if ($is_exists) return ['user_exists_err' => true];
             $picture_id = \Controller\User_picture::create(['URI' => self::DEFAULT_AVATAR]);
             $valid_user['picture_id'] = $picture_id->id;
+            $valid_user['role'] = $post['role'];
             if ($user = \Controller\User::create_update($valid_user, 'CREATE')) 
             {
                 $_SESSION['user_id'] = $user->id;
@@ -78,7 +80,7 @@
 
         public static function login($post) 
         {
-            $post = \My_class\String_format::sanitize_input($post);
+            $post = self::sanitize_input($post);
             if ($is_register = \Model\User::is_register((array)$post)) 
             {
                 $_SESSION['user_id'] = $is_register['id'];

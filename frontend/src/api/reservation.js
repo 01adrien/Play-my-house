@@ -65,6 +65,7 @@ export async function getOwnerReservation(id, active, offset, limit) {
   post.append('offset', offset);
   post.append('limit', limit);
   post.append('active', active);
+  console.log(id);
   const res = await AXIOS.post(`/reservation/get_owner_reservation`, post);
   return res.data;
 }

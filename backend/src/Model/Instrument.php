@@ -8,9 +8,9 @@
 
         public static function get_instrument($offset, $limit, $filter = 'ALL', $post = []) 
         {   
-            if ($filter === 'FAMILY') $where = "WHERE instru.`family_id` =:id";
-            if ($filter === 'TYPE') $where = "WHERE instru.`type_id` =:id";
-            if ($filter === 'ALL') $where = "WHERE instru.`id` IS NOT NULL";
+            if ($filter === 'FAMILY') $where = "WHERE instru.`family_id` =:id AND instru.`statut` = 'V'";
+            if ($filter === 'TYPE') $where = "WHERE instru.`type_id` =:id AND instru.`statut` = 'V'";
+            if ($filter === 'ALL') $where = "WHERE instru.`id` IS NOT NULL AND instru.`statut` = 'V'";
             
             $sql = "SELECT
                     instru.`id`,
@@ -39,7 +39,7 @@
                     instru_br.`id`
                     FROM `".self::$table."` instru
                     LEFT JOIN `instruments_brand` instru_br ON instru_br.`id` = instru.`brand_id`
-                    WHERE instru.`family_id` =:id";
+                    WHERE instru.`family_id` =:id AND instru.`statut` = 'V'";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
@@ -51,19 +51,19 @@
                     instru_br.`id`
                     FROM `".self::$table."` instru
                     LEFT JOIN `instruments_brand` instru_br ON instru_br.`id` = instru.`brand_id`
-                    WHERE instru.`type_id` =:id";
+                    WHERE instru.`type_id` =:id AND instru.`statut` = 'V'";
 
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 
         public static function get_count_by($post, $data)
         {   
-            if ($data === 'FAMILY') $where = "WHERE instru.`family_id` =:id";
-            if ($data === 'TYPE') $where = "WHERE instru.`type_id` =:id";
-            if ($data === 'BRAND') $where = "WHERE instru.`brand_id` =:brand_id AND instru.`type_id` =:type_id";
-            if ($data === 'FAMILY_&_BRAND') $where = "WHERE instru.`family_id` =:family_id AND instru.`brand_id` =:brand_id";
-            if ($data === 'ALL_BRAND') $where = "WHERE instru.`brand_id` =:brand_id";
-            if ($data === 'OWNER') $where = "WHERE instru.`owner_id` =:id" ;
+            if ($data === 'FAMILY') $where = "WHERE instru.`family_id` =:id AND instru.`statut` = 'V'";
+            if ($data === 'TYPE') $where = "WHERE instru.`type_id` =:id AND instru.`statut` = 'V'";
+            if ($data === 'BRAND') $where = "WHERE instru.`brand_id` =:brand_id AND instru.`type_id` =:type_id AND instru.`statut` = 'V'";
+            if ($data === 'FAMILY_&_BRAND') $where = "WHERE instru.`family_id` =:family_id AND instru.`brand_id` =:brand_id AND instru.`statut` = 'V'";
+            if ($data === 'ALL_BRAND') $where = "WHERE instru.`brand_id` =:brand_id AND instru.`statut` = 'V'";
+            if ($data === 'OWNER') $where = "WHERE instru.`owner_id` =:id AND instru.`statut` = 'V'" ;
 
             $sql = "SELECT COUNT(*)
                     FROM `".self::$table."` instru
@@ -92,6 +92,7 @@
         {
             $sql = "SELECT
                     instru.`id`,
+                    instru.`statut`,
                     users.`name` `proprietaire`,
                     DATE(instru.`created`) `date de creation`,
                     type.`name` `nom`,
@@ -110,7 +111,8 @@
         public static function get_owner_instrument($post, $offset, $limit)
         {   
             $sql = "SELECT
-                    instru.`id` `n°`,
+                    instru.`id`,
+                    instru.`statut`,
                     instru.`name` `nom`,
                     family.`name` `famille`,
                     brand.`name` `marque`,

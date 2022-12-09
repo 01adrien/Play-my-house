@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { user } from './store/user';
 import { useRecoilValue } from 'recoil';
+import Test from './pages/Test';
 
 function ProtectedRoute({ profile, children }) {
   if (!profile?.name) return <Navigate to={'/login'} replace={true} />;
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/instrument-type/:type" element={<InstrumentType />} />
           <Route path="/instrument/:id" element={<Instrument />} />
           <Route path="/instrument-all" element={<InstrumentsAll />} />
+          <Route path="/test" element={<Test />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
