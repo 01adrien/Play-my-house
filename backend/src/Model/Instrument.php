@@ -17,6 +17,7 @@
                     instru.`created`,
                     instru.`owner_id`,
                     instru.`name` `instrumentName`,
+                    instru.`description`,
                     family.`name` `family`,
                     picture.`URI` `picture`,
                     type.`name` `type`,

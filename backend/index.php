@@ -8,7 +8,8 @@ if ($http_origin === "http://127.0.0.1:1234" || "https://no-idea-web.fr/" ) {
     header("Access-Control-Allow-Origin: $http_origin");
 }
 
-session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+
 
 require __DIR__. '/vendor/autoload.php';
 include_once(__DIR__ . '/src/Autoloader.php');
@@ -18,7 +19,7 @@ define('CONFIG_PATH', __DIR__);
 
 $router = new AltoRouter();
 
-$router->map('GET', '/', function () { echo json_encode($_SESSION);});
+$router->map('GET', '/', function () { echo 'server is running...' ;});
 
 
 $router->map('GET', '/[*:controller]/[*:function]', function ($controller, $function) {
@@ -34,7 +35,7 @@ $router->map('POST', '/[*:controller]/[*:function]', function ($controller, $fun
     $instance = new $contr();
     \My_class\Config::send_JSON($instance->$function($_POST));
 });
- 
+
 
 $match = $router->match();
 if ($match && is_callable($match['target'])) {

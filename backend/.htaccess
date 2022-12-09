@@ -1,9 +1,21 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule . index.php [L]
-RewriteRule "api/public/pictures/(.*)" "https://backend.no-idea-web.fr/public/pictures/(.*)"
+RewriteCond %{HTTP_HOST} !https://no-idea-web.fr
+RewriteCond %{HTTP_ORIGIN} !https://no-idea-web.fr
+
+RewriteRule ^img/picto-01/(.+) ./public/pictures/picto-01/$1 [N]
+RewriteRule ^img/picto-02/(.+) ./public/pictures/picto-02/$1 [N]
+RewriteRule ^user/* index.php [N]
+RewriteRule ^instrument/* index.php [N]
+RewriteRule ^reservation/* index.php [N]
+RewriteRule ^user_picture/* index.php [L]
 
 <FilesMatch "^\.">
 Order allow,deny
 Deny from all
 </FilesMatch>
+
+ <Files ~ "\.log|json|lock|phar">
+Order allow,deny
+Deny from all
+</Files> 

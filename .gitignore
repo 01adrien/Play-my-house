@@ -3,7 +3,7 @@ node_modules/
 dist/
 .parcel-cache/
 .env.*
-config.php
+config/
 vendor/
 .htaccess
 secret/

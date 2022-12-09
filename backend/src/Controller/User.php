@@ -31,14 +31,31 @@
         }
 
         public static function create_update($post, $action) 
-        {
-            $post['role'] = self::formatdata($post, 'role', \Model\Table::P_STRING);
-            $post['email'] = self::formatdata($post, 'email', \Model\Table::P_STRING);
-            $post['picture_id'] = self::formatdata($post, 'picture_id', \Model\Table::P_STRING);
-            $post['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
-            $post['password'] = self::formatdata($post, 'password', \Model\Table::P_STRING);
-            if (isset($post['id'])) $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\User::create_update($post, $action);
+        {   
+            $attr = [];
+            if (isset($post['telephone'])) $attr['telephone'] = self::formatdata($post, 'telephone', \Model\Table::P_STRING);
+            if (isset($post['address'])) $attr['address'] = self::formatdata($post, 'address', \Model\Table::P_STRING);
+            if (isset($post['city'])) 
+            {
+                $city['name'] = self::formatdata($post, 'city', \Model\Table::P_STRING);
+                if ($city_exist = \Model\City::find_by($city, true))
+                {
+                    $attr['city_id'] = self::formatdata((array)$city_exist, 'id', \Model\Table::P_STRING);
+                } 
+                else 
+                { 
+                   $new_city =  \Model\City::create_update($city, 'CREATE');
+                   $attr['city_id'] = self::formatdata((array)$new_city, 'id', \Model\Table::P_STRING);
+                }
+                
+            }
+            $attr['role'] = self::formatdata($post, 'role', \Model\Table::P_STRING);
+            $attr['email'] = self::formatdata($post, 'email', \Model\Table::P_STRING);
+            $attr['picture_id'] = self::formatdata($post, 'picture_id', \Model\Table::P_STRING);
+            $attr['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
+            $attr['password'] = self::formatdata($post, 'password', \Model\Table::P_STRING);
+            if (isset($post['id'])) $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\User::create_update($attr, $action);
         }
 
         public static function validate_credentials($post) 
@@ -72,7 +89,7 @@
             $valid_user['picture_id'] = $picture_id->id;
             $valid_user['role'] = $post['role'];
             if ($user = \Controller\User::create_update($valid_user, 'CREATE')) 
-            {
+            {   
                 $_SESSION['user_id'] = $user->id;
                 return ['granted' => true];
             };
@@ -93,9 +110,9 @@
         {
             if ($_SESSION && $_SESSION['user_id']) 
             {
-                $id['id'] = \Controller\Controller::formatdata($_SESSION, 'user_id', \Model\Table::P_INT);
+                $id['id'] = self::formatdata($_SESSION, 'user_id', \Model\Table::P_INT);
                 $user = \Model\User::find_by($id, true);
-                $picture_id['id'] = \Controller\Controller::formatdata((array)$user, 'picture_id', \Model\Table::P_INT);
+                $picture_id['id'] = self::formatdata((array)$user, 'picture_id', \Model\Table::P_INT);
                 $picture = \Model\User_picture::find_by($picture_id, true);
                 return ['email' => $user->email, 'name' => $user->name, 'role' => $user->role, 'id' => $user->id, 'picture_id' => $picture->id, 'picture_name' => $picture->URI, ];
             }   
