@@ -29,7 +29,6 @@
                     users.`telephone`,
                     users.`address` adresse,
                     users.`role`,
-                    city.`CP` CP,
                     city.`name` ville
                     FROM `".self::$table."`
                     LEFT JOIN `city` ON city.`id` = users.`city_id`
@@ -47,7 +46,6 @@
                     users.`address`,
                     users.`telephone`,
                     users.`role`,
-                    city.`CP` CP,
                     city.`name` city
                     FROM `".self::$table."`
                     LEFT JOIN `city` ON city.`id` = users.`city_id`

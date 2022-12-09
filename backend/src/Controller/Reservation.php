@@ -135,7 +135,7 @@
                 $data[] = [
                     'id' => $r['id'], 'date' => $r['date'], 'jour' => self::translate($r['day']) , 
                     'horaires' => $r['start'].'h - '.$r['end'].'h', 'instrument' => $instrument['name'],
-                    'utilisateur' => 'name'
+                    'utilisateur' => $r['user']
                     
                 ];
             }

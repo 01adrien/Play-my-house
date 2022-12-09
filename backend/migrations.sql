@@ -1,5 +1,6 @@
 ALTER TABLE `instruments` ADD `is_valid` VARCHAR(2) NOT NULL DEFAULT 'NV' AFTER `created`; 
 ALTER TABLE `reservations` ADD `owner_id` INT NOT NULL AFTER `instrument_id`;
+ALTER TABLE `instruments` ADD `description` TEXT NULL AFTER `statut`; 
 UPDATE `reservations` SET `owner_id` = '72' WHERE `reservations`.`id` = 2; 
 UPDATE `reservations` SET `owner_id` = '72' WHERE `reservations`.`id` = 4; 
 UPDATE `reservations` SET `owner_id` = '72' WHERE `reservations`.`id` = 5; 
@@ -16,3 +17,4 @@ UPDATE `reservations` SET `owner_id` = '72' WHERE `reservations`.`id` = 21;
 UPDATE `reservations` SET `owner_id` = '71' WHERE `reservations`.`id` = 22; 
 UPDATE `reservations` SET `owner_id` = '72' WHERE `reservations`.`id` = 23; 
 UPDATE `reservations` SET `owner_id` = '72' WHERE `reservations`.`id` = 24;
+UPDATE `instruments` set description = 'Ut volutpat id massa in auctor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus egestas sed nulla non condimentum. Pellentesque tristique viverra turpis, in luctus quam luctus a. Praesent id urna vel enim luctus ultrices. Nunc sit amet eleifend ipsum. Cras tellus ante, vestibulum vestibulum porta vitae, posuere sed ante. Cras in feugiat est. Vivamus id fermentum odio, sed pharetra nunc. Mauris fringilla erat sed risus' WHERE 1; 
