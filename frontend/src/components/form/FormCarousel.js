@@ -23,7 +23,7 @@ export default function FormCarousel({ children }) {
         />
       </div>
     ) : (
-      <div className="flex justify-end w-8 items-center h-full">
+      <div className="flex justify-start w-8 items-center h-full">
         <FiArrowLeftCircle
           className="text-2xl cursor-pointer hover:scale-125"
           onClick={() => setActiveForm(2)}
@@ -33,7 +33,7 @@ export default function FormCarousel({ children }) {
 
   const ButtonNext = () =>
     activeForm < forms.length - 1 ? (
-      <div className="flex justify-start w-8 items-center h-full">
+      <div className="flex justify-end w-8 items-center h-full">
         <FiArrowRightCircle
           className="text-2xl cursor-pointer hover:scale-125"
           onClick={goNext}
@@ -49,7 +49,7 @@ export default function FormCarousel({ children }) {
     );
 
   return (
-    <div className="flex justify-around min-w-[300px]">
+    <div className="flex justify-around max-w-[800px] min-w-[300px] w-[50%]">
       <ButtonPrev />
       {currentForm}
       <ButtonNext />

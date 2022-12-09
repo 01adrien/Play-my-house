@@ -22,6 +22,7 @@ export default function InstrumentListPage({
         <div className="flex items-center justify-between border-b-2 pb-2 border-border_color">
           <p className="opacity-0">left</p>
           <p className="font-medium text-xl">{name.toUpperCase()}</p>
+          <p className="opacity-0 xs:hidden 2xs:hidden 3xs:hidden">riht</p>
           {types || brands.length ? (
             <BsFilterCircleFill
               onClick={() => setOpenFilters(!openFilters)}
@@ -40,7 +41,7 @@ export default function InstrumentListPage({
             }`}
           >
             <div
-              className={`border-r-2 border-border_color min-w-[250px] xs:w-[60%] sm:w-[100%] h-[100%] bg-white flex overflow-y-scroll z-20 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0`}
+              className={`border-r-2 border-border_color min-w-[250px] xs:w-[40%] xs:shadow-2xl 2xs:shadow-2xl 2xs:w-[40%] sm:w-[100%] h-[100%] bg-white flex overflow-y-scroll z-20 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0`}
             >
               <CheckBoxContainer
                 types={types}

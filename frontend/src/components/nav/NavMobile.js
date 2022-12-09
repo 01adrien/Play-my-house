@@ -40,9 +40,9 @@ export default function NavMobile({ profile, open }) {
           width: 0,
           transition: { delay: 0.7, duration: 0.3 },
         }}
-        className={`fixed top-0 bg-slate-200 h-[100vh] ${navBarClose && ''} ${
-          open ? 'z-10  ' : 'hidden'
-        } `}
+        className={`fixed shadow-2xl top-0 bg-slate-200 h-[100vh] ${
+          navBarClose && ''
+        } ${open ? 'z-10  ' : 'hidden'} `}
       >
         <div className="bg-white">
           <div className="w-full bg-white h-[25%] border-8 border-border_color flex justify-center items-center">

@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { HiOutlineArrowCircleDown } from 'react-icons/hi';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { getDispoSlotsByDay } from '../api/reservation';
+import { getDispoSlotsByDay, getTimelineByDay } from '../api/reservation';
 import { getUserById } from '../api/user';
 import {
   DatePickerBtn,
@@ -15,6 +15,7 @@ import {
   isDispoDay,
   highlightDispoDay,
   daysTraduction,
+  DateNumToStr,
 } from '../calendar/DatePickerUtils';
 import { useDatePicker } from '../hooks/useDatePicker';
 import BasicButton from '../components/button/BasicButton';
@@ -28,7 +29,9 @@ import useProfilePicture from '../hooks/useProfilePicture';
 import Footer from '../components/Footer';
 import { user } from '../store/user';
 import { compose } from '../utils';
-import useMediaQuery from '../hooks/useMediaQuery';
+import { makeErrorToast } from '../utils';
+import ModalReservation from '../components/modal/ModalReservation';
+import format from 'date-fns/format';
 registerLocale('fr', fr);
 
 const PictureWithCarouselAndLoading = compose(
@@ -43,13 +46,16 @@ export default function Instrument() {
   const profile = useRecoilValue(user);
   const location = useLocation();
   const [owner, setOwner] = useState([]);
+  const [timelineDay, setTimelineDay] = useState({});
   const [notDispoSlots, setNotDispoSlots] = useState('');
+  const [noDispo, setNoDispo] = useState([]);
+  const [openReservationModal, seTopenReservationModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [refreshResa, setRefreshResa] = useState(false);
   const { loading, pictures } = useCarousel(id);
   const { avatar, avatarLoading } = useProfilePicture(
     location?.state?.owner_id
   );
-  const isMobile = useMediaQuery('(max-width: 640px)');
 
   const {
     weekDispos,
@@ -66,6 +72,7 @@ export default function Instrument() {
     const formatDay = day.toLocaleDateString();
     if (NotEmptyDays.includes(formatDay)) {
       getDispoSlotsByDay(id, day).then((slots) => {
+        console.log(slots);
         return setNotDispoSlots({
           date: formatDay,
           slots: slots,
@@ -100,6 +107,26 @@ export default function Instrument() {
     return isDispoDay(day, arrayDays, notDispoDays, selectedMonth);
   }
 
+  function handleSelectDate(day) {
+    console.log(profile);
+    if (!profile) return makeErrorToast({}, "Connectez-vous d'abord");
+    if (profile.role !== 'user')
+      return makeErrorToast(
+        {},
+        'Vous devez vous connecter en "USER" pour reserver un creneau..'
+      );
+    setTimelineDay({});
+    setSelectedDate('');
+    setNoDispo({});
+    getDispoSlotsByDay(id, day).then(setNoDispo);
+    const dayFormated = format(day, 'yyyy-MM-dd');
+    console.log(dayFormated);
+    setSelectedDate(dayFormated);
+    getTimelineByDay(id, day)
+      .then(setTimelineDay)
+      .then(() => seTopenReservationModal(true));
+  }
+
   useEffect(() => {
     getUserById(location.state.owner_id).then(setOwner);
   }, [id]);
@@ -109,9 +136,7 @@ export default function Instrument() {
       <div className="w-[100%] flex flex-col items-center justify-center mt-6">
         <div className="flex flex-col justify-around mt-8 max-w-[700px] w-[60%]">
           <div
-            className={`flex sm:flex-col md:flex-col lg:flex-row xl:flex-row justify-between items-center ${
-              isMobile && 'flex-col'
-            }`}
+            className={`flex sm:flex-col md:flex-col lg:flex-row xl:flex-row justify-between items-center xs:flex-col 2xs:flex-col 3xs:flex-col`}
           >
             <div className="h-72 w-96 min-w-[300px] max-w-[300px] rounded-md border-[1px] border-border_color">
               {pictures && (
@@ -171,20 +196,18 @@ export default function Instrument() {
               </Accordion>
             </div>
           </div>
-          <div className="w-full h-8 flex justify-center">
+          <div className="w-full sm:h-8 xs:h-12 2xs:h-12 3xs:h-12 flex justify-center">
             {notDispoSlots && (
               <div className="text-sm w-full flex justify-center text-center items-center py-2">
                 <p className="pr-2 text-base">⚠️</p>
                 <p className="text-red-600 pr-2 ">{notDispoSlots.slots.txt}</p>
-                <p>non disponible(s) pour le {notDispoSlots.date} </p>
+                <p>non disponible(s)</p>
               </div>
             )}
           </div>
           <div className="w-full flex justify-around">
             <div
-              className={`w-full flex justify-around items-center sm:flex-col-reverse md:flex-row ${
-                isMobile && 'flex-col-reverse'
-              }`}
+              className={`w-full flex justify-around items-center sm:flex-col-reverse md:flex-row xs:flex-col-reverse 2xs:flex-col-reverse 3xs:flex-col-reverse`}
             >
               <div className="w-60">
                 <DatePicker
@@ -197,7 +220,7 @@ export default function Instrument() {
                   filterDate={daysToShow}
                   onDayMouseEnter={handleDayHover}
                   onMonthChange={handleChangeMonth}
-                  onChange={(day) => console.log(day)}
+                  onChange={handleSelectDate}
                   dayClassName={dayStyle}
                   customInput={<DatePickerBtn />}
                   popperPlacement="bottom-start"
@@ -219,6 +242,15 @@ export default function Instrument() {
           {location.state.description}
         </div>
       </div>
+      {openReservationModal && (
+        <ModalReservation
+          instrument={location.state}
+          date={selectedDate}
+          onClose={() => seTopenReservationModal(false)}
+          noDispo={JSON.stringify(noDispo)}
+          timeline={timelineDay}
+        />
+      )}
       {/* <Footer /> */}
     </Layout>
   );

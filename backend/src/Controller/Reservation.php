@@ -78,20 +78,35 @@
         }
 
         public function get_dispo_slots_by_day($post) {          
-            $date = date_create($post['day']);
+            // $date = date_create($post['day']);
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $attr['day'] = self::formatdata($post, 'day', \Model\Table::P_STRING);
             $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
             $no_dispo_txt = "";
             $no_dispo_count = 0;
+            $no_dispo_array = [];
             foreach ($day_resas as $resa)
             {
                 $resa = (array)$resa;
                 $no_dispo_count += (int)$resa['reservation_slot'];
                 $no_dispo_txt .= $resa['start']."h-".$resa['end']."h". " et ";
+                $no_dispo_array[] = [$resa['start'], $resa['end']];
             }
-            return ['txt' => \substr($no_dispo_txt, 0, -3), 'count' => $no_dispo_count];
+            return ['txt' => \substr($no_dispo_txt, 0, -3), 'count' => $no_dispo_count, 'array' => $no_dispo_array];
             
+        }
+
+        public static function get_timeline_by_day($post)
+        {
+            // $date = date_create($post['day']);
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $instru = \Model\Instrument::get_by_ID($attr);
+            $t['id'] = self::formatdata((array)$instru, 'timeline_id_'.$post['day_name'], \Model\Table::P_INT);
+            $time = \Model\Timeline_day::get_by_ID($t);
+            unset($time->total_hours);
+            unset($time->id);
+            foreach($time as $k => $v) if (!$v) unset($time->$k);
+            return $time;
         }
 
         public static function get_user_reservation($post)
@@ -153,6 +168,26 @@
         {
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             return \Model\Reservation::delete($attr);
+        }
+
+        public static function create($post)
+        {   
+            // return $post;
+            $dtime = \DateTime::createFromFormat("m/d/Y H:i:s", "10/13/2022 15:00:00");
+            $timestamp = $dtime->getTimestamp();
+
+            // $timestamp = strtotime("13-10-2013 15:00");
+            // $post['start'] = $now = date('Y-m-d\TH:i:s.uP', time());
+
+            $post['end'] = date('Y-m-d H:i:s', \strtotime($post['end']));
+            $post['start'] = date('Y-m-d H:i:s', \strtotime($post['start']));
+
+            $attr['user_id'] = self::formatdata($post, 'user_id', \Model\Table::P_INT);
+            $attr['owner_id'] = self::formatdata($post, 'owner_id', \Model\Table::P_INT);
+            $attr['instrument_id'] = self::formatdata($post, 'instrument_id', \Model\Table::P_INT);
+            $attr['start'] = self::formatdata($post, 'start', \Model\Table::P_STRING);
+            $attr['end'] = self::formatdata($post, 'end', \Model\Table::P_STRING);
+            return \Model\Reservation::create_update($attr,'CREATE');
         }
     }
 ?>

@@ -1,5 +1,6 @@
 import { AXIOS } from './Axios';
 import format from 'date-fns/format';
+import { DateNumToStr } from '../calendar/DatePickerUtils';
 
 export async function getInstrumentDisponibility(id) {
   const post = new FormData();
@@ -28,6 +29,16 @@ export async function getDispoSlotsByDay(id, day) {
   post.append('id', id);
   post.append('day', format(day, 'yyyy-MM-dd'));
   const res = await AXIOS.post(`/reservation/get_dispo_slots_by_day`, post);
+  return res.data;
+}
+
+export async function getTimelineByDay(id, day) {
+  const post = new FormData();
+  const dayName = DateNumToStr[day.getDay()];
+  post.append('day_name', dayName);
+  post.append('id', id);
+  post.append('day', format(day, 'yyyy-MM-dd'));
+  const res = await AXIOS.post(`/reservation/get_timeline_by_day`, post);
   return res.data;
 }
 
@@ -92,5 +103,14 @@ export async function deleteReservation(id) {
   const post = new FormData();
   post.append('id', id);
   const res = await AXIOS.post(`/reservation/delete`, post);
+  return res.data;
+}
+
+export async function createReservation(body) {
+  const post = new FormData();
+  Object.keys(body).forEach((key) => {
+    post.append(key, body[key]);
+  });
+  const res = await AXIOS.post(`/reservation/create`, post);
   return res.data;
 }

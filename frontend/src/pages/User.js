@@ -160,7 +160,7 @@ export default function User() {
         <div className=" w-[85%] h-full">
           <div className="flex justify-around w-[100%] h-[100%]">
             <div
-              className={`flex flex-col border-r-2 bg-white z-20 border-border_color w-52 min-w-[200px] xs:h-[100vh] 2xs:h-[100vh] 3xs:h-[100vh] 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0 ${
+              className={`flex flex-col border-r-2 xs:shadow-2xl 2xs:shadow-2xl 3xs:shadow-2xl bg-white xs:z-20 2xs:z-20 3xs:z-20 border-border_color w-52 min-w-[200px] xs:h-[100vh] 2xs:h-[100vh] 3xs:h-[100vh] 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0 ${
                 !openSettings && 'xs:hidden 2xs:hidden 3xs:hidden'
               }`}
             >
@@ -201,7 +201,7 @@ export default function User() {
                 );
               })}
             </div>
-            <div className=" w-[100%] flex justify-center h-[100%]">
+            <div className=" w-[100%] flex justify-center h-[100%] max-w-[1000px]">
               <div className="w-[90%] h-[100%]">{headings[activeHeading]}</div>
             </div>
           </div>

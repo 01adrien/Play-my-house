@@ -57,7 +57,7 @@ export default function SigninFormOwner() {
     <div className="flex-col items-center justify-center w-[50%] min-w-[200px] mt-4">
       <div className="w-[100%] flex items-center justify-center ">
         <form
-          className="w-[50%] min-w-[200px] flex-col "
+          className="w-[75%] min-w-[200px] flex-col "
           onSubmit={(e) => handleSubmit(e)}
         >
           <div className="flex justify-between">
@@ -65,7 +65,7 @@ export default function SigninFormOwner() {
               name="nom*"
               type="text"
               id="name-signin"
-              style="w-20"
+              style="w-[50%]"
               fn={(e) => {
                 setCredentials({ ...credentials, name: e.target.value });
                 setCredentialsErrors({});
@@ -76,7 +76,7 @@ export default function SigninFormOwner() {
               name="telephone*"
               type="text"
               id=""
-              style="w-36"
+              style="w-[40%]"
               fn={(e) => {
                 setCredentialsErrors({});
                 setCredentials({ ...credentials, telephone: e.target.value });
@@ -99,7 +99,7 @@ export default function SigninFormOwner() {
               name="ville*"
               type="text"
               id="email-signin"
-              style="w-20"
+              style="w-[40%]"
               fn={(e) => {
                 setCredentialsErrors({});
                 setCredentials({ ...credentials, city: e.target.value });
@@ -110,7 +110,7 @@ export default function SigninFormOwner() {
               name="adresse*"
               type="text"
               id=""
-              style="w-36"
+              style="w-[50%]"
               fn={(e) => {
                 setCredentialsErrors({});
                 setCredentials({ ...credentials, address: e.target.value });
