@@ -3,8 +3,8 @@ import CheckBoxContainer from './CheckBoxContainer';
 import InstrumentCard from './cards/InstrumentCard';
 import Pagination from './Pagination';
 import Footer from './Footer';
-import useMediaQuery from '../hooks/useMediaQuery';
-import { BsFilterSquareFill } from 'react-icons/bs';
+import { BsFilterCircleFill } from 'react-icons/bs';
+import { motion } from 'framer-motion';
 
 export default function InstrumentListPage({
   types,
@@ -15,7 +15,6 @@ export default function InstrumentListPage({
   currentPage,
   setCurrentPage,
 }) {
-  const isMobile = useMediaQuery('(max-width: 700px)');
   const [openFilters, setOpenFilters] = useState(false);
   return (
     <div className={`w-full flex flex-col space-between items-center mt-6`}>
@@ -23,10 +22,12 @@ export default function InstrumentListPage({
         <div className="flex items-center justify-between border-b-2 pb-2 border-border_color">
           <p className="opacity-0">left</p>
           <p className="font-medium text-xl">{name.toUpperCase()}</p>
-          {(isMobile && types) || (isMobile && brands.length) ? (
-            <BsFilterSquareFill
+          {types || brands.length ? (
+            <BsFilterCircleFill
               onClick={() => setOpenFilters(!openFilters)}
-              className="text-xl cursor-pointer text-main_color"
+              className={`text-xl cursor-pointer sm:hidden ${
+                openFilters && 'text-main_color'
+              }`}
             />
           ) : (
             <p className="opacity-0">riht</p>
@@ -35,15 +36,11 @@ export default function InstrumentListPage({
         <div className="flex pt-3 min-h-[500px]">
           <div
             className={` ${
-              openFilters
-                ? 'fixed top-0 left-0 h-[100vh] z-20  bg-white'
-                : isMobile
-                ? 'hidden'
-                : ''
-            } flex min-w-[250px]`}
+              !openFilters ? 'xs:hidden 2xs:hidden 3xs:hidden' : ''
+            }`}
           >
             <div
-              className={`border-r-2 ml-4 border-border_color w-[100%] h-[100%] flex overflow-y-scroll`}
+              className={`border-r-2 border-border_color min-w-[250px] xs:w-[60%] sm:w-[100%] h-[100%] bg-white flex overflow-y-scroll z-20 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0`}
             >
               <CheckBoxContainer
                 types={types}

@@ -46,7 +46,9 @@ export default function Instrument() {
   const [notDispoSlots, setNotDispoSlots] = useState('');
   const [refreshResa, setRefreshResa] = useState(false);
   const { loading, pictures } = useCarousel(id);
-  const { avatar, avatarLoading } = useProfilePicture(location.state.owner_id);
+  const { avatar, avatarLoading } = useProfilePicture(
+    location?.state?.owner_id
+  );
   const isMobile = useMediaQuery('(max-width: 640px)');
 
   const {
@@ -214,13 +216,7 @@ export default function Instrument() {
           </div>
         </div>
         <div className="w-[60%] pb-8 text-center mt-8">
-          Ut volutpat id massa in auctor. Pellentesque habitant morbi tristique
-          senectus et netus et malesuada fames ac turpis egestas. Vivamus
-          egestas sed nulla non condimentum. Pellentesque tristique viverra
-          turpis, in luctus quam luctus a. Praesent id urna vel enim luctus
-          ultrices. Nunc sit amet eleifend ipsum. Cras tellus ante, vestibulum
-          vestibulum porta vitae, posuere sed ante. Cras in feugiat est. Vivamus
-          id fermentum odio, sed pharetra nunc. Mauris fringilla erat sed risus
+          {location.state.description}
         </div>
       </div>
       {/* <Footer /> */}

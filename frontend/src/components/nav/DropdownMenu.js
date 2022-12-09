@@ -45,7 +45,7 @@ export default function DropdownMenu() {
                   </span>
                 </Link>
                 <ul
-                  className={`dropdown-content border-x-[1px] border-b-[1px] border-border_color absolute hidden w-52 text-gray-700  ml-48 -mt-10 -translate-y-[1px]`}
+                  className={`dropdown-content border-x-[1px] border-b-[1px] border-border_color absolute hidden w-52 text-gray-700 -translate-x-1 ml-48 -mt-10 -translate-y-[1px]`}
                 >
                   {menuItems[item].map((i) => {
                     return (

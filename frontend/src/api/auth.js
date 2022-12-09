@@ -7,6 +7,9 @@ export async function signin(credentials) {
   post.append('email', email);
   post.append('password', password);
   post.append('role', role);
+  credentials.telephone && post.append('telephone', credentials.telephone);
+  credentials.address && post.append('address', credentials.address);
+  credentials.city && post.append('city', credentials.city.toLowerCase());
   return await AXIOS.post(`/user/signin`, post);
 }
 

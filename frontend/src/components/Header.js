@@ -22,17 +22,21 @@ export default function Header() {
     <div className="h-46">
       <div className="w-full h-9 bg-main_color shadow-md"></div>
       <div className="w-full h-36 flex justify-around items-center border-slate-200">
-        {!isMobile && (
-          <Link to="/">
-            <img className="h-20 w-30 rounded-full" src={logo} alt="logo" />
-          </Link>
-        )}
+        <Link to="/">
+          <img
+            className="h-20 w-30 rounded-full xs:hidden 2xs:hidden 3xs:hidden"
+            src={logo}
+            alt="logo"
+          />
+        </Link>
         <SearchBar />
-        {!isMobile && (
-          <Link to="/">
-            <img className="h-20 w-30 rounded-full" src={logo} alt="logo" />
-          </Link>
-        )}
+        <Link to="/">
+          <img
+            className="h-20 w-30 rounded- :hidden 2xs:hidden 3xs:hidden"
+            src={logo}
+            alt="logo"
+          />
+        </Link>
       </div>
       <div
         className={`w-full h-12 flex justify-center items-center shadow-inner bg-slate-100`}

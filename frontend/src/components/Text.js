@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react';
 
 export default function Text({ text }) {
-  return <p>{text}</p>;
+  return <div>{text}</div>;
 }

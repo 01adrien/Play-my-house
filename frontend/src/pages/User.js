@@ -26,6 +26,7 @@ import { listToDelete } from '../store/user';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { VscSettings } from 'react-icons/vsc';
 import { RxCrossCircled } from 'react-icons/rx';
+import useProfilePicture from '../hooks/useProfilePicture';
 
 export default function User() {
   const setItemsToDelete = useSetRecoilState(listToDelete);
@@ -39,6 +40,8 @@ export default function User() {
     setProfile({ default: 'user' });
     navigate('/');
   };
+
+  const { avatar, avatarLoading } = useProfilePicture(profile?.id);
 
   const handleSelectHeading = (h) => {
     if (h === 'Deconnexion') {
@@ -144,39 +147,38 @@ export default function User() {
   return (
     <Layout>
       <div className="w-full flex flex-col justify-center items-center mt-4">
-        {isMobile && (
-          <div className="flex w-full items-center justify-end">
-            {
-              <VscSettings
-                onClick={() => setOpenSettings(!openSettings)}
-                className="pr-4 text-5xl cursor-pointer"
-              />
-            }
-          </div>
-        )}
+        <div className="flex w-full items-center justify-end sm:hidden md:hidden lg:hidden">
+          {
+            <VscSettings
+              onClick={() => setOpenSettings(!openSettings)}
+              className={`pr-4 text-5xl cursor-pointer ${
+                openSettings && 'text-main_color'
+              }`}
+            />
+          }
+        </div>
         <div className=" w-[85%] h-full">
           <div className="flex justify-around w-[100%] h-[100%]">
             <div
-              className={`flex flex-col border-r-2 border-border_color w-52 min-w-[200px] ${
-                openSettings
-                  ? 'fixed top-0 left-0 h-[100vh] z-20 bg-white'
-                  : isMobile
-                  ? 'hidden'
-                  : ''
+              className={`flex flex-col border-r-2 bg-white z-20 border-border_color w-52 min-w-[200px] xs:h-[100vh] 2xs:h-[100vh] 3xs:h-[100vh] 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0 ${
+                !openSettings && 'xs:hidden 2xs:hidden 3xs:hidden'
               }`}
             >
+              <img
+                src={avatar}
+                alt="avatar"
+                className="w-16 h-16 self-center rounded-full mt-8 mb-4 sm:hidden md:hidden lg:hidden"
+              />
               <div className="h-14 w-[95%] flex justify-between items-center border-b-2">
                 <p className="text-[1.2em] pl-2"> MON COMPTE</p>
-                {isMobile && (
-                  <span>
-                    {
-                      <RxCrossCircled
-                        onClick={() => setOpenSettings(false)}
-                        className="bg-red-600 text-white cursor-pointer rounded-full text-xl"
-                      />
-                    }
-                  </span>
-                )}
+                <span>
+                  {
+                    <RxCrossCircled
+                      onClick={() => setOpenSettings(false)}
+                      className="bg-red-600 text-white cursor-pointer rounded-full text-xl sm:hidden md:hidden lg:hidden"
+                    />
+                  }
+                </span>
               </div>
               {Object.keys(headings).map((head) => {
                 return (

@@ -9,7 +9,7 @@ import useMediaQuery from '../../hooks/useMediaQuery';
 const PictureWithLoading = withLoading(Picture);
 
 export default function InstrumentCard({ instrument, style = '', link }) {
-  const isMobile = useMediaQuery('(max-width: 540px)');
+  const isMobile = useMediaQuery('(max-width: 600px)');
   const [loading, setLoading] = useState(true);
   const [picture, setPicture] = useState({ src: null });
 
@@ -21,47 +21,46 @@ export default function InstrumentCard({ instrument, style = '', link }) {
   }, []);
 
   return (
-    <div className={`p-3 ${style}`}>
-      <div
-        className={`rounded-t border-2 border-border_color-center ${
-          isMobile ? 'h-28 w-32' : 'w-64 h-48'
-        }`}
-      >
-        <PictureWithLoading
-          loading={loading}
-          src={picture?.src}
-          alt={`image ${instrument.instrumentName}`}
-          style={`rounded-t object-cover ${
-            isMobile ? 'h-28 w-32' : 'w-64 h-48'
-          }`}
-        />
-      </div>
-      <div
-        className={`flex justify-center border-b-2 border-r-2 border-l-2 border-border_color rounded-b ${
-          isMobile ? 'h-14 w-32' : 'w-64 h-28'
-        }`}
-      >
-        <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[80%]">
-          {!isMobile && (
+    <Link to={link} state={{ ...instrument, picture: null }}>
+      <div className={`p-3 ${style}`}>
+        <div
+          className={`rounded-t border-2 border-border_color-center sm:h-48 sm:w-64 xs:h-28 xs:w-32 2xs:w-32 2xs:h-28 3sx:h-28 3xs:w-32`}
+        >
+          <PictureWithLoading
+            loading={loading}
+            src={picture?.src}
+            alt={`image ${instrument.instrumentName}`}
+            style={`rounded-t object-cover sm:h-48 sm:w-64 xs:h-28 xs:w-32 2xs:w-32 2xs:h-28 3sx:h-28 3xs:w-32`}
+          />
+        </div>
+        <div
+          className={`flex justify-center border-b-2 border-r-2 border-l-2 border-border_color rounded-b sm:h-48 sm:w-64 sm:text-xs 2xs:text-sm 3xs:text-sm xs:h-14 xs:w-32 2xs:w-32 2xs:h-14 3sx:h-14 3xs:w-32`}
+        >
+          <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[80%]">
             <div>
-              <p className="text-main_color text-sm text-center">
-                {instrument.type}
+              <p
+                className={`text-main_color xs:text-xs 2xs:text-xs 3xs:text-xs text-center`}
+              >
+                {instrument.type.length > 15
+                  ? instrument.type.slice(0, 15) + '..'
+                  : instrument.type}
               </p>
-              <p className="text-sm text-center">
+              <p className={`xs:text-xs 2xs:text-xs 3xs:text-xs text-center`}>
                 {instrument.brand.slice(0, 20)}
               </p>
             </div>
-          )}
-          <Link to={link} state={{ ...instrument, picture: null }}>
             <BasicButton
               type="button"
-              style={isMobile ? 'text-xs h-6 w-20 mt-1' : `text-sm h-8`}
+              width="40"
+              style={`${
+                isMobile ? 'text-xs h-6 w-20 mt-1' : 'text-sm h-8'
+              } xs:hidden 2xs:hidden 3xs:hidden`}
             >
               <p>details</p>
             </BasicButton>
-          </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
