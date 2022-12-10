@@ -19,8 +19,8 @@ export const isDispoDay = (day, arr1, arr2, selectedMonth) => {
   const formatDay2 = day.toLocaleDateString().replace(/-/g, '/');
   const formatDay1 = day.toString().slice(0, 3).toLocaleLowerCase();
   return (
-    arr1.includes(formatDay1) &&
     !arr2.includes(formatDay2) &&
+    arr1.includes(formatDay1) &&
     day.getMonth() + 1 === selectedMonth
   );
 };

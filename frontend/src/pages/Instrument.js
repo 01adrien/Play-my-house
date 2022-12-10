@@ -108,7 +108,6 @@ export default function Instrument() {
   }
 
   function handleSelectDate(day) {
-    console.log(profile);
     if (!profile) return makeErrorToast({}, "Connectez-vous d'abord");
     if (profile.role !== 'user')
       return makeErrorToast(
@@ -120,7 +119,6 @@ export default function Instrument() {
     setNoDispo({});
     getDispoSlotsByDay(id, day).then(setNoDispo);
     const dayFormated = format(day, 'yyyy-MM-dd');
-    console.log(dayFormated);
     setSelectedDate(dayFormated);
     getTimelineByDay(id, day)
       .then(setTimelineDay)

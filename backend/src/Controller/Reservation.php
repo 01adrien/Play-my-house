@@ -84,15 +84,16 @@
             $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
             $no_dispo_txt = "";
             $no_dispo_count = 0;
-            $no_dispo_array = [];
+            $no_dispo_array = "";
             foreach ($day_resas as $resa)
-            {
+            {   
                 $resa = (array)$resa;
                 $no_dispo_count += (int)$resa['reservation_slot'];
                 $no_dispo_txt .= $resa['start']."h-".$resa['end']."h". " et ";
-                $no_dispo_array[] = [$resa['start'], $resa['end']];
+                $no_dispo_array .= implode(',', range((int)$resa['start'], (int)$resa['end'])) . ',' ;
             }
-            return ['txt' => \substr($no_dispo_txt, 0, -3), 'count' => $no_dispo_count, 'array' => $no_dispo_array];
+            $no_dispo_array = substr($no_dispo_array, 0, -1);
+            return ['txt' => \substr($no_dispo_txt, 0, -3), 'count' => $no_dispo_count, 'array' => explode(',', $no_dispo_array)];
             
         }
 

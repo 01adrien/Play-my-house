@@ -15,12 +15,14 @@ export default function BasicSelect({
   return (
     <div className="flex flex-col justify-center items-start">
       <label
-        className={`text-xs ${disabled ? 'text-gray-300' : 'text-gray-500'} `}
+        className={`text-xs mb-2 ${
+          disabled ? 'text-gray-300' : 'text-gray-500'
+        } `}
       >
         {label}
       </label>
       <select
-        className={`w-22 rounded-md border-blue-600 ${
+        className={`w-22 rounded-md border-main_color focus:border-none ${
           disabled && 'opacity-25'
         }`}
         onChange={handleChange}

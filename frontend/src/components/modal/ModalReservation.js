@@ -6,8 +6,8 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import BasicSelect from '../select/BasicSelect';
 import BasicToggle from '../toggle/BasicToggle';
 import { createReservation } from '../../api/reservation';
-import { makeErrorToast } from '../../utils';
-import { makeSuccesToast } from '../../utils';
+import { makeErrorToast, makeSuccesToast, deepCopyFunction } from '../../utils';
+import BasicButton from '../button/BasicButton';
 
 export default function ModalReservation({
   onClose,
@@ -24,8 +24,6 @@ export default function ModalReservation({
     start: '',
     end: '',
   });
-
-  console.log(instrument);
 
   const indispo = JSON.parse(noDispo);
 
@@ -45,7 +43,8 @@ export default function ModalReservation({
   const removeFirstHour = getSlotsRightNumber('START');
   const removeLastHour = getSlotsRightNumber('END');
 
-  function slotsReducerOne(acc, x) {
+  function slotsReducer(acc, x) {
+    if (indispo?.array.includes(x)) return acc;
     acc[timeline[x]]
       ? (acc[timeline[x]] = [...acc[timeline[x]], x])
       : (acc[timeline[x]] = [x]);
@@ -75,21 +74,18 @@ export default function ModalReservation({
   }
 
   function handleConfirmReservation() {
-    if (
-      reservationHours.start >= reservationHours.end ||
-      !reservationHours.end ||
-      !reservationHours.start
-    ) {
+    const { start, end } = reservationHours;
+    if (parseInt(start) >= parseInt(end) || !end || !start) {
       return makeErrorToast({}, 'Probleme selection horaires');
     }
-    const start = `${date} ${reservationHours.start}:00:00`;
-    const end = `${date} ${reservationHours.end}:00:00`;
+    const startHour = `${date} ${start}:00:00`;
+    const endHour = `${date} ${end}:00:00`;
     const body = {
       owner_id: owner_id,
       user_id: profile?.id,
       instrument_id: id,
-      start: start,
-      end: end,
+      start: startHour,
+      end: endHour,
     };
 
     createReservation(body)
@@ -106,14 +102,34 @@ export default function ModalReservation({
   }
 
   useEffect(() => {
-    if (!indispo.count && timeline) {
-      const daySlots = Object.keys(timeline).reduce(slotsReducerOne, {});
-      setSlots(daySlots);
-    }
+    const daySlots = Object.keys(timeline).reduce(slotsReducer, {});
+    const indispoInt = indispo.array.map((x) => parseInt(x));
+    Object.keys(daySlots).map((slot) => {
+      const currentSlot = daySlots[slot];
+      const firstHour = parseInt(currentSlot[0]);
+      const lastHour = parseInt(currentSlot[currentSlot.length - 1]);
+      if (indispoInt.includes(firstHour - 1)) {
+        currentSlot.unshift(firstHour - 1);
+      }
+      if (indispoInt.includes(lastHour + 1)) {
+        currentSlot.push(lastHour + 1);
+      }
+    });
+
+    //console.log(daySlots);
+    //console.log(timeline);
+    console.log(indispo.array);
+    setSlots(daySlots);
   }, [id]);
 
   return (
-    <Modal show={true} size="md" popup={true} onClose={handleClose}>
+    <Modal
+      show={true}
+      size="md"
+      popup={true}
+      onClose={handleClose}
+      className="h-[100vh]"
+    >
       <Modal.Header />
       <Modal.Body>
         <div className="text-center flex flex-col">
@@ -130,7 +146,7 @@ export default function ModalReservation({
                   return (
                     <div key={i}>
                       <p className="text center text-sm  text-gray-500">
-                        Creneaux entre {slots[slot][0]}h et {last}h
+                        Creneau(x) entre {slots[slot][0]}h et {last}h
                       </p>
                       <div className="w-full flex justify-around py-2 items-center">
                         <BasicSelect
@@ -138,7 +154,7 @@ export default function ModalReservation({
                           setValue={setReservationHours}
                           index={'start'}
                           value={reservationHours.start}
-                          deflt={'⏲️'}
+                          deflt={' 🕐 '}
                           data={removeFirstHour(slots[slot])}
                           label={'heure de debut*'}
                         />
@@ -147,7 +163,7 @@ export default function ModalReservation({
                           setValue={setReservationHours}
                           index={'end'}
                           value={reservationHours.end}
-                          deflt={'⏲️'}
+                          deflt={' 🕐 '}
                           data={removeLastHour(slots[slot])}
                           label={'heure de fin*'}
                         />
@@ -160,9 +176,9 @@ export default function ModalReservation({
                   );
                 })}
             </div>
-            <Button className="text-xl" onClick={handleConfirmReservation}>
-              JE RESERVE
-            </Button>
+            <BasicButton className="text-xl" onClick={handleConfirmReservation}>
+              <p>JE RESERVE</p>
+            </BasicButton>
           </div>
         </div>
       </Modal.Body>
