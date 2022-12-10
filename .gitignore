@@ -2,9 +2,9 @@
 node_modules/
 dist/
 .parcel-cache/
-.env.*
+*.env.*
 config/
 vendor/
-.htaccess
+*.htaccess
 secret/
-.gitignore
+*.gitignore

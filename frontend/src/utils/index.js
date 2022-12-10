@@ -17,19 +17,26 @@ export const credentialsValidation = (credentials) => {
 
 export const isEqual = (a, b) => a === b;
 
-export const makeSuccesToast = (styles, msg) => {
-  return toast.success(msg, {
+const makeToast = (type) => (styles, msg) => {
+  return toast(msg, {
     style: {
-      border: styles?.border || '2px solid green',
+      border:
+        styles?.border || type === 'succes'
+          ? '2px solid green'
+          : '2px solid red',
       padding: styles?.padding || '16px',
-      color: styles?.color || 'green',
+      color: styles?.color || type === 'succes' ? 'green' : 'red',
+      textAlign: 'center',
     },
     iconTheme: {
-      primary: styles?.primary || 'green',
+      primary: styles?.primary || type === 'succes' ? 'green' : 'red',
       secondary: styles?.secondary || 'white',
     },
   });
 };
+
+export const makeSuccesToast = makeToast('succes');
+export const makeErrorToast = makeToast('error');
 
 export const scrollUp = () => {
   window.scroll({
