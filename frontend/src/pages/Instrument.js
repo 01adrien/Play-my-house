@@ -195,10 +195,14 @@ export default function Instrument() {
             </div>
           </div>
           <div className="w-full sm:h-8 xs:h-12 2xs:h-12 3xs:h-12 flex justify-center">
-            {notDispoSlots && (
+            {notDispoSlots?.slots?.txt.length > 0 && (
               <div className="text-sm w-full flex justify-center text-center items-center py-2">
                 <p className="pr-2 text-base">⚠️</p>
-                <p className="text-red-600 pr-2 ">{notDispoSlots.slots.txt}</p>
+                <p className="text-red-600 pr-2 ">
+                  {notDispoSlots.slots.txt.map((x) => (
+                    <span key={x}>{x + ' '}</span>
+                  ))}
+                </p>
                 <p>non disponible(s)</p>
               </div>
             )}
@@ -243,7 +247,7 @@ export default function Instrument() {
       {openReservationModal && (
         <ModalReservation
           instrument={location.state}
-          date={selectedDate}
+          selectedDate={selectedDate}
           onClose={() => seTopenReservationModal(false)}
           noDispo={JSON.stringify(noDispo)}
           timeline={timelineDay}

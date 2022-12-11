@@ -15,7 +15,7 @@ export default function BasicSelect({
   return (
     <div className="flex flex-col justify-center items-start">
       <label
-        className={`text-xs mb-2 ${
+        className={`text-xs mb-1 ${
           disabled ? 'text-gray-300' : 'text-gray-500'
         } `}
       >
@@ -26,7 +26,7 @@ export default function BasicSelect({
           disabled && 'opacity-25'
         }`}
         onChange={handleChange}
-        value={value || ''}
+        value={disabled ? '' : value}
         disabled={disabled}
       >
         <option key="title" className="text-sm text-center" value="">

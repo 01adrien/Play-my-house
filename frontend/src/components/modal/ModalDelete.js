@@ -7,13 +7,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 export default function ModalDelete({ onClose, onConfirm, label }) {
   const items = useRecoilValue(listToDelete);
   return (
-    <Modal
-      show={true}
-      size="md"
-      popup={true}
-      onClose={onClose}
-      className="sm:mt-14 xs:mt-14 2xs:mt-14 3xs:mt-14"
-    >
+    <Modal show={true} size="md" popup={true} onClose={onClose}>
       <Modal.Header />
       <Modal.Body>
         <div className="text-center">
