@@ -82,19 +82,42 @@
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $attr['day'] = self::formatdata($post, 'day', \Model\Table::P_STRING);
             $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
-            $no_dispo_txt = "";
+            $no_dispo_txt = [];
             $no_dispo_count = 0;
-            $no_dispo_array = [];
+            $test = [];
+            $slots_chunk = [];
             foreach ($day_resas as $resa)
-            {
+            {   
                 $resa = (array)$resa;
                 $no_dispo_count += (int)$resa['reservation_slot'];
-                $no_dispo_txt .= $resa['start']."h-".$resa['end']."h". " et ";
-                $no_dispo_array[] = [$resa['start'], $resa['end']];
+                $no_dispo_txt[] = $resa['start']."h-".$resa['end']."h";
+                $test[$resa['slot_num']] .= implode(',', range((int)$resa['start'], (int)$resa['end'])) . ',';
+                $temp = range((int)$resa['start'], (int)$resa['end']);
+                if (count($temp) === 2) $slots_chunk[] = $temp;
+                else {
+                    array_pop($temp);
+                    foreach($temp as $t) $slots_chunk[] = [$t, $t + 1];
+                }
             }
-            return ['txt' => \substr($no_dispo_txt, 0, -3), 'count' => $no_dispo_count, 'array' => $no_dispo_array];
+            $data = [];
+            foreach ($test as $k => $v) {
+                $v = \substr($v, 0, -1);
+                $data[$k] = explode(',', $v);
+                $data[$k] = array_map('intval', $data[$k]);
+            }
+            return ['txt' => $no_dispo_txt, 'count' => $no_dispo_count,
+                    'arrayCheck' => $data, 'slotsChunk' => $slots_chunk];
             
         }
+
+
+        public static function test_slots($post) {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $attr['day'] = self::formatdata($post, 'day', \Model\Table::P_STRING);
+            $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
+            return $day_resas;
+        }
+
 
         public static function get_timeline_by_day($post)
         {
@@ -172,21 +195,18 @@
 
         public static function create($post)
         {   
-            // return $post;
-            $dtime = \DateTime::createFromFormat("m/d/Y H:i:s", "10/13/2022 15:00:00");
-            $timestamp = $dtime->getTimestamp();
-
-            // $timestamp = strtotime("13-10-2013 15:00");
-            // $post['start'] = $now = date('Y-m-d\TH:i:s.uP', time());
-
             $post['end'] = date('Y-m-d H:i:s', \strtotime($post['end']));
             $post['start'] = date('Y-m-d H:i:s', \strtotime($post['start']));
 
+            $attr['instrument_id'] = self::formatdata($post, 'instrument_id', \Model\Table::P_INT);
+            $attr['slot_num'] = self::formatdata($post, 'slot_num', \Model\Table::P_INT);
             $attr['user_id'] = self::formatdata($post, 'user_id', \Model\Table::P_INT);
             $attr['owner_id'] = self::formatdata($post, 'owner_id', \Model\Table::P_INT);
-            $attr['instrument_id'] = self::formatdata($post, 'instrument_id', \Model\Table::P_INT);
             $attr['start'] = self::formatdata($post, 'start', \Model\Table::P_STRING);
             $attr['end'] = self::formatdata($post, 'end', \Model\Table::P_STRING);
+
+            
+
             return \Model\Reservation::create_update($attr,'CREATE');
         }
     }

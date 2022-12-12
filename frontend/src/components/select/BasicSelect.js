@@ -15,27 +15,31 @@ export default function BasicSelect({
   return (
     <div className="flex flex-col justify-center items-start">
       <label
-        className={`text-xs ${disabled ? 'text-gray-300' : 'text-gray-500'} `}
+        className={`text-xs mb-1 ${
+          disabled ? 'text-gray-300' : 'text-gray-500'
+        } `}
       >
         {label}
       </label>
       <select
-        className={`w-22 rounded-md border-blue-600 ${
+        className={`w-22 rounded-md border-main_color focus:border-none ${
           disabled && 'opacity-25'
         }`}
         onChange={handleChange}
-        value={value || ''}
+        value={disabled ? '' : value}
         disabled={disabled}
       >
         <option key="title" className="text-sm text-center" value="">
           {deflt}
         </option>
         {data &&
-          data.map((d) => (
-            <option className="text-xs text-gray-500" key={d} value={d}>
-              {d}h
-            </option>
-          ))}
+          data.map((d) => {
+            return (
+              <option className="text-xs text-gray-500" key={d} value={d}>
+                {d}h
+              </option>
+            );
+          })}
       </select>
     </div>
   );

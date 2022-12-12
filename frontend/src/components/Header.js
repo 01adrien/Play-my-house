@@ -39,7 +39,7 @@ export default function Header() {
       >
         <div
           onClick={() => <Navigate to={'/instrument-all'} replace />}
-          className="w-[80%] h-12 flex justify-between items-center xs:hidden 2xs:hidden 3xs:hidden"
+          className="w-[80%] h-12 lg:flex justify-between items-center md:hidden sm:hidden xs:hidden 2xs:hidden 3xs:hidden"
         >
           <DropdownMenu />
           <div>
@@ -72,7 +72,7 @@ export default function Header() {
             )}
           </div>
         </div>
-        <div className="w-full pl-1 sm:hidden md:hidden lg:hidden xl:hidden">
+        <div className="w-full pl-1  lg:hidden xl:hidden">
           {
             <RxHamburgerMenu
               onClick={() => setOpenNav(!openNav)}

@@ -29,6 +29,7 @@
                     LOWER(DAYNAME(resa.`start`)) `day`,
                     HOUR(resa.`start`) `start`,
                     HOUR(resa.`end`) `end`,
+                    resa.`slot_num`,
                     resa.`instrument_id` instruId,
                     instru.`timeline_id_monday` monday,
                     instru.`timeline_id_tuesday` tuesday,
@@ -42,7 +43,10 @@
 
             $reservations =  \My_class\App::get_DB()->prepare($sql, $post, null, false);
 
-            foreach ($reservations as $r) $r->reservation_slot = count(range($r->start, $r->end)) - 1;
+            foreach ($reservations as $r) 
+            {   
+                $r->reservation_slot = count(range($r->start, $r->end)) - 1;
+            }
             
             return $reservations;
         }
