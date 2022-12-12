@@ -23,22 +23,30 @@ export default function ModalReservation({
   const [slots, setSlots] = useState({});
   const [selectedSlot, setselectedSlot] = useState({});
   const [timeChecker, setTimeChecker] = useState([]);
-  // const [slotsCount, setSlotsCount] = useState(0)
   const [reservationHours, setReservationHours] = useState({
     start: '',
     end: '',
   });
 
   function makeSlotsChunks(slot) {
-    const chunks = [];
     const arr = Array.from(
       { length: slot[1] - slot[0] + 1 },
       (_, i) => i + slot[0]
     );
     if (arr.length === 2) return [[arr]];
     arr.pop();
-    arr.map((s) => chunks.push([s, s + 1]));
-    return chunks;
+    return arr.map((s) => [s, s + 1]);
+  }
+
+  function isDispoSlot(slot) {
+    let dispo = false;
+    indispo?.slotsChunk?.forEach((s) => {
+      if (JSON.stringify(slot) === JSON.stringify(s)) {
+        dispo = true;
+      }
+      if (dispo) return;
+    });
+    return dispo;
   }
 
   function getSlotsRightNumber(types) {
@@ -63,6 +71,7 @@ export default function ModalReservation({
       : (acc[timeline[x]] = [parseInt(x)]);
     return acc;
   }
+
   function slotsReducer2(acc, x) {
     acc[timeline[x]]
       ? (acc[timeline[x]] = [
@@ -96,6 +105,8 @@ export default function ModalReservation({
   }
 
   function handleConfirmReservation() {
+    console.log(timeChecker);
+    console.log(slots);
     let slotNum;
     let valid = true;
     const { start, end } = reservationHours;
@@ -111,23 +122,13 @@ export default function ModalReservation({
       return;
     }
 
-    timeChecker.forEach((t) => {
-      indispo?.slotsChunk?.forEach((a) => {
-        if (JSON.stringify(t.slot[0]) === JSON.stringify(a)) t.check = true;
-      });
-    });
-
     console.log(timeChecker);
     console.log(resaSlots.length);
 
+    // console.log( JSON.stringify(t.slot[0]), '===', JSON.stringify(r[0]), t.check);
+
     timeChecker.forEach((t) => {
       resaSlots.forEach((r) => {
-        console.log(
-          JSON.stringify(t.slot[0]),
-          '===',
-          JSON.stringify(r[0]),
-          t.check
-        );
         if (
           JSON.stringify(t.slot[0]) ==
             JSON.stringify(resaSlots.length === 1 ? r[0] : r) &&
@@ -135,18 +136,17 @@ export default function ModalReservation({
         ) {
           console.log('creneau deja pris');
           makeErrorToast({}, errorMsg);
-          valid = false;
-          return;
+          return (valid = false);
         }
       });
     });
 
-    Object.keys(slots).forEach((s) => {
-      if (slots[s].includes(startInt) && slots[s].includes(endInt)) slotNum = s;
-    });
+    // Object.keys(slots).forEach((s) => {
+    //   if (slots[s].includes(startInt) && slots[s].includes(endInt)) slotNum = s;
+    // });
 
     const body = {
-      slot_num: slotNum,
+      slot_num: null,
       owner_id: owner_id,
       user_id: profile?.id,
       instrument_id: id,
@@ -170,25 +170,24 @@ export default function ModalReservation({
   useEffect(() => {
     setTimeChecker([]);
     const timelineCheck = Object.keys(timeline).reduce(slotsReducer2, {});
-
     Object.keys(timelineCheck).map((t) => {
       for (let i = 0; i < timelineCheck[t].length - 1; i++) {
         setTimeChecker((prev) => [
           ...prev,
-          { slot: [timelineCheck[t][i]], check: false },
+          {
+            slot: [timelineCheck[t][i]],
+            check: isDispoSlot(timelineCheck[t][i]),
+          },
         ]);
       }
     });
+    const daySlots = Object.keys(timeline).reduce(slotsReducer2, {});
+    Object.keys(daySlots).forEach((s) => {
+      daySlots[s].pop();
+      daySlots[s] = new Set(daySlots[s].filter((x) => !isDispoSlot(x)).flat());
+    });
 
-    const daySlots = Object.keys(timeline).reduce(slotsReducer, {});
-
-    // const { arrayCheck } = indispo;
-    // Object.keys(daySlots).forEach((slot) => {
-    //   if (arrayCheck && arrayCheck[slot]) {
-    //     console.log(daySlots[slot].le ngth, '===', arrayCheck[slot].length);
-    //     daySlots[slot] = [];
-    //   }
-    // });
+    // Object.keys(daySlots).map((x) => console.log([...daySlots[x]]));
     setSlots(daySlots);
   }, [id]);
 
@@ -226,12 +225,15 @@ export default function ModalReservation({
             <div className="flex flex-col">
               {slots &&
                 Object.keys(slots).map((slot, i) => {
-                  const [last] = slots[slot].slice(-1);
-                  // if (slots[slot].length == 0) return;
+                  const arrayFromSet = [...slots[slot]];
+                  if (arrayFromSet.length == 0) return;
+                  const [lastH] = arrayFromSet.slice(-1);
+                  const firstH = arrayFromSet[0];
+                  // console.log(slots[slot]);
                   return (
                     <div key={i}>
                       <p className="text center text-sm  text-gray-500">
-                        Creneau(x) entre {slots[slot][0]}h et {last}h
+                        Creneau(x) entre {firstH}h et {lastH}h
                       </p>
                       <div className="w-full flex justify-around py-2 items-center">
                         <BasicSelect
@@ -240,7 +242,7 @@ export default function ModalReservation({
                           index={'start'}
                           value={reservationHours.start}
                           deflt={' 🕐 '}
-                          data={removeFirstHour(slots[slot])}
+                          data={removeFirstHour(arrayFromSet)}
                           label={'heure de debut*'}
                         />
                         <BasicSelect
@@ -249,7 +251,7 @@ export default function ModalReservation({
                           index={'end'}
                           value={reservationHours.end}
                           deflt={' 🕐 '}
-                          data={removeLastHour(slots[slot])}
+                          data={removeLastHour(arrayFromSet)}
                           label={'heure de fin*'}
                         />
                         <BasicToggle

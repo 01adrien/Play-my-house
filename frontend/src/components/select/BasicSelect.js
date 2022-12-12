@@ -33,11 +33,13 @@ export default function BasicSelect({
           {deflt}
         </option>
         {data &&
-          data.map((d) => (
-            <option className="text-xs text-gray-500" key={d} value={d}>
-              {d}h
-            </option>
-          ))}
+          data.map((d) => {
+            return (
+              <option className="text-xs text-gray-500" key={d} value={d}>
+                {d}h
+              </option>
+            );
+          })}
       </select>
     </div>
   );

@@ -2,7 +2,6 @@ import React from 'react';
 import BasicCheckbox from '../components/checkbox/BasicCheckbox';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { RxCrossCircled } from 'react-icons/rx';
-import { motion } from 'framer-motion';
 
 export default function CheckBoxContainer({ types, brands, closeFilters }) {
   const isMobile = useMediaQuery('(max-width: 740px)');
