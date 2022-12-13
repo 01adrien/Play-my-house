@@ -11,14 +11,15 @@
         private $PHP_ENV;
 
         public function __construct() 
-        {
+        {            
             $servers_address = [
                 'https://no-idea-web.fr' => 'production',
                 'http://127.0.0.1:1234' => 'development',
-                'http://127.0.0.1:3000' => 'development',
+                'http://localhost:1234' => 'development',
             ];
            $this->PHP_ENV = $servers_address[$_SERVER['HTTP_ORIGIN']];
            if ($this->PHP_ENV) $this->config = require CONFIG_PATH . '/config/config.'.$this->PHP_ENV.'.php';
+           
         }
         
         public static function get_instance() 
