@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { user } from '../../store/user';
 import { useRecoilValue } from 'recoil';
 import useAddInstrument from '../../hooks/useAddInstrument';
-import useInstrumentSlot from '../../hooks/UseInstrumentSlot';
+import useInstrumentSlot from '../../hooks/useInstrumentSlot';
 import BasicButton from '../button/BasicButton';
 import BasicSelect from '../select/BasicSelect';
 import BasicToggle from '../toggle/BasicToggle';

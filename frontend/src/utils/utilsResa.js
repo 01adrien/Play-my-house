@@ -31,3 +31,23 @@ export function getSlotsRightNumber(types) {
     }
   };
 }
+
+export function reservationSlotsControl(timeChecker) {
+  return function (resa) {
+    let valid = true;
+    const errorMsg = 'mauvaises selections des horaires, merci de recommencer';
+    timeChecker.forEach((t) => {
+      resa.forEach((r) => {
+        if (
+          JSON.stringify(t.slot[0]) ==
+            JSON.stringify(resa.length === 1 ? r[0] : r) &&
+          t.check === true
+        ) {
+          console.log('creneau deja pris');
+          return (valid = false);
+        }
+      });
+    });
+    return valid;
+  };
+}
