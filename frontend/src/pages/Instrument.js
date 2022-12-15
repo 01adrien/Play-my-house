@@ -198,11 +198,11 @@ export default function Instrument() {
             {notDispoSlots?.slots?.txt.length > 0 && (
               <div className="text-sm w-full flex justify-center text-center items-center py-2">
                 <p className="pr-2 text-base">⚠️</p>
-                <p className="text-red-600 pr-2 ">
+                {/* <p className="text-red-600 pr-2 ">
                   {notDispoSlots.slots.txt.map((x) => (
-                    <span key={x}>{x + ' '}</span>
+                    <span >{1}</span>
                   ))}
-                </p>
+                </p> */}
                 <p>non disponible(s)</p>
               </div>
             )}

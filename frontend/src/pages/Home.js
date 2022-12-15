@@ -11,6 +11,8 @@ import Footer from '../components/Footer';
 import { Picture } from '../components/Picture';
 import Caroussel from '../components/Caroussel';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { pingServer } from '../api';
+
 
 export default function Home() {
   const [instruments, setInstruments] = useState([]);
@@ -20,6 +22,7 @@ export default function Home() {
   const isMobile = useMediaQuery('(max-width: 540px)');
 
   useEffect(() => {
+    pingServer().then(console.log)
     getTenNewest()
       .then(setInstruments)
       .then(() => {

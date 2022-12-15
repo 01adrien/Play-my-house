@@ -31,6 +31,11 @@ export async function getByTypeName(name, data, offset, limit) {
   return res.data;
 }
 
+export async function getAllFamily() {
+  const res = await AXIOS.get(`/instrument/get_all_family`);
+  return res.data;
+}
+
 export async function getAllBrand() {
   const res = await AXIOS.get(`/instrument/get_all_brand`);
   return res.data;

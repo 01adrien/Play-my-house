@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import BaseTable from '../components/tables/BaseTable';
 import UserProfile from '../components/UserProfile';
-import useMediaQuery from '../hooks/useMediaQuery';
+import AddInstrumentForm from '../components/form/AddInstrumentForm';
 import { user } from '../store/user';
 import { getUserAdmin, getUserCount } from '../api/user';
 import {
@@ -32,7 +32,6 @@ export default function User() {
   const setItemsToDelete = useSetRecoilState(listToDelete);
   const [profile, setProfile] = useRecoilState(user);
   const [activeHeading, setActiveHeading] = useState('Details du compte');
-  const isMobile = useMediaQuery('(max-width: 640px)');
   const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
   const disconnect = () => {
@@ -111,6 +110,7 @@ export default function User() {
         resaStatus={0}
       />
     ),
+    'Ajout instrument': <AddInstrumentForm />,
     'Details du compte': <UserProfile />,
     Messages: 'Mes messages',
     Deconnexion: '',
