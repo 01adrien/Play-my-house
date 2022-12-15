@@ -77,21 +77,24 @@
             return $reservations;
         }
 
-        public function get_dispo_slots_by_day($post) {          
-            // $date = date_create($post['day']);
+        public function get_dispo_slots_by_day($post) 
+        {          
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $attr['day'] = self::formatdata($post, 'day', \Model\Table::P_STRING);
             $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
             $no_dispo_txt = [];
             $no_dispo_count = 0;
-            $test = [];
+            $temp_array_check = [];
+            $array_check = [];
             $slots_chunk = [];
+
             foreach ($day_resas as $resa)
             {   
                 $resa = (array)$resa;
                 $no_dispo_count += (int)$resa['reservation_slot'];
-                $no_dispo_txt[] = $resa['start']."h-".$resa['end']."h";
-                $test[$resa['slot_num']] .= implode(',', range((int)$resa['start'], (int)$resa['end'])) . ',';
+                $no_dispo_txt[] = (int)$resa['start'];
+                $no_dispo_txt[] = (int)$resa['end'];
+                $temp_array_check[$resa['slot_num']] .= implode(',', range((int)$resa['start'], (int)$resa['end'])) . ',';
                 $temp = range((int)$resa['start'], (int)$resa['end']);
                 if (count($temp) === 2) $slots_chunk[] = $temp;
                 else {
@@ -99,14 +102,18 @@
                     foreach($temp as $t) $slots_chunk[] = [$t, $t + 1];
                 }
             }
-            $data = [];
-            foreach ($test as $k => $v) {
+            
+            sort($no_dispo_txt);
+
+            foreach ($temp_array_check as $k => $v) 
+            {
                 $v = \substr($v, 0, -1);
-                $data[$k] = explode(',', $v);
-                $data[$k] = array_map('intval', $data[$k]);
+                $array_check[$k] = explode(',', $v);
+                $array_check[$k] = array_map('intval', $array_check[$k]);
             }
-            return ['txt' => $no_dispo_txt, 'count' => $no_dispo_count,
-                    'arrayCheck' => $data, 'slotsChunk' => $slots_chunk];
+
+            return ['txt' => array_chunk($no_dispo_txt, 2), 'count' => $no_dispo_count,
+                    'arrayCheck' => $array_check, 'slotsChunk' => $slots_chunk];
             
         }
 

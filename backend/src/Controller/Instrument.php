@@ -167,6 +167,12 @@
             return $types;
         }
 
+        public static function get_all_family()
+        {
+            return (array)\Model\Instrument_family::get_all();
+        }
+
+
         public static function get_admin_data($post)
         {
             return \Model\Instrument::get_admin_data($post['offset'], $post['limit']);
