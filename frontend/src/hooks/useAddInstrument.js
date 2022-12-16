@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAllFamily, getAllBrand, getAllType } from '../api/instrument';
-// import { makeErrorToast, makeSuccesToast } from '../utils';
+import { makeErrorToast } from '../utils';
 
 export default function useAddInstrument() {
   const [families, setFamilies] = useState([]);
@@ -13,6 +13,7 @@ export default function useAddInstrument() {
     family: '',
     brand: '',
     description: '',
+    name: '',
   });
 
   function getFilteredTypeList() {

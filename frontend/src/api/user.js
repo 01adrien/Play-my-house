@@ -15,6 +15,7 @@ export async function getPictureByUserId(id) {
 }
 
 export async function uploadPicture(body) {
+  console.log(body);
   const { id, name, selectedFile, picture_id } = body;
   const post = new FormData();
   post.append('file', selectedFile);
@@ -22,7 +23,11 @@ export async function uploadPicture(body) {
   post.append('id', id);
   post.append('picture_id', picture_id);
 
-  return await AXIOS.post(`/user_picture/upload_picture`, post);
+  return await AXIOS.post(`/user_picture/upload_picture`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 export async function getProfile() {

@@ -12,13 +12,15 @@ export default function SelectAddInstrument({
     setValue((prev) => ({ ...prev, [type]: e.target.value }));
 
   return (
-    <div className={`flex flex-col justify-center items-start`}>
-      <label className="text-xs mb-1">{label}</label>
+    <div
+      className={`flex flex-col justify-center items-start ${
+        disabled && 'opacity-30'
+      }`}
+    >
+      <label className="text-xs mb-1 text-gray-500">{label}</label>
       <select
         onChange={handleChange}
-        className={`rounded-md border-main_color focus:border-none ${
-          disabled && 'opacity-30'
-        }`}
+        className={`rounded-md border-main_color focus:border-none`}
         value={value}
         disabled={disabled}
       >

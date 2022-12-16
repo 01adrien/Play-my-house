@@ -5,10 +5,14 @@ import useAddInstrument from '../../hooks/useAddInstrument';
 import useReservationSlot from '../../hooks/useReservationSlot';
 import BasicButton from '../button/BasicButton';
 import BasicSelect from '../select/BasicSelect';
+import FileInput from '../input/FileInput';
+import FormInput from '../input/FormInput';
+import { makeErrorToast, makeSuccesToast } from '../../utils';
 import SelectAddInstrument from '../select/SelectAddInstrument';
 import { BsPlusCircleFill } from 'react-icons/bs';
 import { RxCrossCircled } from 'react-icons/rx';
 import { timelineIds } from '../../store/user';
+import { createInstrument, uploadPicture } from '../../api/instrument';
 import {
   HiOutlineArrowCircleDown,
   HiOutlineArrowCircleUp,
@@ -43,7 +47,7 @@ export default function AddInstrumentForm() {
   } = useAddInstrument();
 
   const [showSelectedHours, setShowSelectedHours] = useState(false);
-  const { type, family, brand, description } = instrumentInfo;
+  const { type, family, brand, description, name } = instrumentInfo;
   const textAreaDisabled = !family || !type || !brand;
   const uploadDisabled = !description;
   const selectSlotsDisabled = !pictures.length;
@@ -56,21 +60,40 @@ export default function AddInstrumentForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(timelines);
-    const { family, type, brand, description } = instrumentInfo;
+    //console.log(timelines);
+    //const { family, type, brand, description, name } = instrumentInfo;
     const body = {
-      family: family,
-      type: type,
-      brand: brand,
+      ownerId: profile.id,
+      familyId: family,
+      typeId: type,
+      brandId: brand,
+      name: name,
       description: description,
-      timeline_id_monday: timelines?.lundi || null,
-      timeline_id_tuesday: timelines?.mardi || null,
-      timeline_id_wednesday: timelines?.mercredi || null,
-      timeline_id_thusrday: timelines?.jeudi || null,
-      timeline_id_iriday: timelines?.vendredi || null,
-      timeline_id_saturday: timelines?.samedi || null,
-      timeline_id_sunday: timelines?.dimanche || null,
+      timelineIdMonday: timelines?.lundi || null,
+      timelineIdTuesday: timelines?.mardi || null,
+      timelineIdWednesday: timelines?.mercredi || null,
+      timelineIdThursday: timelines?.jeudi || null,
+      timelineIdFriday: timelines?.vendredi || null,
+      timelineIdSaturday: timelines?.samedi || null,
+      timelineIdSunday: timelines?.dimanche || null,
     };
+    console.log(body);
+    console.log(pictures);
+
+    createInstrument(body).then((data) => {
+      if (data.result) {
+        pictures.forEach((picture, i) => {
+          uploadPicture({
+            name: profile.name,
+            file: picture,
+            instrumentId: data.id,
+            mainPicture: i === 0 ? 1 : 0,
+          });
+        });
+      } else {
+        return makeErrorToast({}, 'erreur à la creation..');
+      }
+    });
   }
 
   return (
@@ -82,6 +105,18 @@ export default function AddInstrumentForm() {
         className="flex flex-col justify-between mt-6"
         onSubmit={handleSubmit}
       >
+        <FormInput
+          name="nom de l'instrument"
+          labelStyle="text-gray-500 text-xs"
+          style={'w-[60%] self-center text-xs text-gray-500'}
+          value={instrumentInfo.name}
+          fn={(e) =>
+            setInstrumentInfo((prev) => ({
+              ...prev,
+              name: e.target.value,
+            }))
+          }
+        />
         <div className="flex justify-around">
           <SelectAddInstrument
             type="family"
@@ -89,6 +124,7 @@ export default function AddInstrumentForm() {
             data={families}
             setValue={setInstrumentInfo}
             value={instrumentInfo.family}
+            disabled={!instrumentInfo.name}
           />
           <SelectAddInstrument
             type="type"
@@ -136,6 +172,7 @@ export default function AddInstrumentForm() {
                 className="block w-full bg-white text-sm text-gray-900 rounded-lg border border-gray-300 cursor-pointer"
                 onChange={handleFilesSelect}
                 type="file"
+                accept="image/jpeg"
                 multiple
               />
             </div>
@@ -255,16 +292,16 @@ export default function AddInstrumentForm() {
             <BasicButton
               type="button"
               onClick={validateSlots}
-              style={'w-40 self-center'}
+              style={'w-40 self-center mb-8'}
             >
               <p>valider horaires</p>
             </BasicButton>
           </div>
         </div>
         <BasicButton
-          disabled={submitDisabled}
+          //disabled={submitDisabled}
           type={'submit'}
-          style={`w-28 self-center mb-4 ${submitDisabled && 'opacity-30'}`}
+          // style={`w-80 self-center mb-4 ${submitDisabled && 'opacity-30'}`}
         >
           <p>terminé !</p>
         </BasicButton>

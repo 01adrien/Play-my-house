@@ -189,6 +189,36 @@
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             return \Model\Instrument::get_count_by_owner($attr);
         }
+
+        public static function upload_picture($post) 
+        {
+            $ext = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+            if ($ext === 'jpeg' || $ext == 'jpg') 
+            {
+                return \Controller\Picto::upload_picture_instrument();
+            }
+            
+        }
+
+        public static function create_instrument($post)
+        {
+            $attr = [];
+            $attr['owner_id'] = self::formatdata($post, 'ownerId', \Model\Table::P_INT);
+            $attr['family_id'] = self::formatdata($post, 'familyId', \Model\Table::P_INT);
+            $attr['type_id'] = self::formatdata($post, 'typeId', \Model\Table::P_INT);
+            $attr['brand_id'] = self::formatdata($post, 'brandId', \Model\Table::P_INT);
+            $attr['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
+            $attr['description'] = self::formatdata($post, 'description', \Model\Table::P_STRING);
+            $attr['timeline_id_monday'] = self::formatdata($post, 'timelineIdMonday', \Model\Table::P_INT);
+            $attr['timeline_id_tuesday'] = self::formatdata($post, 'timelineIdTuesday', \Model\Table::P_INT);
+            $attr['timeline_id_wednesday'] = self::formatdata($post, 'timelineIdWednesday', \Model\Table::P_INT);
+            $attr['timeline_id_thursday'] = self::formatdata($post, 'timelineIdThursday', \Model\Table::P_INT);
+            $attr['timeline_id_friday'] = self::formatdata($post, 'timelineIdFriday', \Model\Table::P_INT);
+            $attr['timeline_id_saturday'] = self::formatdata($post, 'timelineIdSaturday', \Model\Table::P_INT);
+            $attr['timeline_id_sunday'] = self::formatdata($post, 'timelineIdSunday', \Model\Table::P_INT);
+
+            return \Model\Instrument::create_update($attr, 'CREATE');
+        }
     }
 
 ?>

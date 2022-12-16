@@ -39,7 +39,7 @@ const UserSmallCardsWithLoading = withLoading(UserSmallCards);
 
 export default function Instrument() {
   const { id } = useParams();
-  // const profile = useRecoilValue(user);
+  const profile = useRecoilValue(user);
   const location = useLocation();
   const [owner, setOwner] = useState([]);
   const [refreshResa, setRefreshResa] = useState(false);
@@ -101,6 +101,7 @@ export default function Instrument() {
   return (
     <Layout>
       <div className="w-[100%] flex flex-col items-center justify-center mt-6">
+        <p className="text-lg">{location.state.instrumentName.toUpperCase()}</p>
         <div className="flex flex-col justify-around mt-8 max-w-[700px] w-[60%]">
           <div
             className={`flex sm:flex-col md:flex-col lg:flex-row xl:flex-row justify-between items-center xs:flex-col 2xs:flex-col 3xs:flex-col`}

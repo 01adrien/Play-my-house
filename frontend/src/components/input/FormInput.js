@@ -9,20 +9,18 @@ export default function FormInput({
   required = true,
   testId,
   style,
+  labelStyle = 'text-gray-900 text-sm font-medium',
 }) {
   return (
     <div className={`mb-4 ${style}`}>
-      <label
-        htmlFor={id}
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-      >
+      <label htmlFor={id} className={`block mb-2 ${labelStyle}`}>
         {name}
       </label>
       <input
         data-cy={testId}
         type={type}
         id={id}
-        className="bg-gray-50 border h-10 border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5"
+        className="bg-gray-50 border h-10 rounded-md border-main_color focus:border-none text-gray-900 text-sm block w-full p-2.5"
         placeholder=""
         required={required}
         onChange={(e) => fn(e)}

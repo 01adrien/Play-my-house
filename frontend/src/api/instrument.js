@@ -115,3 +115,24 @@ export async function getOwnerCount(id) {
   const [count] = Object.values(res.data);
   return count;
 }
+
+export async function createInstrument(body) {
+  const post = new FormData();
+  Object.keys(body).forEach((key) => {
+    post.append(key, body[key]);
+  });
+  const res = await AXIOS.post(`/instrument/create_instrument`, post);
+  return res.data;
+}
+
+export async function uploadPicture(body) {
+  const post = new FormData();
+  Object.keys(body).forEach((key) => {
+    post.append(key, body[key]);
+  });
+  return await AXIOS.post(`/instrument/upload_picture`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}
