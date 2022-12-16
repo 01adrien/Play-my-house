@@ -9,3 +9,8 @@ export const listToDelete = atom({
   key: 'itemsToDelete',
   default: [],
 });
+
+export const timelineIds = atom({
+  key: 'timelineIds',
+  default: {},
+});

@@ -18,11 +18,11 @@
                     $id['id'] = self::formatdata(['id' => $val], 'id', \Model\Table::P_INT);
                     $timeLine = \Model\Timeline_day::get_by_ID($id);
                     unset($timeLine->id);
-                    unset($timeLine->total_hours);
+                    unset($timeLine->_total_hours);
                     foreach($timeLine as $k => $v)
                     {   
                         if ((int)$v > 0){
-                            $data[$day][$v][] = $k ;
+                            $data[$day][$v][] = str_replace('_', '',$k) ;
                         }
                     }
                 }                
@@ -66,7 +66,7 @@
                 $attr = [];
                 $attr['id'] = self::formatdata($resa, $resa['day'], \Model\Table::P_INT );
                 $timeline = \Model\Timeline_day::get_by_ID($attr);
-                $total_slots = $timeline->total_hours;
+                $total_slots = $timeline->_total_hours;
                 $array = [];
                 $array['day'] = $resa['date'];
                 $array['id'] = $post['id'];
@@ -128,15 +128,20 @@
 
         public static function get_timeline_by_day($post)
         {
-            // $date = date_create($post['day']);
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $instru = \Model\Instrument::get_by_ID($attr);
             $t['id'] = self::formatdata((array)$instru, 'timeline_id_'.$post['day_name'], \Model\Table::P_INT);
             $time = \Model\Timeline_day::get_by_ID($t);
-            unset($time->total_hours);
+            unset($time->_total_hours);
             unset($time->id);
-            foreach($time as $k => $v) if (!$v) unset($time->$k);
-            return $time;
+            $data = [];
+            foreach($time as $k => $v)
+            {   
+                //if (!$v) unset($time->$k);
+                if ($v) $data[str_replace('_',"",$k)] = $v;
+                
+            } 
+            return $data;
         }
 
         public static function get_user_reservation($post)
@@ -215,6 +220,32 @@
             
 
             return \Model\Reservation::create_update($attr,'CREATE');
+        }
+
+        public static function create_get_timeline($post) 
+        {
+            $attr = [];
+            foreach ($post as $k => $v) 
+            {   
+                $attr['_'.$k] = self::formatdata($post, $k, \Model\Table::P_INT);
+            }
+            $timeline_exist = \Model\Timeline_day::find_timeline($attr);
+            
+            if ($timeline_exist) 
+            {
+                return $timeline_exist[0];
+                exit();
+            } 
+            
+            $timeline =  \Model\Timeline_day::create_update($attr, 'CREATE');
+            if ($timeline->id)
+            {
+                return $timeline; 
+                exit();
+            }
+            
+            return false;
+
         }
     }
 ?>

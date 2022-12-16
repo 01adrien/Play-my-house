@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getAllFamily, getAllBrand, getAllType } from '../api/instrument';
 // import { makeErrorToast, makeSuccesToast } from '../utils';
 
-export default function useAddInstrument(state) {
+export default function useAddInstrument() {
   const [families, setFamilies] = useState([]);
   const [types, setTypes] = useState([]);
   const [brands, setBrands] = useState([]);

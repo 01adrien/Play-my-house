@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
-import { user } from '../../store/user';
+import { user, timelineIds } from '../../store/user';
 import { useRecoilValue } from 'recoil';
 import useAddInstrument from '../../hooks/useAddInstrument';
-import useInstrumentSlot from '../../hooks/useInstrumentSlot';
+import useReservationSlot from '../../hooks/useReservationSlot';
 import BasicButton from '../button/BasicButton';
 import BasicSelect from '../select/BasicSelect';
-import BasicToggle from '../toggle/BasicToggle';
 import SelectAddInstrument from '../select/SelectAddInstrument';
 import { BsPlusCircleFill } from 'react-icons/bs';
 import { RxCrossCircled } from 'react-icons/rx';
+import { timelineIds } from '../../store/user';
+import {
+  HiOutlineArrowCircleDown,
+  HiOutlineArrowCircleUp,
+} from 'react-icons/hi';
 
 export default function AddInstrumentForm() {
+  const timelines = useRecoilValue(timelineIds);
   const profile = useRecoilValue(user);
   const {
     days,
     currentDay,
-    setCurrentDay,
-    setDays,
     hours,
     setHours,
     handleOneSlotValidation,
     rangeHours,
-    timeChecker,
-  } = useInstrumentSlot();
+    numToDay,
+    nextDay,
+    prevDay,
+    handleDeleteHour,
+    formatDaySlotAndPostTimeline,
+  } = useReservationSlot();
 
   const {
     families,
@@ -35,24 +42,34 @@ export default function AddInstrumentForm() {
     setInstrumentInfo,
   } = useAddInstrument();
 
-  function validateInput(body) {
-    return null;
-  }
+  const [showSelectedHours, setShowSelectedHours] = useState(false);
+  const { type, family, brand, description } = instrumentInfo;
+  const textAreaDisabled = !family || !type || !brand;
+  const uploadDisabled = !description;
+  const selectSlotsDisabled = !pictures.length;
+  const submitDisabled = !timelines?.done;
 
-  function handleDaySlotsValidation() {
-    console.log(timeline);
-    console.log(hours);
-    console.log(days);
+  async function validateSlots() {
+    setShowSelectedHours(false);
+    formatDaySlotAndPostTimeline();
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(timelines);
     const { family, type, brand, description } = instrumentInfo;
     const body = {
       family: family,
       type: type,
       brand: brand,
       description: description,
+      timeline_id_monday: timelines?.lundi || null,
+      timeline_id_tuesday: timelines?.mardi || null,
+      timeline_id_wednesday: timelines?.mercredi || null,
+      timeline_id_thusrday: timelines?.jeudi || null,
+      timeline_id_iriday: timelines?.vendredi || null,
+      timeline_id_saturday: timelines?.samedi || null,
+      timeline_id_sunday: timelines?.dimanche || null,
     };
   }
 
@@ -92,13 +109,27 @@ export default function AddInstrumentForm() {
         </div>
         <div className="flex flex-col mt-6">
           <textarea
-            className="border-main_color rounded mb-8"
+            onChange={(e) =>
+              setInstrumentInfo((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
+            }
+            className={`border-main_color rounded mb-8 ${
+              textAreaDisabled && 'opacity-30'
+            }`}
+            disabled={textAreaDisabled}
             name="desription"
             rows="5"
             placeholder="Decris ton instrument (255 caracteres max)"
             cols="33"
           />
-          <div className="flex justify-around h-32 items-start">
+          <div
+            disabled={uploadDisabled}
+            className={`${
+              uploadDisabled && 'opacity-30'
+            } flex justify-around h-32 items-start`}
+          >
             <div className="flex flex-col">
               <p className="text-xs pb-1 ml-4 text-red-700">5 images max</p>
               <input
@@ -117,7 +148,7 @@ export default function AddInstrumentForm() {
                       key={i}
                       className="flex justify-between items-center space-x-2"
                     >
-                      <li className="text-xs text-main_color pl-2" key={p.name}>
+                      <li className="text-xs pl-2" key={p.name}>
                         - {p.name}
                       </li>
                       <span className="">
@@ -131,16 +162,21 @@ export default function AddInstrumentForm() {
                     </div>
                   ))
                 ) : (
-                  <p className="text-xs text-main_color pl-2">aucune</p>
+                  <p className="text-xs pl-2">aucune</p>
                 )}
               </ul>
             </div>
           </div>
-          <div className="flex flex-col mb-4">
-            <p className="text-center self-center w-[60%] text-xl border-t-2 border-main_border_color pt-4">
-              Creneaux du {currentDay}
+          <div
+            className={`flex flex-col justify-around mb-4 border-b-2 border-border_color w-[100%] ${
+              selectSlotsDisabled && 'opacity-100'
+            }`}
+            disabled={false || selectSlotsDisabled}
+          >
+            <p className="text-center self-center w-[60%] text-xl border-t-2 border-main_border_color py-4">
+              Creneaux du {numToDay[currentDay]}
             </p>
-            <div className="flex justify-between items-center w-[60%] self-center mb-4">
+            <div className="flex justify-between items-center w-[60%] self-center mb-8">
               <BasicSelect
                 deflt={' 🕐 '}
                 index="start"
@@ -167,16 +203,69 @@ export default function AddInstrumentForm() {
                 <p className="text-xs">valider ce creneau</p>
               </div>
             </div>
+            <div className="flex justify-around w-[60%] self-center mb-8">
+              <BasicButton type="button" onClick={prevDay} style={`w-28`}>
+                <p>prev</p>
+              </BasicButton>
+              <BasicButton type="button" onClick={nextDay} style={`w-28`}>
+                <p>next</p>
+              </BasicButton>
+            </div>
+            <div className="flex flex-col text-sm w-[100%] justify-center mb-8">
+              <div className="flex justify-between self-center items-center">
+                <p className="text-center pr-3">
+                  heures selectionnées pour le {numToDay[currentDay]}
+                </p>
+
+                <span
+                  className="cursor-pointer"
+                  onClick={() => setShowSelectedHours(!showSelectedHours)}
+                >
+                  {!showSelectedHours ? (
+                    <HiOutlineArrowCircleDown className="text-xl" />
+                  ) : (
+                    <HiOutlineArrowCircleUp className="text-xl" />
+                  )}
+                </span>
+              </div>
+              {showSelectedHours && (
+                <ul className="text-center text-xs mt-2 self-center">
+                  {days[numToDay[currentDay]].length ? (
+                    days[numToDay[currentDay]]
+                      .sort((a, b) => a[0] - b[0])
+                      .map((h) => (
+                        <li key={h} className="flex items-center space-x-2">
+                          <span>
+                            {h[0] < 10 ? '0' + h[0] : h[0]}h - {h[1]}h
+                          </span>
+                          {
+                            <RxCrossCircled
+                              onClick={() => handleDeleteHour(h)}
+                              className="text-white text-xs cursor-pointer bg-red-700 rounded-full"
+                            />
+                          }
+                        </li>
+                      ))
+                  ) : (
+                    <p>aucune(s) heure(s)</p>
+                  )}
+                </ul>
+              )}
+            </div>
             <BasicButton
               type="button"
-              onClick={handleDaySlotsValidation}
-              style={`w-28 self-center`}
+              onClick={validateSlots}
+              style={'w-40 self-center'}
             >
-              <p>next</p>
+              <p>valider horaires</p>
             </BasicButton>
           </div>
         </div>
-        <BasicButton type={'submit'} style={`w-28 self-center`}>
+        <BasicButton
+          disabled={submitDisabled}
+          type={'submit'}
+          style={`w-28 self-center mb-4 ${submitDisabled && 'opacity-30'}`}
+        >
           <p>terminé !</p>
         </BasicButton>
       </form>

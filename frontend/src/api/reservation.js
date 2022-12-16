@@ -76,7 +76,6 @@ export async function getOwnerReservation(id, active, offset, limit) {
   post.append('offset', offset);
   post.append('limit', limit);
   post.append('active', active);
-  console.log(id);
   const res = await AXIOS.post(`/reservation/get_owner_reservation`, post);
   return res.data;
 }
@@ -112,5 +111,14 @@ export async function createReservation(body) {
     post.append(key, body[key]);
   });
   const res = await AXIOS.post(`/reservation/create`, post);
+  return res.data;
+}
+
+export async function createTimeline(body) {
+  const post = new FormData();
+  Object.keys(body).forEach((key) => {
+    post.append(key, body[key]);
+  });
+  const res = await AXIOS.post(`/reservation/create_get_timeline`, post);
   return res.data;
 }

@@ -35,7 +35,6 @@ export function getSlotsRightNumber(types) {
 export function reservationSlotsControl(timeChecker) {
   return function (resa) {
     let valid = true;
-    const errorMsg = 'mauvaises selections des horaires, merci de recommencer';
     timeChecker.forEach((t) => {
       resa.forEach((r) => {
         if (
@@ -51,3 +50,12 @@ export function reservationSlotsControl(timeChecker) {
     return valid;
   };
 }
+
+export function isValidHours(start, end) {
+  return start >= end || !start || !end ? false : true;
+}
+
+export const timelineReducer = (acc, x) => {
+  !acc[x[0]] && (acc[x[0]] = 0);
+  return acc;
+};

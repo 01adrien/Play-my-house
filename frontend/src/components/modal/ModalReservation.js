@@ -14,6 +14,7 @@ import {
   makeSlotsChunks,
   getSlotsRightNumber,
   reservationSlotsControl,
+  isValidHours,
 } from '../../utils/utilsResa';
 
 export default function ModalReservation({
@@ -49,7 +50,8 @@ export default function ModalReservation({
 
   function handleConfirmReservation() {
     let slotNum;
-    let valid = true;
+    let validSlot = true;
+    let validHour = true;
     const { start, end } = reservationHours;
     const startInt = parseInt(start);
     const endInt = parseInt(end);
@@ -66,7 +68,8 @@ export default function ModalReservation({
       return;
     }
 
-    valid = checkResa(resaSlots);
+    validHour = isValidHours(startInt, endInt);
+    validSlot = checkResa(resaSlots);
 
     Object.keys(slots).forEach((s) => {
       if ([...slots[s]].includes(startInt) && [...slots[s]].includes(endInt))
@@ -81,7 +84,7 @@ export default function ModalReservation({
       start: startHour,
       end: endHour,
     };
-    if (!valid) return makeErrorToast({}, errorMsg);
+    if (!validSlot || !validHour) return makeErrorToast({}, errorMsg);
     console.log(body);
     createReservation(body)
       .then(() => makeSuccesToast({}, succesMsg))
