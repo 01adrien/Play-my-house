@@ -62,8 +62,6 @@ export default function useReservationSlot() {
   const resetTimeChecker = () => setTimechecker(initialTimeCheckerState);
   const resetHour = () => setHours({ start: '', end: '' });
 
-  // A REVOIR
-
   function hydrateTimeChecker(toCompare, type) {
     timeChecker.forEach((t, i) => {
       toCompare.forEach((s) => {
@@ -84,8 +82,6 @@ export default function useReservationSlot() {
     });
   }
 
-  //******************* */
-
   function handleOneSlotValidation() {
     const { start, end } = hours;
     const startInt = parseInt(start);
@@ -95,6 +91,7 @@ export default function useReservationSlot() {
       return false;
     hydrateTimeChecker(slotsRange, 'A');
     resetHour();
+    return true;
   }
 
   function nextDay() {

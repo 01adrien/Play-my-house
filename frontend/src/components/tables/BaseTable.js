@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, Checkbox } from 'flowbite-react';
 import Spinner from '../icons/Spinner';
 import { SiApplemusic } from 'react-icons/si';
@@ -7,8 +7,10 @@ import usePagination from '../../hooks/usePagination';
 import Pagination from '../Pagination';
 import BasicButton from '../button/BasicButton';
 import ModalDelete from '../modal/ModalDelete';
+import ModalAdminValidation from '../modal/ModalAdminValidation';
 import { useDeleteItems, viewTolabel } from '../../hooks/useDeleteItems';
 import useMediaQuery from '../../hooks/useMediaQuery';
+import useAdminVAlidation from '../../hooks/useAdminValidation';
 
 export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
   const {
@@ -30,7 +32,27 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
     isChecked,
   } = useDeleteItems(view, fn1, setItemsNumber);
 
+  const [instrumentToValidate, setinstrumentToValidate] = useState(null);
+
+  const {
+    openModalAdmin,
+    closeModalAdmin,
+    showModalAdmin,
+    instrumentInfos,
+    schedule,
+    userInfos,
+    handleDeny,
+    handleValidation,
+  } = useAdminVAlidation(instrumentToValidate);
+
   const isMobile = useMediaQuery('(max-width: 700px)');
+
+  function handleSelectInstrument(instrument) {
+    if (view === 'ADMIN_VALIDATION') {
+      setinstrumentToValidate(instrument);
+      openModalAdmin();
+    }
+  }
 
   const displayStatus = (value) => {
     const status = (color) => {
@@ -55,13 +77,15 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
           <div
             className={`flex justify-around w-full text-sm h-10 items-center mb-8`}
           >
-            <BasicButton
-              onClick={openModal}
-              width={isMobile ? '16' : '40'}
-              style="h-10 bg-red-600 hover:bg-red-700 hover:scale-105 text-xs"
-            >
-              <p className="self-center">supprimer</p>
-            </BasicButton>
+            {view !== 'ADMIN_VALIDATION' && (
+              <BasicButton
+                onClick={openModal}
+                width={isMobile ? '16' : '40'}
+                style="h-10 bg-red-600 hover:bg-red-700 hover:scale-105 text-xs"
+              >
+                <p className="self-center">supprimer</p>
+              </BasicButton>
+            )}
             <SiApplemusic className="text-2xl" />
             <p className={`${isMobile ? 'text-xs' : 'text-base'} text-thin`}>
               {itemsNumber + ' ' + viewTolabel[view]}
@@ -73,7 +97,7 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
             className="min-w-[500px] !focus:ring-0 mt-6"
           >
             <Table.Head className="sticky top-0">
-              {data.length ? (
+              {data.length & (view !== 'ADMIN_VALIDATION') ? (
                 <>
                   <Table.HeadCell className="text-center !p-4">
                     <p>🎶</p>
@@ -97,15 +121,21 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
                 <Table.Row
                   key={d.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  onClick={() => handleSelectInstrument(d)}
                 >
-                  <Table.Cell key={d.id} className="!focus:ring-0 !p-4 text-sm">
-                    <Checkbox
+                  {view !== 'ADMIN_VALIDATION' && (
+                    <Table.Cell
                       key={d.id}
-                      checked={isChecked(d, view)}
-                      onChange={(e) => handleSelectItem(e, d)}
-                      className="!focus:ring-0"
-                    />
-                  </Table.Cell>
+                      className="!focus:ring-0 !p-4 text-sm"
+                    >
+                      <Checkbox
+                        key={d.id}
+                        checked={isChecked(d, view)}
+                        onChange={(e) => handleSelectItem(e, d)}
+                        className="!focus:ring-0"
+                      />
+                    </Table.Cell>
+                  )}
                   {view === 'OWNER_INSTRUMENT' && (
                     <Table.Cell className="text-center">
                       <FiEdit className="text-center" />
@@ -131,6 +161,17 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
               onConfirm={handleConfirm}
               onClose={closeModal}
               label={viewTolabel[view]}
+            />
+          )}
+          {showModalAdmin && (
+            <ModalAdminValidation
+              onClose={closeModalAdmin}
+              onConfirm={handleValidation}
+              instrument={instrumentToValidate}
+              instrumentInfos={instrumentInfos}
+              schedule={schedule}
+              userInfos={userInfos}
+              onDeny={handleDeny}
             />
           )}
           {itemsNumber > 12 && (

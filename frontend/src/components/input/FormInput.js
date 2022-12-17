@@ -20,11 +20,12 @@ export default function FormInput({
         data-cy={testId}
         type={type}
         id={id}
-        className="bg-gray-50 border h-10 rounded-md border-main_color focus:border-none text-gray-900 text-sm block w-full p-2.5"
+        className="bg-gray-50 border border-main_color h-10 focus:ring-0 rounded-md text-gray-900 text-sm block w-full p-2.5"
         placeholder=""
         required={required}
         onChange={(e) => fn(e)}
         value={value}
+        maxlength="50"
       />
     </div>
   );

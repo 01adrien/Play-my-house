@@ -65,6 +65,7 @@
             if ($data === 'FAMILY_&_BRAND') $where = "WHERE instru.`family_id` =:family_id AND instru.`brand_id` =:brand_id AND instru.`statut` = 'V'";
             if ($data === 'ALL_BRAND') $where = "WHERE instru.`brand_id` =:brand_id AND instru.`statut` = 'V'";
             if ($data === 'OWNER') $where = "WHERE instru.`owner_id` =:id AND instru.`statut` = 'V'" ;
+            if ($data === 'TO_VALIDATE') $where = "WHERE instru.`statut` = 'NV'";
 
             $sql = "SELECT COUNT(*)
                     FROM `".self::$table."` instru
@@ -89,8 +90,10 @@
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 
-        public static function get_admin_data($offset, $limit)
+        public static function get_admin_data($offset, $limit, $type)
         {
+            if ($type === 'TO_VALIDATE') $where = "WHERE instru.`statut` = 'NV'";
+            else $where = "WHERE 1";
             $sql = "SELECT
                     instru.`id`,
                     instru.`statut`,
@@ -104,6 +107,7 @@
                     LEFT JOIN `instruments_type` type ON type.`id` = instru.`type_id`
                     LEFT JOIN `instruments_brand` brand ON brand.`id` = instru.`brand_id`
                     LEFT JOIN `users` ON users.`id` = instru.`owner_id`
+                    ".$where."
                     ORDER BY instru.`id` DESC LIMIT ".$limit." OFFSET ".$offset."";
             
             return \My_class\App::get_DB()->prepare($sql, [], null, false);

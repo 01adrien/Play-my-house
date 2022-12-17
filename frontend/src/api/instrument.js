@@ -76,6 +76,13 @@ export async function getCountByTypeName(name) {
   return count;
 }
 
+export async function getInstrumentById(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/get_by_id`, post);
+  return res.data;
+}
+
 export async function getAllPictureForOne(id) {
   const post = new FormData();
   post.append('id', id);
@@ -89,6 +96,20 @@ export async function getInstrumentAdmin(offset, limit) {
   post.append('limit', limit);
   const res = await AXIOS.post(`/instrument/get_admin_data`, post);
   return res.data;
+}
+
+export async function getInstrumentToValidate(offset, limit) {
+  const post = new FormData();
+  post.append('offset', offset);
+  post.append('limit', limit);
+  const res = await AXIOS.post(`/instrument/get_instrument_to_validate`, post);
+  return res.data;
+}
+
+export async function getCountToValidate() {
+  const res = await AXIOS.post(`/instrument/get_count_to_validate`);
+  const [count] = Object.values(res.data);
+  return count;
 }
 
 export async function deleteInstrument(id) {

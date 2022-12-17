@@ -16,6 +16,12 @@
             return \Model\Instrument::get_count();
         }
 
+        public static function get_by_id($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::get_by_ID($attr);
+        }
+
         public static function get_ten_newest()
         {
             return \Model\Instrument::get_instrument(0, 10);
@@ -175,8 +181,19 @@
 
         public static function get_admin_data($post)
         {
-            return \Model\Instrument::get_admin_data($post['offset'], $post['limit']);
+            return \Model\Instrument::get_admin_data($post['offset'], $post['limit'], 'ALL');
         }
+
+        public static function get_count_to_validate()
+        {
+            return \Model\Instrument::get_count_by([], 'TO_VALIDATE');
+        }
+
+        public static function get_instrument_to_validate($post)
+        {
+            return  \Model\Instrument::get_admin_data($post['offset'], $post['limit'], 'TO_VALIDATE');
+        }
+
 
         public static function get_owner_instrument($post)
         {   

@@ -22,7 +22,7 @@ export default function BasicSelect({
         {label}
       </label>
       <select
-        className={`w-22 rounded-md border-main_color focus:border-none ${
+        className={`w-22 rounded-md border-main_color ${
           disabled && 'opacity-25'
         }`}
         onChange={handleChange}

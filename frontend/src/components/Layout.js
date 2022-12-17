@@ -12,10 +12,11 @@ export default function Layout({ children }) {
     getProfile().then((u) => setProfile(u));
   }, []);
   return (
-    <div className="flex flex-col min-h-screen h-[100%]">
+    <div className="flex flex-col min-h-screen h-[100%] justify-between">
       <Header />
       {children}
       <Toaster position="bottom-right" />
+      <Footer />
     </div>
   );
 }

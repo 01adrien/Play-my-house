@@ -16,7 +16,9 @@ export default function BasicButton({
       data-cy={testId}
       type={type}
       disabled={disabled}
-      className={`${style} text-white flex justify-center items-center shadow-md bg-main_color w-${width} h-${height} hover:bg-main_color_hover focus:outline-none font-bold h-10 rounded px-5 py-3 text-center`}
+      className={`${style} text-white flex justify-center items-center shadow-md bg-main_color w-${width} h-${height} ${
+        !disabled && 'hover:bg-main_color_hover'
+      } focus:outline-none font-bold h-10 rounded px-5 py-3 text-center`}
     >
       <div className="w-[100%] h-[100%] flex items-center justify-center">
         {children}
