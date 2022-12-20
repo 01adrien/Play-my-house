@@ -24,7 +24,6 @@ export default function ModalAdminValidation({
   const { loading, pictures } = useCarousel(instrument.id);
   console.log(instrumentInfos);
   console.log(instrument);
-  // console.log(userInfos);
   return (
     <Modal show={true} size="md" popup={true} onClose={onClose}>
       <Modal.Header />
@@ -65,10 +64,24 @@ export default function ModalAdminValidation({
             })}
           </div>
           <div className="flex justify-around w-full mt-8">
-            <BasicButton onClick={onConfirm} width="40">
+            <BasicButton
+              onClick={() => {
+                onConfirm('V', instrument?.id);
+                onClose();
+              }}
+              width="40"
+              style="bg-green-500 hover:bg-green-700"
+            >
               <p>Valider</p>
             </BasicButton>
-            <BasicButton onClick={onDeny} width="40">
+            <BasicButton
+              onClick={() => {
+                onDeny('A', instrument?.id);
+                onClose();
+              }}
+              width="40"
+              style="bg-red-500 hover:bg-red-700"
+            >
               <p>refuser</p>
             </BasicButton>
           </div>

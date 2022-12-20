@@ -50,8 +50,8 @@ export default function AddInstrumentForm() {
   const { type, family, brand, description, name } = instrumentInfo;
   const textAreaDisabled = !family || !type || !brand;
   const uploadDisabled = textAreaDisabled || !description;
-  const selectSlotsDisabled =
-    uploadDisabled || !pictures.length || timelines?.done;
+  const selectSlotsDisabled = false;
+  //uploadDisabled || !pictures.length || timelines?.done;
   const submitDisabled =
     !timelines?.done ||
     !family ||
@@ -62,7 +62,7 @@ export default function AddInstrumentForm() {
     !pictures.length;
 
   async function validateSlots() {
-    setShowSelectedHours(false);
+    //setShowSelectedHours(false);
     formatDaySlotAndPostTimeline();
   }
 

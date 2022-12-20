@@ -43,7 +43,7 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
     userInfos,
     handleDeny,
     handleValidation,
-  } = useAdminVAlidation(instrumentToValidate);
+  } = useAdminVAlidation(instrumentToValidate, fn1, setItemsNumber);
 
   const isMobile = useMediaQuery('(max-width: 700px)');
 
@@ -59,13 +59,14 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
       return (
         <div className="w-full h-full flex justify-center items-center">
           <div
-            className={`w-[10px] h-[10px] rounded-full bg-${color}-400`}
+            className={`w-[10px] h-[10px] rounded-full bg-${color}-600`}
           ></div>
         </div>
       );
     };
     if (value === 'NV') return status('yellow');
     if (value === 'V') return status('green');
+    if (value === 'A') return status('red');
     return value;
   };
 

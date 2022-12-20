@@ -1,24 +1,29 @@
 import { useState, useEffect } from 'react';
 import { getInstrumentById } from '../api/instrument';
 import { getInstrumentDisponibility } from '../api/reservation';
-import { getUserById } from '../api/user';
+import { validateOrNotInstrument } from '../api/instrument';
 
-export default function useAdminVAlidation(instrumentToValidate) {
+export default function useAdminVAlidation(
+  instrumentToValidate,
+  fn1,
+  setItemsNumber
+) {
   const [showModalAdmin, setShowModalAdmin] = useState(false);
   const [instrumentInfos, setInstrumentInfos] = useState([]);
   const [schedule, setSchedule] = useState([]);
-  const [userInfos, setUserInfos] = useState([]);
   const openModalAdmin = () => setShowModalAdmin(true);
   const closeModalAdmin = () => setShowModalAdmin(false);
 
-  const handleValidation = () => null;
-  const handleDeny = () => null;
+  const handleValidation = (action, id) =>
+    validateOrNotInstrument(action, id).then(() => fn1().then(setItemsNumber));
+
+  const handleDeny = (action, id) =>
+    validateOrNotInstrument(action, id).then(() => fn1().then(setItemsNumber));
 
   useEffect(() => {
     if (instrumentToValidate) {
       getInstrumentById(instrumentToValidate.id).then(setInstrumentInfos);
       getInstrumentDisponibility(instrumentToValidate.id).then(setSchedule);
-      // getUserById(instrumentToValidate.owner_id).then(setUserInfos);
     }
   }, [instrumentToValidate]);
 
@@ -29,7 +34,6 @@ export default function useAdminVAlidation(instrumentToValidate) {
     showModalAdmin,
     instrumentInfos,
     schedule,
-    userInfos,
     handleDeny,
   };
 }

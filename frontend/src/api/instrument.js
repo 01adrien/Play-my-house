@@ -157,3 +157,11 @@ export async function uploadPicture(body) {
     },
   });
 }
+
+export async function validateOrNotInstrument(action, id) {
+  const post = new FormData();
+  post.append('action', action);
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/admin_validation`, post);
+  return res.data;
+}

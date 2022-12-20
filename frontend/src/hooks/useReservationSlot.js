@@ -131,21 +131,29 @@ export default function useReservationSlot() {
         const timelineObject = days[day].reduce(timelineReducer, {});
         const timelineArray = Object.keys(timelineObject);
         timelineObject[timelineArray[0]] = 1;
+        const lastHour = parseInt(timelineArray[timelineArray.length - 1]);
+        if (lastHour !== 23) {
+          timelineArray.push(
+            parseInt(timelineArray[timelineArray.length - 1]) + 1
+          );
+        }
         timelineArray.forEach((h, i) => {
           if (i > 1 && parseInt(h) - 1 !== parseInt(timelineArray[i - 1])) {
+            timelineObject[parseInt(timelineArray[i - 1]) + 1] = slotNumber;
             slotNumber++;
             timelineObject[timelineArray[i]] = slotNumber;
           } else {
             timelineObject[timelineArray[i]] = slotNumber;
           }
         });
+        console.log(timelineObject);
         const data = {
           ...timelineScheme,
           ...timelineObject,
           total_hours: totalHours,
         };
-        const { id } = await createTimeline(data);
-        setTimelines((prev) => ({ ...prev, [day]: id }));
+        //const { id } = await createTimeline(data);
+        //setTimelines((prev) => ({ ...prev, [day]: id }));
       }
     });
     resetHour();
