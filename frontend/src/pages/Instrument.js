@@ -6,7 +6,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { HiOutlineArrowCircleDown } from 'react-icons/hi';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { getDispoSlotsByDay, getTimelineByDay } from '../api/reservation';
 import { getUserById } from '../api/user';
 import {
   DatePickerBtn,
@@ -15,7 +14,6 @@ import {
   isDispoDay,
   highlightDispoDay,
   daysTraduction,
-  DateNumToStr,
 } from '../calendar/DatePickerUtils';
 import { useDatePicker } from '../hooks/useDatePicker';
 import BasicButton from '../components/button/BasicButton';
@@ -29,9 +27,7 @@ import useProfilePicture from '../hooks/useProfilePicture';
 import Footer from '../components/Footer';
 import { user } from '../store/user';
 import { compose } from '../utils';
-import { makeErrorToast } from '../utils';
 import ModalReservation from '../components/modal/ModalReservation';
-import format from 'date-fns/format';
 registerLocale('fr', fr);
 
 const PictureWithCarouselAndLoading = compose(
@@ -46,11 +42,6 @@ export default function Instrument() {
   const profile = useRecoilValue(user);
   const location = useLocation();
   const [owner, setOwner] = useState([]);
-  const [timelineDay, setTimelineDay] = useState({});
-  const [notDispoSlots, setNotDispoSlots] = useState('');
-  const [noDispo, setNoDispo] = useState([]);
-  const [openReservationModal, seTopenReservationModal] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [refreshResa, setRefreshResa] = useState(false);
   const { loading, pictures } = useCarousel(id);
   const { avatar, avatarLoading } = useProfilePicture(
@@ -66,20 +57,16 @@ export default function Instrument() {
     setSelectedMonth,
     selectedYear,
     setSelectedYear,
+    timelineDay,
+    noDispo,
+    selectedDate,
+    handleSelectDate,
+    setOpenReservationModal,
+    openReservationModal,
+    handleDayHover,
+    notDispoSlots,
+    setNotDispoSlots,
   } = useDatePicker(id, refreshResa);
-
-  function handleDayHover(day) {
-    const formatDay = day.toLocaleDateString();
-    if (NotEmptyDays.includes(formatDay)) {
-      getDispoSlotsByDay(id, day).then((slots) => {
-        console.log(slots);
-        return setNotDispoSlots({
-          date: formatDay,
-          slots: slots,
-        });
-      });
-    }
-  }
 
   function dayStyle(day) {
     return highlightDispoDay(
@@ -107,24 +94,6 @@ export default function Instrument() {
     return isDispoDay(day, arrayDays, notDispoDays, selectedMonth);
   }
 
-  function handleSelectDate(day) {
-    if (!profile) return makeErrorToast({}, "Connectez-vous d'abord");
-    if (profile.role !== 'user')
-      return makeErrorToast(
-        {},
-        'Vous devez vous connecter en "USER" pour reserver un creneau..'
-      );
-    setTimelineDay({});
-    setSelectedDate('');
-    setNoDispo({});
-    getDispoSlotsByDay(id, day).then(setNoDispo);
-    const dayFormated = format(day, 'yyyy-MM-dd');
-    setSelectedDate(dayFormated);
-    getTimelineByDay(id, day)
-      .then(setTimelineDay)
-      .then(() => seTopenReservationModal(true));
-  }
-
   useEffect(() => {
     getUserById(location.state.owner_id).then(setOwner);
   }, [id]);
@@ -132,6 +101,7 @@ export default function Instrument() {
   return (
     <Layout>
       <div className="w-[100%] flex flex-col items-center justify-center mt-6">
+        <p className="text-lg">{location.state.instrumentName.toUpperCase()}</p>
         <div className="flex flex-col justify-around mt-8 max-w-[700px] w-[60%]">
           <div
             className={`flex sm:flex-col md:flex-col lg:flex-row xl:flex-row justify-between items-center xs:flex-col 2xs:flex-col 3xs:flex-col`}
@@ -198,11 +168,11 @@ export default function Instrument() {
             {notDispoSlots?.slots?.txt.length > 0 && (
               <div className="text-sm w-full flex justify-center text-center items-center py-2">
                 <p className="pr-2 text-base">⚠️</p>
-                <p className="text-red-600 pr-2 ">
+                {/* <p className="text-red-600 pr-2 ">
                   {notDispoSlots.slots.txt.map((x) => (
-                    <span key={x}>{x + ' '}</span>
+                    <span >{1}</span>
                   ))}
-                </p>
+                </p> */}
                 <p>non disponible(s)</p>
               </div>
             )}
@@ -248,7 +218,7 @@ export default function Instrument() {
         <ModalReservation
           instrument={location.state}
           selectedDate={selectedDate}
-          onClose={() => seTopenReservationModal(false)}
+          onClose={() => setOpenReservationModal(false)}
           noDispo={JSON.stringify(noDispo)}
           timeline={timelineDay}
         />

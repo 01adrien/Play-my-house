@@ -26,17 +26,17 @@
 
         public static function get_by_ID($post) 
         {
-            $query = "SELECT * FROM `". static::get_table() ."`WHERE id = :id";
+            $query = "SELECT * FROM `". static::get_table() ."`WHERE id =:id";
             $stmt =  \My_class\App::get_DB()->prepare($query, $post, null, true);
             if($stmt) return $stmt;
             return 'ID incorrect';
         }
-
+        
         public static function delete($post) 
-        {
-            $query = "DELETE FROM `". static::get_table() ."`WHERE id = :id";
-            $stmt =  \My_class\App::get_DB()->prepare($query, $post);
-            if ($stmt) return true;
+        {   
+            $query = "DELETE FROM `". static::get_table() ."` WHERE id = :id";
+            $stmt =  \My_class\App::get_DB()->prepare($query, $post, null, true);
+            if ($stmt->result) return $stmt;
             return 'ID incorrect';
         }
 
@@ -45,7 +45,7 @@
             $params = '';
             foreach ($post as $key => $value) 
             {
-                $params .= $key.' = :'.$key.', ';
+                $params .= strval($key) .' = :'.$key.', ';
             }
             $params = rtrim($params, ', ');
             $query = "INSERT INTO " . static::get_table() . " SET " . $params;
@@ -53,9 +53,10 @@
             {
                 $query = "UPDATE " . static::get_table() . " SET " . $params . " WHERE id = :id";
             }
+
             $stmt = \My_class\App::get_DB()->prepare($query, (array)$post);
-            if ($stmt) return $stmt;
-            return 'erreur';
+            if ($stmt->result) return $stmt;
+            return (object)['message' => 'erreur creation / modification'];
         }
 
         public static function find_by(array $post, $uniq) 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, Checkbox } from 'flowbite-react';
 import Spinner from '../icons/Spinner';
 import { SiApplemusic } from 'react-icons/si';
@@ -7,8 +7,10 @@ import usePagination from '../../hooks/usePagination';
 import Pagination from '../Pagination';
 import BasicButton from '../button/BasicButton';
 import ModalDelete from '../modal/ModalDelete';
+import ModalAdminValidation from '../modal/ModalAdminValidation';
 import { useDeleteItems, viewTolabel } from '../../hooks/useDeleteItems';
 import useMediaQuery from '../../hooks/useMediaQuery';
+import useAdminVAlidation from '../../hooks/useAdminValidation';
 
 export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
   const {
@@ -30,20 +32,41 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
     isChecked,
   } = useDeleteItems(view, fn1, setItemsNumber);
 
+  const [instrumentToValidate, setinstrumentToValidate] = useState(null);
+
+  const {
+    openModalAdmin,
+    closeModalAdmin,
+    showModalAdmin,
+    instrumentInfos,
+    schedule,
+    userInfos,
+    handleDeny,
+    handleValidation,
+  } = useAdminVAlidation(instrumentToValidate, fn1, setItemsNumber);
+
   const isMobile = useMediaQuery('(max-width: 700px)');
+
+  function handleSelectInstrument(instrument) {
+    if (view === 'ADMIN_VALIDATION') {
+      setinstrumentToValidate(instrument);
+      openModalAdmin();
+    }
+  }
 
   const displayStatus = (value) => {
     const status = (color) => {
       return (
         <div className="w-full h-full flex justify-center items-center">
           <div
-            className={`w-[10px] h-[10px] rounded-full bg-${color}-400`}
+            className={`w-[10px] h-[10px] rounded-full bg-${color}-600`}
           ></div>
         </div>
       );
     };
     if (value === 'NV') return status('yellow');
     if (value === 'V') return status('green');
+    if (value === 'A') return status('red');
     return value;
   };
 
@@ -93,19 +116,26 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
                 ))}
             </Table.Head>
             <Table.Body className="divide-y">
+              <Table.Row></Table.Row>
               {data?.map((d) => (
                 <Table.Row
                   key={d.id}
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  onClick={() => handleSelectInstrument(d)}
                 >
-                  <Table.Cell key={d.id} className="!focus:ring-0 !p-4 text-sm">
-                    <Checkbox
+                  {view !== 'ADMIN_VALIDATION' && (
+                    <Table.Cell
                       key={d.id}
-                      checked={isChecked(d, view)}
-                      onChange={(e) => handleSelectItem(e, d)}
-                      className="!focus:ring-0"
-                    />
-                  </Table.Cell>
+                      className="!focus:ring-0 !p-4 text-sm"
+                    >
+                      <Checkbox
+                        key={d.id}
+                        checked={isChecked(d, view)}
+                        onChange={(e) => handleSelectItem(e, d)}
+                        className="!focus:ring-0"
+                      />
+                    </Table.Cell>
+                  )}
                   {view === 'OWNER_INSTRUMENT' && (
                     <Table.Cell className="text-center">
                       <FiEdit className="text-center" />
@@ -131,6 +161,17 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
               onConfirm={handleConfirm}
               onClose={closeModal}
               label={viewTolabel[view]}
+            />
+          )}
+          {showModalAdmin && (
+            <ModalAdminValidation
+              onClose={closeModalAdmin}
+              onConfirm={handleValidation}
+              instrument={instrumentToValidate}
+              instrumentInfos={instrumentInfos}
+              schedule={schedule}
+              userInfos={userInfos}
+              onDeny={handleDeny}
             />
           )}
           {itemsNumber > 12 && (

@@ -4,8 +4,9 @@ import { logout } from '../api/auth';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import BaseTable from '../components/tables/BaseTable';
+import InProgress from '../components/InProgress';
 import UserProfile from '../components/UserProfile';
-import useMediaQuery from '../hooks/useMediaQuery';
+import AddInstrumentForm from '../components/form/AddInstrumentForm';
 import { user } from '../store/user';
 import { getUserAdmin, getUserCount } from '../api/user';
 import {
@@ -13,6 +14,8 @@ import {
   getInstrumentCount,
   getOwnerInstrument,
   getOwnerCount,
+  getCountToValidate,
+  getInstrumentToValidate,
 } from '../api/instrument';
 import {
   getUserReservation,
@@ -32,7 +35,6 @@ export default function User() {
   const setItemsToDelete = useSetRecoilState(listToDelete);
   const [profile, setProfile] = useRecoilState(user);
   const [activeHeading, setActiveHeading] = useState('Details du compte');
-  const isMobile = useMediaQuery('(max-width: 640px)');
   const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
   const disconnect = () => {
@@ -76,7 +78,7 @@ export default function User() {
       />
     ),
     'Details du compte': <UserProfile />,
-    Messages: 'Mes messages',
+    Messages: <InProgress />,
     Deconnexion: '',
   };
 
@@ -111,8 +113,9 @@ export default function User() {
         resaStatus={0}
       />
     ),
+    'Ajout instrument': <AddInstrumentForm />,
     'Details du compte': <UserProfile />,
-    Messages: 'Mes messages',
+    Messages: <InProgress />,
     Deconnexion: '',
   };
 
@@ -133,9 +136,17 @@ export default function User() {
         title="Tous les instruments"
       />
     ),
-    Planning: 'planning',
+    Validation: (
+      <BaseTable
+        fn1={getCountToValidate}
+        fn2={getInstrumentToValidate}
+        view="ADMIN_VALIDATION"
+        title="Instruments a valider"
+      />
+    ),
+    Planning: <InProgress />,
     'Details du compte': <UserProfile />,
-    Messages: 'Mes messages',
+    Messages: <InProgress />,
     Deconnexion: '',
   };
 
@@ -157,10 +168,10 @@ export default function User() {
             />
           }
         </div>
-        <div className=" w-[85%] h-full">
+        <div className=" w-[85%] h-full max-w-[1400px]">
           <div className="flex justify-around w-[100%] h-[100%]">
             <div
-              className={`flex flex-col border-r-2 xs:shadow-2xl 2xs:shadow-2xl 3xs:shadow-2xl bg-white xs:z-20 2xs:z-20 3xs:z-20 border-border_color w-52 min-w-[200px] xs:h-[100vh] 2xs:h-[100vh] 3xs:h-[100vh] 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0 ${
+              className={`flex flex-col min-h-[70vh] border-r-2 xs:shadow-2xl 2xs:shadow-2xl 3xs:shadow-2xl bg-white xs:z-20 2xs:z-20 3xs:z-20 border-border_color w-52 min-w-[200px] xs:h-[100vh] 2xs:h-[100vh] 3xs:h-[100vh] 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0 ${
                 !openSettings && 'xs:hidden 2xs:hidden 3xs:hidden'
               }`}
             >
@@ -201,7 +212,7 @@ export default function User() {
                 );
               })}
             </div>
-            <div className=" w-[100%] flex justify-center h-[100%] max-w-[1000px]">
+            <div className=" w-[100%] flex justify-center h-[100%] max-w-[1000px] mb-8">
               <div className="w-[90%] h-[100%]">{headings[activeHeading]}</div>
             </div>
           </div>

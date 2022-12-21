@@ -31,6 +31,11 @@ export async function getByTypeName(name, data, offset, limit) {
   return res.data;
 }
 
+export async function getAllFamily() {
+  const res = await AXIOS.get(`/instrument/get_all_family`);
+  return res.data;
+}
+
 export async function getAllBrand() {
   const res = await AXIOS.get(`/instrument/get_all_brand`);
   return res.data;
@@ -71,6 +76,13 @@ export async function getCountByTypeName(name) {
   return count;
 }
 
+export async function getInstrumentById(id) {
+  const post = new FormData();
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/get_by_id`, post);
+  return res.data;
+}
+
 export async function getAllPictureForOne(id) {
   const post = new FormData();
   post.append('id', id);
@@ -84,6 +96,20 @@ export async function getInstrumentAdmin(offset, limit) {
   post.append('limit', limit);
   const res = await AXIOS.post(`/instrument/get_admin_data`, post);
   return res.data;
+}
+
+export async function getInstrumentToValidate(offset, limit) {
+  const post = new FormData();
+  post.append('offset', offset);
+  post.append('limit', limit);
+  const res = await AXIOS.post(`/instrument/get_instrument_to_validate`, post);
+  return res.data;
+}
+
+export async function getCountToValidate() {
+  const res = await AXIOS.post(`/instrument/get_count_to_validate`);
+  const [count] = Object.values(res.data);
+  return count;
 }
 
 export async function deleteInstrument(id) {
@@ -109,4 +135,33 @@ export async function getOwnerCount(id) {
   const res = await AXIOS.post(`/instrument/get_count_by_owner`, post);
   const [count] = Object.values(res.data);
   return count;
+}
+
+export async function createInstrument(body) {
+  const post = new FormData();
+  Object.keys(body).forEach((key) => {
+    post.append(key, body[key]);
+  });
+  const res = await AXIOS.post(`/instrument/create_instrument`, post);
+  return res.data;
+}
+
+export async function uploadPicture(body) {
+  const post = new FormData();
+  Object.keys(body).forEach((key) => {
+    post.append(key, body[key]);
+  });
+  return await AXIOS.post(`/instrument/upload_picture`, post, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}
+
+export async function validateOrNotInstrument(action, id) {
+  const post = new FormData();
+  post.append('action', action);
+  post.append('id', id);
+  const res = await AXIOS.post(`/instrument/admin_validation`, post);
+  return res.data;
 }

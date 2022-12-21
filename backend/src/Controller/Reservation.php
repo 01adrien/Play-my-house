@@ -18,11 +18,11 @@
                     $id['id'] = self::formatdata(['id' => $val], 'id', \Model\Table::P_INT);
                     $timeLine = \Model\Timeline_day::get_by_ID($id);
                     unset($timeLine->id);
-                    unset($timeLine->total_hours);
+                    unset($timeLine->_total_hours);
                     foreach($timeLine as $k => $v)
                     {   
                         if ((int)$v > 0){
-                            $data[$day][$v][] = $k ;
+                            $data[$day][$v][] = str_replace('_', '',$k) ;
                         }
                     }
                 }                
@@ -34,7 +34,7 @@
                         if (count($value) === 2) 
                         {
                             if (!isset($final_data[$day])) {
-                                $final_data[$day] = $value[0].'h-'.$value[1] . "h | ";
+                                $final_data[$day] = $value[0].'h-'.$value[1]. "h | ";
                             } else {
                                 $final_data[$day] .= $value[0].'h-'.$value[1] . "h | ";
                             }
@@ -66,7 +66,7 @@
                 $attr = [];
                 $attr['id'] = self::formatdata($resa, $resa['day'], \Model\Table::P_INT );
                 $timeline = \Model\Timeline_day::get_by_ID($attr);
-                $total_slots = $timeline->total_hours;
+                $total_slots = $timeline->_total_hours;
                 $array = [];
                 $array['day'] = $resa['date'];
                 $array['id'] = $post['id'];
@@ -77,21 +77,24 @@
             return $reservations;
         }
 
-        public function get_dispo_slots_by_day($post) {          
-            // $date = date_create($post['day']);
+        public function get_dispo_slots_by_day($post) 
+        {          
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $attr['day'] = self::formatdata($post, 'day', \Model\Table::P_STRING);
             $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
             $no_dispo_txt = [];
             $no_dispo_count = 0;
-            $test = [];
+            $temp_array_check = [];
+            $array_check = [];
             $slots_chunk = [];
+
             foreach ($day_resas as $resa)
             {   
                 $resa = (array)$resa;
                 $no_dispo_count += (int)$resa['reservation_slot'];
-                $no_dispo_txt[] = $resa['start']."h-".$resa['end']."h";
-                $test[$resa['slot_num']] .= implode(',', range((int)$resa['start'], (int)$resa['end'])) . ',';
+                $no_dispo_txt[] = (int)$resa['start'];
+                $no_dispo_txt[] = (int)$resa['end'];
+                $temp_array_check[$resa['slot_num']] .= implode(',', range((int)$resa['start'], (int)$resa['end'])) . ',';
                 $temp = range((int)$resa['start'], (int)$resa['end']);
                 if (count($temp) === 2) $slots_chunk[] = $temp;
                 else {
@@ -99,14 +102,18 @@
                     foreach($temp as $t) $slots_chunk[] = [$t, $t + 1];
                 }
             }
-            $data = [];
-            foreach ($test as $k => $v) {
+            
+            sort($no_dispo_txt);
+
+            foreach ($temp_array_check as $k => $v) 
+            {
                 $v = \substr($v, 0, -1);
-                $data[$k] = explode(',', $v);
-                $data[$k] = array_map('intval', $data[$k]);
+                $array_check[$k] = explode(',', $v);
+                $array_check[$k] = array_map('intval', $array_check[$k]);
             }
-            return ['txt' => $no_dispo_txt, 'count' => $no_dispo_count,
-                    'arrayCheck' => $data, 'slotsChunk' => $slots_chunk];
+
+            return ['txt' => array_chunk($no_dispo_txt, 2), 'count' => $no_dispo_count,
+                    'arrayCheck' => $array_check, 'slotsChunk' => $slots_chunk];
             
         }
 
@@ -121,15 +128,20 @@
 
         public static function get_timeline_by_day($post)
         {
-            // $date = date_create($post['day']);
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $instru = \Model\Instrument::get_by_ID($attr);
             $t['id'] = self::formatdata((array)$instru, 'timeline_id_'.$post['day_name'], \Model\Table::P_INT);
             $time = \Model\Timeline_day::get_by_ID($t);
-            unset($time->total_hours);
+            unset($time->_total_hours);
             unset($time->id);
-            foreach($time as $k => $v) if (!$v) unset($time->$k);
-            return $time;
+            $data = [];
+            foreach($time as $k => $v)
+            {   
+                //if (!$v) unset($time->$k);
+                if ($v) $data[str_replace('_',"",$k)] = $v;
+                
+            } 
+            return $data;
         }
 
         public static function get_user_reservation($post)
@@ -148,7 +160,7 @@
                     'id' => $r['id'], 'date' => $r['date'], 'jour' => self::translate($r['day']) , 
                     'horaires' => $r['start'].'h - '.$r['end'].'h', 'instrument' => $instrument['name'], 
                     'nom' => $owner[0]->name, "adresse" => $owner[0]->address, 
-                    'ville' => $owner[0]->city.' '.$owner[0]->CP, 'téléphone' => $owner[0]->telephone
+                    'ville' => $owner[0]->city, 'téléphone' => $owner[0]->telephone
                 ];
             }
             return $data;
@@ -208,6 +220,32 @@
             
 
             return \Model\Reservation::create_update($attr,'CREATE');
+        }
+
+        public static function create_get_timeline($post) 
+        {
+            $attr = [];
+            foreach ($post as $k => $v) 
+            {   
+                $attr['_'.$k] = self::formatdata($post, $k, \Model\Table::P_INT);
+            }
+            $timeline_exist = \Model\Timeline_day::find_timeline($attr);
+            
+            if ($timeline_exist) 
+            {
+                return $timeline_exist[0];
+                exit();
+            } 
+            
+            $timeline =  \Model\Timeline_day::create_update($attr, 'CREATE');
+            if ($timeline->id)
+            {
+                return $timeline; 
+                exit();
+            }
+            
+            return false;
+
         }
     }
 ?>

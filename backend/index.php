@@ -19,7 +19,7 @@ define('CONFIG_PATH', __DIR__);
 
 $router = new AltoRouter();
 
-$router->map('GET', '/', function () { echo  $_SERVER['HTTP_ORIGIN'] ; });
+$router->map('GET', '/', function () { echo 'ok' ; });
 
 
 $router->map('GET', '/[*:controller]/[*:function]', function ($controller, $function) {

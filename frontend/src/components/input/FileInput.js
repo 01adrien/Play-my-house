@@ -1,6 +1,10 @@
-import React from "react";
+import React from 'react';
 
-export default function FileInput({ label = "", setSelectedFile }) {
+export default function FileInput({
+  label = '',
+  setSelectedFile,
+  multiple = '',
+}) {
   return (
     <div className="w-[60%]">
       <label
@@ -14,9 +18,13 @@ export default function FileInput({ label = "", setSelectedFile }) {
         id="multiple_files"
         type="file"
         accept="image/jpeg"
-        multiple=""
+        multiple={multiple}
         required
-        onChange={(e) => setSelectedFile(e.target.files[0])}
+        onChange={(e) => {
+          !multiple
+            ? setSelectedFile(e.target.files[0])
+            : setSelectedFile((prev) => [...prev, e.target.files[0]]);
+        }}
       />
     </div>
   );

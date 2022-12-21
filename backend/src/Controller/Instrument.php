@@ -6,14 +6,26 @@
     {
 
         public static function delete($post)
-        {
+        {   
+            $msg = (object)['status' => 'error', 'msg' => 'probleme de suppression'];
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\Instrument::delete($attr);
+            \Model\Instrument_picture::delete_pictures($attr);
+            $delete = \Model\Instrument::delete($attr);
+            if ($delete->result) {
+                $msg = (object)['status' => 'succes', 'msg' => 'suppression effectuée'];
+            }
+            return $msg;
         }
 
         public static function get_count() 
         {
             return \Model\Instrument::get_count();
+        }
+
+        public static function get_by_id($post)
+        {
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            \Model\Instrument::get_by_ID($attr);
         }
 
         public static function get_ten_newest()
@@ -167,10 +179,27 @@
             return $types;
         }
 
+        public static function get_all_family()
+        {
+            return (array)\Model\Instrument_family::get_all();
+        }
+
+
         public static function get_admin_data($post)
         {
-            return \Model\Instrument::get_admin_data($post['offset'], $post['limit']);
+            return \Model\Instrument::get_admin_data($post['offset'], $post['limit'], 'ALL');
         }
+
+        public static function get_count_to_validate()
+        {
+            return \Model\Instrument::get_count_by([], 'TO_VALIDATE');
+        }
+
+        public static function get_instrument_to_validate($post)
+        {
+            return  \Model\Instrument::get_admin_data($post['offset'], $post['limit'], 'TO_VALIDATE');
+        }
+
 
         public static function get_owner_instrument($post)
         {   
@@ -182,6 +211,45 @@
         {
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             return \Model\Instrument::get_count_by_owner($attr);
+        }
+
+        public static function upload_picture($post) 
+        {
+            $ext = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+            if ($ext === 'jpeg' || $ext == 'jpg') 
+            {
+                return \Controller\Picto::upload_picture_instrument();
+            }
+            
+        }
+
+        public static function create_instrument($post)
+        {
+            $attr = [];
+            $attr['owner_id'] = self::formatdata($post, 'ownerId', \Model\Table::P_INT);
+            $attr['family_id'] = self::formatdata($post, 'familyId', \Model\Table::P_INT);
+            $attr['type_id'] = self::formatdata($post, 'typeId', \Model\Table::P_INT);
+            $attr['brand_id'] = self::formatdata($post, 'brandId', \Model\Table::P_INT);
+            $attr['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
+            $attr['description'] = self::formatdata($post, 'description', \Model\Table::P_STRING);
+            $attr['timeline_id_monday'] = self::formatdata($post, 'timelineIdMonday', \Model\Table::P_INT);
+            $attr['timeline_id_tuesday'] = self::formatdata($post, 'timelineIdTuesday', \Model\Table::P_INT);
+            $attr['timeline_id_wednesday'] = self::formatdata($post, 'timelineIdWednesday', \Model\Table::P_INT);
+            $attr['timeline_id_thursday'] = self::formatdata($post, 'timelineIdThursday', \Model\Table::P_INT);
+            $attr['timeline_id_friday'] = self::formatdata($post, 'timelineIdFriday', \Model\Table::P_INT);
+            $attr['timeline_id_saturday'] = self::formatdata($post, 'timelineIdSaturday', \Model\Table::P_INT);
+            $attr['timeline_id_sunday'] = self::formatdata($post, 'timelineIdSunday', \Model\Table::P_INT);
+
+            return \Model\Instrument::create_update($attr, 'CREATE');
+        }
+
+        public static function admin_validation($post)
+        {
+            $attr = [];
+            $attr['statut'] = self::formatdata($post, 'action', \Model\Table::P_STRING);
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::create_update($attr, 'UPDATE');
+
         }
     }
 

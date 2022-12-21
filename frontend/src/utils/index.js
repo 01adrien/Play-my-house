@@ -19,6 +19,7 @@ export const isEqual = (a, b) => a === b;
 
 const makeToast = (type) => (styles, msg) => {
   return toast(msg, {
+    duration: 2500,
     style: {
       border:
         styles?.border || type === 'succes'
