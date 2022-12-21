@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { deleteInstrument } from '../api/instrument';
 import { deleteUser } from '../api/user';
 import { deleteReservation } from '../api/reservation';
-import { makeSuccesToast } from '../utils';
-import { listToDelete } from '../store/user';
-import { useRecoilState } from 'recoil';
+import { makeErrorToast, makeSuccesToast } from '../utils';
+import { listToDelete, user } from '../store/user';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 export const viewTolabel = {
   ADMIN_USERS: 'utilisateur(s)',
@@ -20,10 +20,12 @@ const viewToFunction = {
   ADMIN_INSTRUMENTS: deleteInstrument,
   USER_RESERVATION: deleteReservation,
   OWNER_RESERVATION: deleteReservation,
+  OWNER_INSTRUMENT: deleteInstrument,
 };
 
 export function useDeleteItems(view, fn1, setItemsNumber) {
   const [itemsToDelete, setItemsToDelete] = useRecoilState(listToDelete);
+  const profile = useRecoilValue(user);
   const [showModal, setShowModal] = useState(false);
   const openModal = () => setShowModal(true);
 
@@ -44,9 +46,12 @@ export function useDeleteItems(view, fn1, setItemsNumber) {
   }
 
   function handleConfirm() {
-    itemsToDelete.forEach((item) => viewToFunction[view](item.id));
-    makeSuccesToast({}, 'suppression effectuée!');
-    fn1().then(setItemsNumber);
+    itemsToDelete.forEach(async (item) => {
+      const res = await viewToFunction[view](item.id);
+      if (res.status == 'succes') makeSuccesToast({}, res.msg);
+      if (res.status == 'error') makeErrorToast({}, res.msg);
+    });
+    fn1(profile?.id).then(setItemsNumber);
     closeModal();
   }
 

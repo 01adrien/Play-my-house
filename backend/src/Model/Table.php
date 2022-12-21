@@ -26,17 +26,17 @@
 
         public static function get_by_ID($post) 
         {
-            $query = "SELECT * FROM `". static::get_table() ."`WHERE id = :id";
+            $query = "SELECT * FROM `". static::get_table() ."`WHERE id =:id";
             $stmt =  \My_class\App::get_DB()->prepare($query, $post, null, true);
             if($stmt) return $stmt;
             return 'ID incorrect';
         }
-
+        
         public static function delete($post) 
-        {
-            $query = "DELETE FROM `". static::get_table() ."`WHERE id = :id";
-            $stmt =  \My_class\App::get_DB()->prepare($query, $post);
-            if ($stmt->result) return true;
+        {   
+            $query = "DELETE FROM `". static::get_table() ."` WHERE id = :id";
+            $stmt =  \My_class\App::get_DB()->prepare($query, $post, null, true);
+            if ($stmt->result) return $stmt;
             return 'ID incorrect';
         }
 

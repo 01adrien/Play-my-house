@@ -34,7 +34,7 @@
                         if (count($value) === 2) 
                         {
                             if (!isset($final_data[$day])) {
-                                $final_data[$day] = $value[0].'h-'.$value[1] . "h | ";
+                                $final_data[$day] = $value[0].'h-'.$value[1]. "h | ";
                             } else {
                                 $final_data[$day] .= $value[0].'h-'.$value[1] . "h | ";
                             }
@@ -160,7 +160,7 @@
                     'id' => $r['id'], 'date' => $r['date'], 'jour' => self::translate($r['day']) , 
                     'horaires' => $r['start'].'h - '.$r['end'].'h', 'instrument' => $instrument['name'], 
                     'nom' => $owner[0]->name, "adresse" => $owner[0]->address, 
-                    'ville' => $owner[0]->city.' '.$owner[0]->CP, 'téléphone' => $owner[0]->telephone
+                    'ville' => $owner[0]->city, 'téléphone' => $owner[0]->telephone
                 ];
             }
             return $data;

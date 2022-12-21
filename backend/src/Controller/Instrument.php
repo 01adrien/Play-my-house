@@ -6,9 +6,15 @@
     {
 
         public static function delete($post)
-        {
+        {   
+            $msg = (object)['status' => 'error', 'msg' => 'probleme de suppression'];
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\Instrument::delete($attr);
+            \Model\Instrument_picture::delete_pictures($attr);
+            $delete = \Model\Instrument::delete($attr);
+            if ($delete->result) {
+                $msg = (object)['status' => 'succes', 'msg' => 'suppression effectuée'];
+            }
+            return $msg;
         }
 
         public static function get_count() 
@@ -19,7 +25,7 @@
         public static function get_by_id($post)
         {
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\Instrument::get_by_ID($attr);
+            \Model\Instrument::get_by_ID($attr);
         }
 
         public static function get_ten_newest()
@@ -235,6 +241,15 @@
             $attr['timeline_id_sunday'] = self::formatdata($post, 'timelineIdSunday', \Model\Table::P_INT);
 
             return \Model\Instrument::create_update($attr, 'CREATE');
+        }
+
+        public static function admin_validation($post)
+        {
+            $attr = [];
+            $attr['statut'] = self::formatdata($post, 'action', \Model\Table::P_STRING);
+            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::create_update($attr, 'UPDATE');
+
         }
     }
 

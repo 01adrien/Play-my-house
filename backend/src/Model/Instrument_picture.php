@@ -15,6 +15,17 @@
 
             return  \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
-    }
+
+        public static function delete_pictures($post)
+        {
+            $sql = "DELETE 
+                    FROM `".self::$table."` picture
+                    WHERE picture.`instrument_id` =:id";
+                    
+            return  \My_class\App::get_DB()->prepare($sql, $post, null, false);
+        }
+            
+    }        
+                
 
 ?>

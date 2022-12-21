@@ -85,7 +85,6 @@ export default function ModalReservation({
       end: endHour,
     };
     if (!validSlot || !validHour) return makeErrorToast({}, errorMsg);
-    console.log(body);
     createReservation(body)
       .then(() => makeSuccesToast({}, succesMsg))
       .catch(() => makeErrorToast({}, failureMsg));
@@ -129,7 +128,6 @@ export default function ModalReservation({
               {slots &&
                 Object.keys(slots).map((slot, i) => {
                   const arrayFromSet = [...slots[slot]];
-                  console.log(arrayFromSet);
                   if (arrayFromSet.length == 0) return;
                   const [lastH] = arrayFromSet.slice(-1);
                   const firstH = arrayFromSet[0];

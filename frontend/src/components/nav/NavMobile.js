@@ -35,7 +35,7 @@ export default function NavMobile({ profile, open }) {
     <AnimatePresence>
       <motion.div
         initial={{ width: 0 }}
-        animate={{ width: '80vw' }}
+        animate={{ width: '60vw' }}
         exit={{
           width: 0,
           transition: { delay: 0.7, duration: 0.3 },

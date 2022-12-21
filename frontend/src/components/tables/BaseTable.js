@@ -78,15 +78,13 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
           <div
             className={`flex justify-around w-full text-sm h-10 items-center mb-8`}
           >
-            {view !== 'ADMIN_VALIDATION' && (
-              <BasicButton
-                onClick={openModal}
-                width={isMobile ? '16' : '40'}
-                style="h-10 bg-red-600 hover:bg-red-700 hover:scale-105 text-xs"
-              >
-                <p className="self-center">supprimer</p>
-              </BasicButton>
-            )}
+            <BasicButton
+              onClick={openModal}
+              width={isMobile ? '16' : '40'}
+              style="h-10 bg-red-600 hover:bg-red-700 hover:scale-105 text-xs"
+            >
+              <p className="self-center">supprimer</p>
+            </BasicButton>
             <SiApplemusic className="text-2xl" />
             <p className={`${isMobile ? 'text-xs' : 'text-base'} text-thin`}>
               {itemsNumber + ' ' + viewTolabel[view]}
@@ -98,7 +96,7 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
             className="min-w-[500px] !focus:ring-0 mt-6"
           >
             <Table.Head className="sticky top-0">
-              {data.length & (view !== 'ADMIN_VALIDATION') ? (
+              {data.length ? (
                 <>
                   <Table.HeadCell className="text-center !p-4">
                     <p>🎶</p>
@@ -118,6 +116,7 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
                 ))}
             </Table.Head>
             <Table.Body className="divide-y">
+              <Table.Row></Table.Row>
               {data?.map((d) => (
                 <Table.Row
                   key={d.id}
