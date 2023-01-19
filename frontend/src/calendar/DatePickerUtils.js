@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import BasicButton from '../components/button/BasicButton';
 
-export const DatePickerBtn = React.forwardRef(({ value, onClick }, ref) => (
+export const DatePickerBtn = React.forwardRef(({ onClick }, ref) => (
   <div className="">
     <BasicButton
       ref={ref}

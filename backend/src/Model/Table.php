@@ -1,12 +1,9 @@
 <?php 
-
     namespace Model;
 
     abstract class Table 
     {
-
         protected static $table;
-
         const  P_NULL = 0; 
 	    const  P_INT = 1;  
 	    const  P_LOB = 3; 
@@ -29,7 +26,7 @@
             $query = "SELECT * FROM `". static::get_table() ."`WHERE id =:id";
             $stmt =  \My_class\App::get_DB()->prepare($query, $post, null, true);
             if($stmt) return $stmt;
-            return 'ID incorrect';
+            return false;
         }
         
         public static function delete($post) 
@@ -37,7 +34,7 @@
             $query = "DELETE FROM `". static::get_table() ."` WHERE id = :id";
             $stmt =  \My_class\App::get_DB()->prepare($query, $post, null, true);
             if ($stmt->result) return $stmt;
-            return 'ID incorrect';
+            return false;
         }
 
         public static function create_update($post, $action) 

@@ -1,21 +1,31 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{HTTP_HOST} !https://no-idea-web.fr
-RewriteCond %{HTTP_ORIGIN} !https://no-idea-web.fr
+RewriteRule . index.php [L]
 
-RewriteRule ^img/picto-01/(.+) ./public/pictures/picto-01/$1 [N]
-RewriteRule ^img/picto-02/(.+) ./public/pictures/picto-02/$1 [N]
-RewriteRule ^user/* index.php [N]
-RewriteRule ^instrument/* index.php [N]
-RewriteRule ^reservation/* index.php [N]
-RewriteRule ^user_picture/* index.php [L]
+SetEnvIf Origin "^http(s)?://(.+\.)?(127.0.0.1:1234|no-idea-web.fr)$" REQUEST_ORIGIN=$0
+Header always set Access-Control-Allow-Origin %{REQUEST_ORIGIN}e env=REQUEST_ORIGIN
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, Accept, Accept-Language, X-Authorization"
+Header set Access-Control-Allow-Credentials true
+
+Header always set X-Frame-Options "DENY"
+Header set X-XSS-Protection "1; mode=block"
+Header set Content-Security-Policy "default-src 'self'"
+Header set X-Content-Type-Options "nosniff"
+Header always edit Set-Cookie (.\*) "$1; SameSite=None; Secure"
+
+php_value session.use_strict_mode 1
+php_value upload_max_filesize 2M
+php_value post_max_size 2M
+php_value max_execution_time 100
+php_value max_input_time 100
 
 <FilesMatch "^\.">
 Order allow,deny
 Deny from all
 </FilesMatch>
 
- <Files ~ "\.log|json|lock|phar">
+<Files ~ "\.log|json|lock|phar|sql">
 Order allow,deny
 Deny from all
-</Files> 
+</Files>

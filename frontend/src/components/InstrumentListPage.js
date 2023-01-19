@@ -52,8 +52,8 @@ export default function InstrumentListPage({
           </div>
           <div className="flex flex-col h-full w-[100%]">
             <div className="flex flex-wrap justify-center h-fit mb-6  ">
-              {instruments.length ? (
-                instruments?.map((instrument) => {
+              {instruments?.length ? (
+                instruments.map((instrument) => {
                   return (
                     <InstrumentCard
                       key={instrument.id}

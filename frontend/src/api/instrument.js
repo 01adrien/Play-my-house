@@ -115,7 +115,7 @@ export async function getCountToValidate() {
 export async function deleteInstrument(id) {
   const post = new FormData();
   post.append('id', id);
-  const res = await AXIOS.post(`/instrument/delete`, post);
+  const res = await AXIOS.delete(`/instrument/delete`, post);
   return res.data;
 }
 

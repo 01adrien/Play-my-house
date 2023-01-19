@@ -91,16 +91,18 @@
             if ($user = \Controller\User::create_update($valid_user, 'CREATE')) 
             {   
                 $_SESSION['user_id'] = $user->id;
+                $_SESSION['timeout'] = new \DateTime();
                 return ['granted' => true];
             };
         }
-
+        
         public static function login($post) 
         {
             $post = self::sanitize_input($post);
             if ($is_register = \Model\User::is_register((array)$post)) 
             {
                 $_SESSION['user_id'] = $is_register['id'];
+                $_SESSION['timeout'] = new \DateTime();
                 return ['granted' => true];
             }
             return ['login_err' => true];
@@ -114,15 +116,19 @@
                 $user = \Model\User::find_by($id, true);
                 $picture_id['id'] = self::formatdata((array)$user, 'picture_id', \Model\Table::P_INT);
                 $picture = \Model\User_picture::find_by($picture_id, true);
-                return ['email' => $user->email, 'name' => $user->name, 'role' => $user->role, 'id' => $user->id, 'picture_id' => $picture->id, 'picture_name' => $picture->URI, ];
+                return [
+                    'email' => $user->email, 'name' => $user->name, 'role' => $user->role,
+                     'id' => $user->id, 'picture_id' => $picture->id, 'picture_name' => $picture->URI,
+                ];
             }   
         }
 
         public static function logout() 
         {   
+            session_gc();
             session_destroy();
 		    unset($_SESSION);
-		    setcookie("userId", null, -1, '/');
+		    //setcookie("userId", null, -1, '/');
         }
 }
 

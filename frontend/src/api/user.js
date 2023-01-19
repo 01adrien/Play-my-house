@@ -59,6 +59,6 @@ export async function getUserCount() {
 export async function deleteUser(id) {
   const post = new FormData();
   post.append('id', id);
-  const res = await AXIOS.post(`/user/delete`, post);
+  const res = await AXIOS.delete(`/user/delete`, post);
   return res.data;
 }

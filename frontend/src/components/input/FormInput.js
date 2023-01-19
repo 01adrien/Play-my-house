@@ -25,7 +25,7 @@ export default function FormInput({
         required={required}
         onChange={(e) => fn(e)}
         value={value}
-        maxlength="50"
+        maxLength="50"
       />
     </div>
   );

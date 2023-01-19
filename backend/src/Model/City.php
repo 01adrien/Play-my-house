@@ -5,7 +5,6 @@
     class City extends \Model\Table 
     {
         protected static $table = "city";
-
     }
 
 ?>

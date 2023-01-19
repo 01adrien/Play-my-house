@@ -13,7 +13,6 @@ import { RxHamburgerMenu } from 'react-icons/rx';
 export default function Header() {
   const [profile, setProfile] = useRecoilState(user);
   const [openNav, setOpenNav] = useState(false);
-
   return (
     <div className="h-46">
       <div className="w-full h-9 bg-main_color shadow-md"></div>

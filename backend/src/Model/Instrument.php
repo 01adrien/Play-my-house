@@ -1,5 +1,4 @@
 <?php 
-
     namespace Model;
 
     class Instrument extends \Model\Table 
@@ -26,7 +25,8 @@
                     LEFT JOIN `instruments_family` family ON family.`id` = instru.`family_id`
                     LEFT JOIN `instruments_type` type ON type.`id` = instru.`type_id`
                     LEFT JOIN `instruments_brand` brand ON brand.`id` = instru.`brand_id`
-                    LEFT JOIN `instruments_pictures` picture ON  picture.`instrument_id` = instru.`id` AND picture.`main_picture` = 1
+                    LEFT JOIN `instruments_pictures` picture ON  picture.`instrument_id` = instru.`id`
+                    AND picture.`main_picture` = 1
                     ".$where."
                     ORDER BY instru.`created` DESC LIMIT ".$limit." OFFSET ".$offset."";
 
@@ -139,3 +139,6 @@
     }
 
 ?>
+
+
+

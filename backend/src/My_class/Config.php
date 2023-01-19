@@ -19,7 +19,7 @@
             ];
            $this->PHP_ENV = $servers_address[$_SERVER['HTTP_ORIGIN']];
            if ($this->PHP_ENV) $this->config = require CONFIG_PATH . '/config/config.'.$this->PHP_ENV.'.php';
-           
+           else require CONFIG_PATH . '/forbidden.html';
         }
         
         public static function get_instance() 

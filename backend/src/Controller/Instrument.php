@@ -24,8 +24,9 @@
 
         public static function get_by_id($post)
         {
+            $attr = [];
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            \Model\Instrument::get_by_ID($attr);
+            return \Model\Instrument::get_by_ID($attr);
         }
 
         public static function get_ten_newest()

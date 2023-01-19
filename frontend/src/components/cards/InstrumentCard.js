@@ -34,7 +34,8 @@ export default function InstrumentCard({ instrument, style = '', link }) {
           />
         </div>
         <div
-          className={`flex justify-center border-b-2 border-r-2 border-l-2 border-border_color rounded-b sm:h-24 sm:w-64 sm:text-xs 2xs:text-sm 3xs:text-sm xs:h-14 xs:w-32 2xs:w-32 2xs:h-14 3sx:h-14 3xs:w-32`}
+          className={`flex justify-center border-b-2 border-r-2 border-l-2 border-border_color 
+          rounded-b sm:h-24 sm:w-64 sm:text-xs 2xs:text-sm 3xs:text-sm xs:h-14 xs:w-32 2xs:w-32 2xs:h-14 3sx:h-14 3xs:w-32`}
         >
           <div className="flex mt-3 flex-col justify-between items-center w-[85%] h-[80%]">
             <div>
