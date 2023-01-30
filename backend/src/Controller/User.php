@@ -51,7 +51,7 @@
             }
             $attr['role'] = self::formatdata($post, 'role', \Model\Table::P_STRING);
             $attr['email'] = self::formatdata($post, 'email', \Model\Table::P_STRING);
-            $action === "create" && $attr['picture_id'] = self::formatdata($post, 'picture_id', \Model\Table::P_STRING);
+            $action === "CREATE" && $attr['picture_id'] = self::formatdata($post, 'picture_id', \Model\Table::P_STRING);
             $attr['name'] = self::formatdata($post, 'name', \Model\Table::P_STRING);
             $attr['password'] = self::formatdata($post, 'password', \Model\Table::P_STRING);
             if (isset($post['id'])) $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
@@ -93,7 +93,7 @@
             $passwordRegex = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/";
             $nameRegex = "/^[a-zA-Z-' ]*$/";
 
-            if($post["newPassword"] && $post["newPasswordConfirm"])
+            if(isset($post["newPassword"]) && isset($post["newPasswordConfirm"]))
             {
                 if (!preg_match($passwordRegex, $post['newPassword']) || $post["newPassword"] != $post["newPasswordConfirm"])
                 {
@@ -124,8 +124,8 @@
             $email['email'] = self::formatdata($post, 'email', \Model\Table::P_STRING);
             $is_exists = \Model\User::email_check($email);
             if ($is_exists) return ['user_exists_err' => true];
-            // $picture_id = \Controller\User_picture::create(['URI' => self::DEFAULT_AVATAR]);
-            $valid_user['picture_id'] = 47;
+            $picture = \Controller\User_picture::create(['URI' => self::DEFAULT_AVATAR]);
+            $valid_user['picture_id'] = $picture->id;
             $valid_user['role'] = $post['role'];
             if ($user = \Controller\User::create_update($valid_user, 'CREATE')) 
             {   
