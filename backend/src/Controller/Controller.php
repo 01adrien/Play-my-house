@@ -36,7 +36,7 @@
 
         public static function regenerate_session()
         {
-            if($_SESSION['timeout'])
+            if(isset($_SESSION['timeout']))
             {
                 $diff = $_SESSION['timeout']->diff(new \DateTime());
                 $sec = $diff->s;

@@ -2,8 +2,18 @@ import React, { useState, useEffect } from 'react';
 import BasicButton from './button/BasicButton';
 import FormInput from './input/FormInput';
 import LoginErrors from './LoginErrors';
-import Spinner from './icons/Spinner';
-import { getPicture, uploadPicture } from '../api/user';
+import {
+  credentialsValidation,
+  isEqual,
+  makeSuccesToast,
+  makeErrorToast,
+} from '../utils';
+import {
+  getPicture,
+  uploadPicture,
+  modifyProfil,
+  getProfile,
+} from '../api/user';
 import FileInput from './input/FileInput';
 import { user } from '../store/user';
 import { useRecoilState } from 'recoil';
@@ -17,13 +27,35 @@ export default function UserProfile() {
   const [picture, setPicture] = useState({ src: null });
   const [loading, setLoading] = useState(false);
   const [pictureLoading, setPictureLoading] = useState(true);
-  const [credentialsErrors, setCredentialsErrors] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploadImg, setIsUploadImg] = useState(false);
-  const [credentials, setCredentials] = useState({});
+  const [credentialsErrors, setCredentialsErrors] = useState({});
   const [profile, setProfile] = useRecoilState(user);
 
-  const { name, email, picture_id, id, role, picture_name } = profile;
+  const {
+    name,
+    email,
+    picture_id,
+    id,
+    role,
+    picture_name,
+    telephone,
+    address,
+    city,
+  } = profile;
+
+  const [credentials, setCredentials] = useState({
+    id: parseInt(id),
+    name: name || '',
+    email: email || '',
+    telephone: telephone || '',
+    address: address || '',
+    city: city || '',
+    role: role || '',
+    newPassword: '',
+    newPasswordConfirm: '',
+  });
+
   useEffect(() => {
     getPicture(picture_id, picture_name).then(({ data }) => {
       setPicture({ src: data });
@@ -33,6 +65,42 @@ export default function UserProfile() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const {
+      name,
+      email,
+      role,
+      telephone,
+      address,
+      city,
+      newPassword,
+      newPasswordConfirm,
+    } = credentials;
+    setLoading(true);
+    setCredentialsErrors(credentialsValidation(credentials));
+    if (newPassword || newPasswordConfirm) {
+      if (
+        !newPassword ||
+        !newPasswordConfirm ||
+        !isEqual(newPassword, newPasswordConfirm)
+      ) {
+        setCredentialsErrors({ passwordMatch_err: true });
+        return setLoading(false);
+      }
+    }
+
+    modifyProfil(credentials).then((data) => {
+      if (data?.errors) setCredentialsErrors(data.errors);
+      if (data?.status === 'succes') {
+        setProfile(data?.user);
+        makeSuccesToast({}, data?.msg);
+      }
+      if (data?.status === 'fail') {
+        setProfile(data?.user);
+        makeErrorToast({}, data?.msg);
+      }
+
+      setLoading(false);
+    });
   }
 
   async function hamdleSubmitUpload(e) {
@@ -42,6 +110,7 @@ export default function UserProfile() {
     uploadPicture({ name, id, selectedFile, picture_id }).then(({ data }) => {
       setIsUploadImg(!isUploadImg);
       setProfile({ ...profile, ...data });
+      getProfile().then(setProfile);
       setPictureLoading(false);
     });
   }
@@ -55,50 +124,123 @@ export default function UserProfile() {
           className="w-[100%] max-w-[400px] min-w-[200px] mt-6"
         >
           <FormInput
-            required={false}
-            name="nom"
+            required={true}
+            name="Nom"
             type="text"
             id="name"
-            fn={(e) => {}}
-            value={name}
+            fn={(e) => {
+              setCredentialsErrors({});
+              setCredentials((prev) => ({
+                ...prev,
+                name: e.target.value,
+              }));
+            }}
+            value={credentials?.name || name}
           />
           <FormInput
-            required={false}
-            name="email"
+            required={true}
+            name="Email"
             type="email"
             id="email"
+            style={'bg-gray-50'}
             fn={(e) => {
               setCredentialsErrors({});
+              setCredentials((prev) => ({
+                ...prev,
+                email: e.target.value,
+              }));
             }}
-            value={email}
+            value={credentials?.email || email}
           />
+          {role === 'owner' && (
+            <div className="flex justify-between">
+              <FormInput
+                required={true}
+                name="Telephone"
+                type="text"
+                id="tel"
+                style={'w-[35%]'}
+                fn={(e) => {
+                  setCredentialsErrors({});
+                  setCredentials((prev) => ({
+                    ...prev,
+                    telephone: e.target.value,
+                  }));
+                }}
+                value={credentials.telephone || telephone}
+              />
+              <FormInput
+                required={true}
+                name="Ville"
+                type="text"
+                id="city"
+                style={'w-[55%]'}
+                fn={(e) => {
+                  setCredentialsErrors({});
+                  setCredentials((prev) => ({
+                    ...prev,
+                    city: e.target.value,
+                  }));
+                }}
+                value={credentials.city || city}
+              />
+            </div>
+          )}
+          {role === 'owner' && (
+            <FormInput
+              required={true}
+              name="Adresse"
+              type="text"
+              id="text"
+              fn={(e) => {
+                setCredentialsErrors({});
+                setCredentials((prev) => ({
+                  ...prev,
+                  address: e.target.value,
+                }));
+              }}
+              value={credentials.address || address}
+            />
+          )}
           <FormInput
             required={false}
-            name="mot de passe actuel"
+            name="Mot de passe actuel"
             type="password"
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
+              setCredentials((prev) => ({
+                ...prev,
+                password: e.target.value,
+              }));
             }}
-            value={credentials.email}
+            value={credentials.password}
           />
           <FormInput
             required={false}
-            name="nouveau mot de passe"
+            name="Nouveau mot de passe"
             type="password"
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
+              setCredentials((prev) => ({
+                ...prev,
+                newPassword: e.target.value,
+              }));
             }}
             value={credentials.newPassword}
           />
           <FormInput
             required={false}
-            name="confirmation nouveau mot de passe"
+            name="Confirmation nouveau mot de passe"
             type="password"
             id="password"
             fn={(e) => {
               setCredentialsErrors({});
+              setCredentials((prev) => ({
+                ...prev,
+                newPasswordConfirm: e.target.value,
+              }));
             }}
             value={credentials.newPasswordConfirm}
           />
@@ -108,10 +250,11 @@ export default function UserProfile() {
                 style={loading && 'border-2 border-slate-700 '}
                 type="submit"
               >
-                {loading ? <Spinner /> : <p>Enregistrer</p>}
+                {loading ? <span>...</span> : <p>Enregistrer</p>}
               </BasicButton>
             </div>
           </div>
+          {credentialsErrors && <LoginErrors errors={credentialsErrors} />}
         </form>
       </div>
       <form

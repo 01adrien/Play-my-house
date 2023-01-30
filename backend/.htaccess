@@ -4,7 +4,7 @@ RewriteRule . index.php [L]
 
 SetEnvIf Origin "^http(s)?://(.+\.)?(127.0.0.1:1234|no-idea-web.fr)$" REQUEST_ORIGIN=$0
 Header always set Access-Control-Allow-Origin %{REQUEST_ORIGIN}e env=REQUEST_ORIGIN
-Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Methods "GET, POST, PATCH, PUT, DELETE, OPTIONS"
 Header always set Access-Control-Allow-Headers "Content-Type, Authorization, Accept, Accept-Language, X-Authorization"
 Header set Access-Control-Allow-Credentials true
 
@@ -12,7 +12,7 @@ Header always set X-Frame-Options "DENY"
 Header set X-XSS-Protection "1; mode=block"
 Header set Content-Security-Policy "default-src 'self'"
 Header set X-Content-Type-Options "nosniff"
-Header always edit Set-Cookie (.\*) "$1; SameSite=None; Secure"
+Header always edit Set-Cookie (.\*) "$1; SameSite=Srict; Secure"
 
 php_value session.use_strict_mode 1
 php_value upload_max_filesize 2M

@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react';
 
 export default function LoginErrors({ errors }) {
   const msg = {
     password_err:
-      "Le mot de passe doit etre entre 6 et 20 characteres et contenir une majuscules et une minuscule",
-    name_err: "Le nom doit etre compose seulement de lettre",
-    passwordMatch_err: "Le mot de passe et sa confirmation sont differents",
-    email_err: "Email nom valide",
-    missing_err: "Formulaire incomplet",
-    user_exists_err: "Email existant",
-    login_err: "Email ou mot de passe non valide(s)",
+      'Le mot de passe doit etre entre 6 et 20 characteres et contenir une majuscules et une minuscule',
+    name_err: 'Le nom doit etre compose seulement de lettre',
+    passwordMatch_err: 'Le mot de passe et sa confirmation sont differents',
+    email_err: 'Email nom valide',
+    missing_err: 'Formulaire incomplet',
+    user_exists_err: 'Email existant',
+    login_err: 'Email ou mot de passe non valide(s)',
+    password_err_2: 'le mot de passe initial est invalide',
   };
   const err = Object.keys(errors);
   return (
