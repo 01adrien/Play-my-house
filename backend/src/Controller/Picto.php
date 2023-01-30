@@ -32,9 +32,9 @@
                     if ($old_name->URI !== 'default.png') unlink(self::USER_PATH.'/'.$old_name->URI);
                     rename($_FILES["file"]["name"], self::USER_PATH.'/'.$file_name);
                 } 
-               else return 'erreur upload'; 
+               else return false; 
             } 
-            else return 'erreur upload';
+            else return false;
             $post['URI'] = $file_name;
             $post['ext'] = pathinfo($file_name, PATHINFO_EXTENSION);
             $post['id'] = $_POST['picture_id'];

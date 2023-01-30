@@ -66,12 +66,16 @@
 
         public static function get_count()
         {
-            $sql = "SELECT COUNT(*)
+            $query = "SELECT COUNT(*)
                     FROM `".static::get_table()."`";
 
-            return \My_class\App::get_DB()->prepare($sql, [], null, true);
+            return \My_class\App::get_DB()->prepare($query, [], null, true);
         }
 
     }
 
 ?>
+
+
+
+

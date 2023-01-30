@@ -25,8 +25,8 @@
         public static function get_by_id($post)
         {
             $attr = [];
-            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\Instrument::get_by_ID($attr);
+            $attr['id'] = self::formatdata((array)$post, 'id', \Model\Table::P_INT);
+            return \Model\Instrument::get_instrument(0, 1, 'ONE', $attr);
         }
 
         public static function get_ten_newest()
@@ -34,10 +34,9 @@
             return \Model\Instrument::get_instrument(0, 10);
         }
 
-
         public static function get_all($post)
         {
-            return \Model\Instrument::get_instrument($post['offset'], $post['limit']);    
+            return \Model\Instrument::get_instrument($post->offset, $post->limit);    
         }
 
         public static function get_all_pictures_for_one($post) 
@@ -107,8 +106,10 @@
                 }
                 return $brands;
             } 
-            if ($post['data'] === 'INSTRUMENT') return \Model\Instrument::get_instrument($post['offset'], $post['limit'], 'FAMILY', $family_id);
-            
+            if ($post['data'] === 'INSTRUMENT') 
+            {
+                return \Model\Instrument::get_instrument($post['offset'], $post['limit'], 'FAMILY', $family_id);
+            }   
         }
 
         public static function get_by_type_name($post)

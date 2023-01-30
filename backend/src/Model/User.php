@@ -24,10 +24,10 @@
         {
             $sql = "SELECT
                     users.`id`,
-                    users.`name` nom,
+                    users.`name` name,
                     users.`email` email,
                     users.`telephone`,
-                    users.`address` adresse,
+                    users.`address` address,
                     users.`role`,
                     city.`name` ville
                     FROM `".self::$table."`

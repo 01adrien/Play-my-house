@@ -25,22 +25,16 @@
         { 
             if ($this->pdo === null)
             {
-                $pdo = new \PDO(
-                    "mysql:host=".$this->db_host.";
-                    dbname=".$this->db_name,
-                    $this->db_user, $this->db_pass);	
+                $pdo = new \PDO("mysql:host=".$this->db_host.";dbname=".$this->db_name,$this->db_user,$this->db_pass);	
                 $this->pdo = $pdo;
             } else $pdo = $this->pdo;
             return $pdo;
         }
 
-        public function query(
-            $statement, $class_name = null
-            , $one = false)
+        public function query($statement, $class_name = null, $one = false)
         {
             $req = $this->getPDO()->query($statement);
-            if($class_name) $req->setFetchMode(
-                \PDO::FETCH_CLASS, $class_name);
+            if($class_name) $req->setFetchMode(\PDO::FETCH_CLASS, $class_name);
             else $req->setFetchMode(\PDO::FETCH_OBJ);
             if($one) return $req->fetch(\PDO::FETCH_ASSOC);
             else return $req->fetchAll(\PDO::FETCH_ASSOC);
@@ -80,4 +74,73 @@
     }
 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

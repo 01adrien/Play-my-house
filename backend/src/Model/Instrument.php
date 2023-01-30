@@ -10,12 +10,13 @@
             if ($filter === 'FAMILY') $where = "WHERE instru.`family_id` =:id AND instru.`statut` = 'V'";
             if ($filter === 'TYPE') $where = "WHERE instru.`type_id` =:id AND instru.`statut` = 'V'";
             if ($filter === 'ALL') $where = "WHERE instru.`id` IS NOT NULL AND instru.`statut` = 'V'";
-            
+            if ($filter === "ONE") $where = "WHERE instru.`id` =:id";
+
             $sql = "SELECT
                     instru.`id`,
                     instru.`created`,
                     instru.`owner_id`,
-                    instru.`name` `instrumentName`,
+                    instru.`name` `name`,
                     instru.`description`,
                     family.`name` `family`,
                     picture.`URI` `picture`,

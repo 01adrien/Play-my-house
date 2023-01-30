@@ -12,12 +12,14 @@
         }
 
         public static function get_admin_data($post)
-        {
+        {   
+            $post= (array)$post;
             return \Model\User::get_admin_data($post['offset'], $post['limit']);
         }
         
         public static function get_by_ID($post) 
         {
+            $post = (array)$post;
             $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $user = \Model\User::get_by_ID($post);
             unset($user->password);
@@ -77,7 +79,10 @@
 
         public static function signin($post) {
             $valid_user = self::validate_credentials($post);
-            if (array_key_exists('name_err', $valid_user) || array_key_exists('missing_err', $valid_user) || array_key_exists('email_err', $valid_user) || array_key_exists('password_err', $valid_user)) 
+            if (array_key_exists('name_err', $valid_user) || 
+            array_key_exists('missing_err', $valid_user) || 
+            array_key_exists('email_err', $valid_user) || 
+            array_key_exists('password_err', $valid_user)) 
             {
                 return $valid_user;
             }

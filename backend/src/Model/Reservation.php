@@ -8,6 +8,7 @@
 
         public static function get_reservation_for_one_instrument($post, $type)
         {   
+            // return $post;
             $where = '';
             if ($type === 'MONTH')
             {
@@ -30,6 +31,7 @@
                     HOUR(resa.`start`) `start`,
                     HOUR(resa.`end`) `end`,
                     resa.`slot_num`,
+                    resa.`user_id` user_id,
                     resa.`instrument_id` instruId,
                     instru.`timeline_id_monday` monday,
                     instru.`timeline_id_tuesday` tuesday,
@@ -40,6 +42,7 @@
                     instru.`timeline_id_sunday` sunday
                     FROM `".self::$table."` resa
                     ".$where."";
+
 
             $reservations =  \My_class\App::get_DB()->prepare($sql, $post, null, false);
 

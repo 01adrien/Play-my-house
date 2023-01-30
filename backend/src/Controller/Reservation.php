@@ -54,11 +54,12 @@
         }
 
         public static function get_reservation_for_one_by_month($post)
-        {
+        {   
+            $post = (array)$post;
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $attr['month'] = self::formatdata($post, 'month', \Model\Table::P_INT);
             $attr['year'] = self::formatdata($post, 'year', \Model\Table::P_INT);
-            $all_resa = (array)\Model\Reservation::get_reservation_for_one_instrument($attr, 'MONTH');
+            $all_resa = \Model\Reservation::get_reservation_for_one_instrument($attr, 'MONTH');
             $reservations = [];
             foreach ($all_resa as $resa)    
             {   
@@ -72,9 +73,9 @@
                 $array['id'] = $post['id'];
                 $dispo = self::get_dispo_slots_by_day($array);
                 $dispo_slots = $total_slots - $dispo['count'] > 0;
-                $reservations[$resa['id']] = [
-                    'date' => $resa['date'], 'start' => $resa['start'], 
-                    'end' => $resa['end'], 'dispo_slots' => $dispo_slots
+                $reservations[] = [
+                    'date' => $resa['date'], 'start' => $resa['start'], 'user_Id' => $resa['user_id'], 
+                    'end' => $resa['end'], 'dispo' => $dispo_slots, 'id' => $resa['id'], 'day' => $resa['day']
                 ];
             }
             return $reservations;
@@ -132,6 +133,10 @@
         public static function get_timeline_by_day($post)
         {
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+            $array = [];
+            $array['day'] = $resa['date'];
+            $array = [];
+            $array['day'] = $resa['date'];
             $instru = \Model\Instrument::get_by_ID($attr);
             $t['id'] = self::formatdata((array)$instru, 'timeline_id_'.$post['day_name'], \Model\Table::P_INT);
             $time = \Model\Timeline_day::get_by_ID($t);
