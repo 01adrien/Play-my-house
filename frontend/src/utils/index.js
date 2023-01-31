@@ -7,7 +7,12 @@ export const credentialsValidation = (credentials) => {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-  if (!credentials.password.match(passwordRegex)) errors.password_err = true;
+  if (
+    credentials &&
+    credentials?.password &&
+    !credentials?.password.match(passwordRegex)
+  )
+    errors.password_err = true;
   if (credentials.name.length > 20 || credentials.name.length < 3)
     errors.name_err = true;
   if (!credentials.name.match(nameRegex)) errors.name_err = true;

@@ -24,7 +24,11 @@ export default function CheckBoxContainer({ types, brands, closeFilters }) {
               {types?.map((type) => {
                 return (
                   <div key={type.id} className="flex justify-between ml-2">
-                    <BasicCheckbox label={type.name} />
+                    <BasicCheckbox
+                      label={type.name}
+                      type="types"
+                      value={type.id}
+                    />
                     <span className="text-xs text-gray-500">
                       ({type?.count && Object.values(type.count)})
                     </span>
@@ -48,7 +52,11 @@ export default function CheckBoxContainer({ types, brands, closeFilters }) {
           {brands?.map((brand) => {
             return (
               <div key={brand.id} className="flex justify-between ml-2">
-                <BasicCheckbox label={brand.name} />
+                <BasicCheckbox
+                  label={brand.name}
+                  type="brands"
+                  value={brand.id}
+                />
                 <span className="text-xs text-gray-500">
                   ({brand?.count && Object.values(brand.count)})
                 </span>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from './SearchBar';
 import logo from '../assets/logo.png';
 import DropdownMenu from './nav/DropdownMenu';
@@ -6,13 +6,22 @@ import { Link, Navigate } from 'react-router-dom';
 import { logout } from '../api/auth';
 import { user } from '../store/user';
 import { useRecoilState } from 'recoil';
-import Profile from './icons/Profile';
+import img from '../assets/fond_blanc.jpeg';
+import { getPictureByUserId } from '../api/user';
+
 import NavMobile from './nav/NavMobile';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import useProfilePicture from '../hooks/useProfilePicture';
 
 export default function Header() {
   const [profile, setProfile] = useRecoilState(user);
   const [openNav, setOpenNav] = useState(false);
+  const [avatar, setAvatar] = useState('');
+
+  useEffect(() => {
+    getPictureByUserId(profile?.id).then(setAvatar);
+    console.log(profile);
+  }, [profile]);
 
   return (
     <div className="h-46">
@@ -45,7 +54,7 @@ export default function Header() {
           <div>
             {profile?.name ? (
               <div className="flex">
-                <Link to="/">
+                <Link to="/" className="flex items-center">
                   {' '}
                   <p
                     onClick={() => {
@@ -59,7 +68,11 @@ export default function Header() {
                   </p>
                 </Link>
                 <Link to="/user">
-                  <Profile />
+                  {avatar ? (
+                    <img src={avatar} className="w-8 h-8 rounded-lg" />
+                  ) : (
+                    <img src={img} className="w-8 h-8 rounded-lg" />
+                  )}
                 </Link>
               </div>
             ) : (

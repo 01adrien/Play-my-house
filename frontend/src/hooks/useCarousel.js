@@ -7,7 +7,8 @@ export default function useCarousel(id) {
   useEffect(() => {
     getAllPictureForOne(id)
       .then(setPictures)
-      .then(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(() => {});
   }, [id]);
 
   return { pictures, loading };

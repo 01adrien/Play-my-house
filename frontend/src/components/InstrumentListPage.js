@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import CheckBoxContainer from './CheckBoxContainer';
 import InstrumentCard from './cards/InstrumentCard';
 import Pagination from './Pagination';
-import Footer from './Footer';
 import { BsFilterCircleFill } from 'react-icons/bs';
-import { motion } from 'framer-motion';
 
 export default function InstrumentListPage({
   types,
@@ -19,7 +17,7 @@ export default function InstrumentListPage({
   return (
     <div className={`w-full flex flex-col space-between items-center mt-6`}>
       <div className="w-[85%] h-[100%]">
-        <div className="flex items-center justify-between border-b-2 pb-2 border-border_color">
+        <div className="flex items-center justify-between border-b-2 pb-6 border-border_color">
           <p className="opacity-0">left</p>
           <p className="font-medium text-xl">{name.toUpperCase()}</p>
           <p className="opacity-0 xs:hidden 2xs:hidden 3xs:hidden">riht</p>
@@ -31,7 +29,7 @@ export default function InstrumentListPage({
               }`}
             />
           ) : (
-            <p className="opacity-0">riht</p>
+            <p className="opacity-0">right</p>
           )}
         </div>
         <div className="flex pt-3 min-h-[500px]">
@@ -51,8 +49,8 @@ export default function InstrumentListPage({
             </div>
           </div>
           <div className="flex flex-col h-full w-[100%]">
-            <div className="flex flex-wrap justify-center h-fit mb-6  ">
-              {instruments.length ? (
+            <div className="flex flex-wrap justify-center h-fit mb-6  min-h-[70vh]">
+              {instruments?.length ? (
                 instruments?.map((instrument) => {
                   return (
                     <InstrumentCard
@@ -63,7 +61,9 @@ export default function InstrumentListPage({
                   );
                 })
               ) : (
-                <p>pas d'instruments</p>
+                <div className="flex justify-center items-center">
+                  <p className="uppercase py-8 px-8">pas d'instruments..</p>
+                </div>
               )}
             </div>
             <div className={`flex justify-center`}>

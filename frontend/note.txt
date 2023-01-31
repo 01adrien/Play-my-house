@@ -1,0 +1,9 @@
+methode a catcher:
+
+
+- uploadPicture
+- deleteUser
+- modifyProfil
+
+controle heure resa passee et future
+erreur console

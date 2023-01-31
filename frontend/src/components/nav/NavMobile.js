@@ -77,7 +77,7 @@ export default function NavMobile({ profile, open }) {
             {menuItems &&
               Object.keys(menuItems).map((item, i) => {
                 return (
-                  <>
+                  <div key={i}>
                     <li key={i}>
                       <div
                         className={`flex justify-between  items-center border-b-[1px] cursor-pointer hover:bg-slate-100 pl-2 h-10 border-border_color ${
@@ -85,6 +85,7 @@ export default function NavMobile({ profile, open }) {
                         }`}
                       >
                         <Link
+                          key={i}
                           onClick={handleCloseNavbar}
                           className="w-[80%] h-10 flex items-center"
                           to={`/instrument-family/${item}`}
@@ -108,6 +109,7 @@ export default function NavMobile({ profile, open }) {
                         {menuItems[item].map((it, i) => {
                           return (
                             <Link
+                              key={it}
                               onClick={handleCloseNavbar}
                               to={`/instrument-type/${it}`}
                             >
@@ -124,7 +126,7 @@ export default function NavMobile({ profile, open }) {
                         })}
                       </ul>
                     </li>
-                  </>
+                  </div>
                 );
               })}
             <Link to={'/login'} onClick={handleCloseNavbar}>

@@ -109,7 +109,7 @@ export default function ModalReservation({
           <h3 className="mb-2 font-normal text-xl text-gray-500">
             {instrumentName}
           </h3>
-          {indispo?.txt.length ? (
+          {indispo?.txt?.length ? (
             <div className="flex flex-col text-center text-red-500">
               <p className="text-sm underline mb-1">non disponible:</p>
               <ul className="text-xs mb-3">

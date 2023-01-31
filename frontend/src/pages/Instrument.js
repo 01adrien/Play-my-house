@@ -24,7 +24,6 @@ import withCarousel from '../HOC/withCarousel';
 import withLoading from '../HOC/withLoading';
 import useCarousel from '../hooks/useCarousel';
 import useProfilePicture from '../hooks/useProfilePicture';
-import Footer from '../components/Footer';
 import { user } from '../store/user';
 import { compose } from '../utils';
 import ModalReservation from '../components/modal/ModalReservation';
@@ -116,7 +115,7 @@ export default function Instrument() {
                 />
               )}
             </div>
-            <div className="flex flex-col justify-center items-end w-72 h-72">
+            <div className="flex flex-col justify-start items-end w-72 h-72 pt-4">
               <Accordion
                 arrowIcon={HiOutlineArrowCircleDown}
                 flush={true}
@@ -164,24 +163,21 @@ export default function Instrument() {
               </Accordion>
             </div>
           </div>
-          <div className="w-full sm:h-8 xs:h-12 2xs:h-12 3xs:h-12 flex justify-center">
+          <div className="w-full sm:h-8 xs:h-2 2xs:h-2 3xs:h-2 flex justify-center">
             {notDispoSlots?.slots?.txt.length > 0 && (
-              <div className="text-sm w-full flex justify-center text-center items-center py-2">
+              <div className="text-base w-full flex justify-center text-center items-center pt-5">
                 <p className="pr-2 text-base">⚠️</p>
-                {/* <p className="text-red-600 pr-2 ">
-                  {notDispoSlots.slots.txt.map((x) => (
-                    <span >{1}</span>
-                  ))}
-                </p> */}
-                <p>non disponible(s)</p>
+                <p className="text-red-600">
+                  certain(s) creneau(x) plus disponible(s)
+                </p>
               </div>
             )}
           </div>
-          <div className="w-full flex justify-around">
+          <div className="w-full flex justify-around h-32">
             <div
               className={`w-full flex justify-around items-center sm:flex-col-reverse md:flex-row xs:flex-col-reverse 2xs:flex-col-reverse 3xs:flex-col-reverse`}
             >
-              <div className="w-60">
+              <div className="">
                 <DatePicker
                   onCalendarOpen={() => setRefreshResa(!refreshResa)}
                   locale="fr"
@@ -199,7 +195,7 @@ export default function Instrument() {
                 ></DatePicker>
               </div>
               <BasicButton
-                width="60"
+                width="52"
                 style="bg-slate-400 hover:bg-slate-500 hover:scale-105 shadow-md"
               >
                 <p className="text-center">
@@ -210,7 +206,7 @@ export default function Instrument() {
             </div>
           </div>
         </div>
-        <div className="w-[60%] pb-8 text-center mt-8">
+        <div className="w-[60%] pb-8 text-center mt-8 max-w-6xl">
           {location.state.description}
         </div>
       </div>
@@ -223,7 +219,6 @@ export default function Instrument() {
           timeline={timelineDay}
         />
       )}
-      {/* <Footer /> */}
     </Layout>
   );
 }

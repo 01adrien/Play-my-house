@@ -29,10 +29,11 @@ export function useDeleteItems(view, fn1, setItemsNumber) {
   const [showModal, setShowModal] = useState(false);
   const openModal = () => setShowModal(true);
 
-  const isChecked = (row) =>
+  function isChecked(row) {
     !!itemsToDelete.filter(
       (item) => item.id === row.id && item.name === row.name
     ).length;
+  }
 
   function handleSelectItem(e, item) {
     e.target.checked
@@ -45,7 +46,7 @@ export function useDeleteItems(view, fn1, setItemsNumber) {
     setItemsToDelete([]);
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
     itemsToDelete.forEach(async (item) => {
       const res = await viewToFunction[view](item.id);
       if (res.status == 'succes') makeSuccesToast({}, res.msg);

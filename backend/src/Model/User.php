@@ -20,6 +20,24 @@
             return false;
         }
 
+        public static function get_user_safe($post) 
+        {
+            $sql = "SELECT
+                    users.`id`,
+                    users.`name`,
+                    users.`email`,
+                    users.`address`,
+                    users.`telephone`,
+                    users.`role`,
+                    users.`picture_id`,
+                    city.`name` city
+                    FROM `".self::$table."`
+                    LEFT JOIN `city` ON city.`id` = users.`city_id`
+                    WHERE users.`id` =:id ";
+
+            return \My_class\App::get_DB()->prepare($sql, $post, null, false);
+        }
+
         public static function get_admin_data($offset, $limit)
         {
             $sql = "SELECT

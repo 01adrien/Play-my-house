@@ -72,7 +72,10 @@
                 $array['id'] = $post['id'];
                 $dispo = self::get_dispo_slots_by_day($array);
                 $dispo_slots = $total_slots - $dispo['count'] > 0;
-                $reservations[$resa['id']] = ['date' => $resa['date'], 'start' => $resa['start'], 'end' => $resa['end'], 'dispo_slots' => $dispo_slots];
+                $reservations[$resa['id']] = [
+                    'date' => $resa['date'], 'start' => $resa['start'], 
+                    'end' => $resa['end'], 'dispo_slots' => $dispo_slots
+                ];
             }
             return $reservations;
         }
@@ -145,7 +148,7 @@
         }
 
         public static function get_user_reservation($post)
-        {
+        {   
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $reservations = \Model\Reservation::get_user_reservation($attr, $post['offset'], $post['limit'], $post['active']);
             $data = [];
@@ -174,6 +177,7 @@
 
         public static function get_owner_reservation($post)
         {
+            $attr = [];
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $reservations = \Model\Reservation::get_owner_reservation($attr, $post['offset'], $post['limit'], $post['active']);
             $data = [];
@@ -216,8 +220,6 @@
             $attr['owner_id'] = self::formatdata($post, 'owner_id', \Model\Table::P_INT);
             $attr['start'] = self::formatdata($post, 'start', \Model\Table::P_STRING);
             $attr['end'] = self::formatdata($post, 'end', \Model\Table::P_STRING);
-
-            
 
             return \Model\Reservation::create_update($attr,'CREATE');
         }

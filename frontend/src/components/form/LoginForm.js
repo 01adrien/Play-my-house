@@ -20,14 +20,16 @@ export default function LoginForm() {
     e.preventDefault();
     setLoading(true);
     if (true) {
-      useAuth(credentials, login).then(
-        ({ profile, loading, credentialsErrors }) => {
+      useAuth(credentials, login)
+        .then(({ profile, loading, credentialsErrors }) => {
           setLoading(loading);
           setProfile(profile);
           setCredentialsErrors(credentialsErrors);
           if (profile) navigate('/user');
-        }
-      );
+        })
+        .catch(() =>
+          makeErrorToast({}, 'Login impossible reessayer plus tard..')
+        );
     }
   }
   return (
@@ -65,7 +67,7 @@ export default function LoginForm() {
               style={`w-60 ${loading && 'border-2 border-slate-700'}`}
               type="submit"
             >
-              <p>{loading ? <Spinner /> : 'login'}</p>
+              <div>{loading ? <Spinner /> : 'login'}</div>
             </BasicButton>
           </div>
         </form>

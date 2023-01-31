@@ -13,12 +13,12 @@ import { useRecoilValue } from 'recoil';
 import Test from './pages/Test';
 
 function ProtectedRoute({ profile, children }) {
-  if (!profile?.name) return <Navigate to={'/login'} replace={true} />;
+  if (!profile.name) return <Navigate to={'/login'} replace={true} />;
   return children;
 }
 
 function ProtectedAdminRoute({ user, children }) {
-  if (!user?.role === 'dmin') return <Navigate to={'/login'} replace={true} />;
+  if (!user.role === 'admin') return <Navigate to={'/home'} replace={true} />;
   return children;
 }
 
