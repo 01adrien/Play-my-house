@@ -42,7 +42,6 @@ export function reservationSlotsControl(timeChecker) {
             JSON.stringify(resa.length === 1 ? r[0] : r) &&
           t.check === true
         ) {
-          console.log('creneau deja pris');
           return (valid = false);
         }
       });

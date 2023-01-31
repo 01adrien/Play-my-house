@@ -4,7 +4,12 @@ import Spinner from '../icons/Spinner';
 import LoginErrors from '../LoginErrors';
 import BasicButton from '../button/BasicButton';
 import { signin } from '../../api/auth';
-import { credentialsValidation, isEqual, makeSuccesToast } from '../../utils';
+import {
+  credentialsValidation,
+  isEqual,
+  makeErrorToast,
+  makeSuccesToast,
+} from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { user } from '../../store/user';
@@ -36,8 +41,8 @@ export default function SigninFormOwner() {
       return setLoading(false);
     }
     if (true) {
-      useAuth({ role: 'owner', ...credentials }, signin).then(
-        ({ profile, loading, credentialsErrors }) => {
+      useAuth({ role: 'owner', ...credentials }, signin)
+        .then(({ profile, loading, credentialsErrors }) => {
           setLoading(loading);
           setProfile(profile);
           setCredentialsErrors(credentialsErrors);
@@ -48,8 +53,10 @@ export default function SigninFormOwner() {
             );
             setTimeout(() => navigate('/user'), 2500);
           }
-        }
-      );
+        })
+        .catch(() =>
+          makeErrorToast({}, 'Service indisponible reessayer plus tard..')
+        );
     }
   }
 

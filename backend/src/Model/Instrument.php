@@ -5,12 +5,35 @@
     {
         protected static $table = "instruments";
 
+        public static function build_filter_query($post)
+        {
+            $where = 'WHERE ';
+            $filters_cat = json_decode($post['search'], true);
+            if (isset($filters_cat['types']) && count($filters_cat['types']) > 0) 
+            {   
+                $sql_types = 'instru.`type_id` in ('.implode(",", $filters_cat["types"]).') AND ';
+                $where .= $sql_types;
+            } 
+            if (isset($filters_cat['brands']) && count($filters_cat['brands']) > 0)
+            {
+                $sql_brands = 'instru.`brand_id` in ('.implode(",", $filters_cat["brands"]).') AND ';
+                $where .= $sql_brands;
+            }
+            $where = substr($where, 0, -4);
+            return $where;
+
+        }
+
         public static function get_instrument($offset, $limit, $filter = 'ALL', $post = []) 
         {   
             if ($filter === 'FAMILY') $where = "WHERE instru.`family_id` =:id AND instru.`statut` = 'V'";
             if ($filter === 'TYPE') $where = "WHERE instru.`type_id` =:id AND instru.`statut` = 'V'";
             if ($filter === 'ALL') $where = "WHERE instru.`id` IS NOT NULL AND instru.`statut` = 'V'";
-            
+            if ($filter === "SEARCH") $where = "WHERE LOWER(instru.`name`) LIKE CONCAT ('%', LOWER(:search), '%')";
+            if ($filter === "SEARCH_FILTER") {
+                $where = self::build_filter_query($post);
+                $post = [];
+            };  
             $sql = "SELECT
                     instru.`id`,
                     instru.`created`,
@@ -66,6 +89,10 @@
             if ($data === 'ALL_BRAND') $where = "WHERE instru.`brand_id` =:brand_id AND instru.`statut` = 'V'";
             if ($data === 'OWNER') $where = "WHERE instru.`owner_id` =:id AND instru.`statut` = 'V'" ;
             if ($data === 'TO_VALIDATE') $where = "WHERE instru.`statut` = 'NV'";
+            if ($data === "SEARCH_FILTER") {
+                $where = self::build_filter_query($post);
+                $post = [];
+            }
 
             $sql = "SELECT COUNT(*)
                     FROM `".self::$table."` instru

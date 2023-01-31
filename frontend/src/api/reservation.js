@@ -101,7 +101,7 @@ export async function getInactiveCountByOwner(id) {
 export async function deleteReservation(id) {
   const post = new FormData();
   post.append('id', id);
-  const res = await AXIOS.delete(`/reservation/delete`, post);
+  const res = await AXIOS.post(`/reservation/delete`, post);
   return res.data;
 }
 

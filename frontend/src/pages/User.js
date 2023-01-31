@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../api/auth';
 import Layout from '../components/Layout';
-import Footer from '../components/Footer';
 import BaseTable from '../components/tables/BaseTable';
 import InProgress from '../components/InProgress';
 import UserProfile from '../components/UserProfile';
 import AddInstrumentForm from '../components/form/AddInstrumentForm';
-import { user } from '../store/user';
+import { user, listToDelete, activeH } from '../store/user';
 import { getUserAdmin, getUserCount } from '../api/user';
 import {
   getInstrumentAdmin,
@@ -25,7 +24,6 @@ import {
   getActiveCountByOwner,
   getInactiveCountByOwner,
 } from '../api/reservation';
-import { listToDelete } from '../store/user';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { VscSettings } from 'react-icons/vsc';
 import { RxCrossCircled } from 'react-icons/rx';
@@ -34,6 +32,7 @@ import useProfilePicture from '../hooks/useProfilePicture';
 export default function User() {
   const setItemsToDelete = useSetRecoilState(listToDelete);
   const [profile, setProfile] = useRecoilState(user);
+  // const [activeSpace, setActiveSpace] = useRecoilState(user);
   const [activeHeading, setActiveHeading] = useState('Details du compte');
   const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
@@ -157,7 +156,7 @@ export default function User() {
 
   return (
     <Layout>
-      <div className="w-full flex flex-col justify-center items-center mt-4">
+      <div className="w-full flex flex-col justify-center items-center">
         <div className="flex w-full items-center justify-end sm:hidden md:hidden lg:hidden">
           {
             <VscSettings
@@ -169,7 +168,7 @@ export default function User() {
           }
         </div>
         <div className=" w-[85%] h-full max-w-[1400px]">
-          <div className="flex justify-around w-[100%] h-[100%]">
+          <div className={`flex justify-around w-[100%] h-[100%] mt-4`}>
             <div
               className={`flex flex-col min-h-[70vh] border-r-2 xs:shadow-2xl 2xs:shadow-2xl 3xs:shadow-2xl bg-white xs:z-20 2xs:z-20 3xs:z-20 border-border_color w-52 min-w-[200px] xs:h-[100vh] 2xs:h-[100vh] 3xs:h-[100vh] 3xs:fixed 3xs:top-0 3xs:left-0 2xs:fixed 2xs:top-0 2xs:left-0 xs:fixed xs:top-0 xs:left-0 ${
                 !openSettings && 'xs:hidden 2xs:hidden 3xs:hidden'
@@ -212,7 +211,7 @@ export default function User() {
                 );
               })}
             </div>
-            <div className=" w-[100%] flex justify-center h-[100%] max-w-[1000px] mb-8">
+            <div className=" w-[100%] flex justify-center h-[100%] max-w-[1000px]">
               <div className="w-[90%] h-[100%]">{headings[activeHeading]}</div>
             </div>
           </div>

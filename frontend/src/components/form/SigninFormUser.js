@@ -33,8 +33,8 @@ export default function SigninFormUser() {
       return setLoading(false);
     }
     if (true) {
-      useAuth({ role: 'user', ...credentials }, signin).then(
-        ({ profile, loading, credentialsErrors }) => {
+      useAuth({ role: 'user', ...credentials }, signin)
+        .then(({ profile, loading, credentialsErrors }) => {
           setLoading(loading);
           setProfile(profile);
           setCredentialsErrors(credentialsErrors);
@@ -45,8 +45,10 @@ export default function SigninFormUser() {
             );
             setTimeout(() => navigate('/user'), 2500);
           }
-        }
-      );
+        })
+        .catch(() =>
+          makeErrorToast({}, 'Service indisponible reessayer plus tard..')
+        );
     }
   }
 

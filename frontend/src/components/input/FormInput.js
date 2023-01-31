@@ -10,6 +10,7 @@ export default function FormInput({
   testId,
   style,
   labelStyle = 'text-gray-900 text-sm font-medium',
+  autoFocus = false,
 }) {
   return (
     <div className={`mb-4 ${style}`}>
@@ -26,6 +27,7 @@ export default function FormInput({
         onChange={(e) => fn(e)}
         value={value}
         maxLength="50"
+        autoFocus={autoFocus}
       />
     </div>
   );

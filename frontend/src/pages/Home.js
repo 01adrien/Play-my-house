@@ -21,7 +21,6 @@ export default function Home() {
   const isMobile = useMediaQuery('(max-width: 540px)');
 
   useEffect(() => {
-    pingServer().then(console.log);
     getTenNewest()
       .then(setInstruments)
       .then(() => {

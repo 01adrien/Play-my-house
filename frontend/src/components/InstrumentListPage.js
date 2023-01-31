@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import CheckBoxContainer from './CheckBoxContainer';
 import InstrumentCard from './cards/InstrumentCard';
 import Pagination from './Pagination';
-import Footer from './Footer';
 import { BsFilterCircleFill } from 'react-icons/bs';
-import { motion } from 'framer-motion';
 
 export default function InstrumentListPage({
   types,
@@ -51,9 +49,9 @@ export default function InstrumentListPage({
             </div>
           </div>
           <div className="flex flex-col h-full w-[100%]">
-            <div className="flex flex-wrap justify-center h-fit mb-6  ">
+            <div className="flex flex-wrap justify-center h-fit mb-6  min-h-[70vh]">
               {instruments?.length ? (
-                instruments.map((instrument) => {
+                instruments?.map((instrument) => {
                   return (
                     <InstrumentCard
                       key={instrument.id}
@@ -63,7 +61,13 @@ export default function InstrumentListPage({
                   );
                 })
               ) : (
-                <p>pas d'instruments</p>
+                <div className="flex justify-center items-center">
+                  <div className="flex justify-center items-center bg-main_color rounded-lg">
+                    <p className="text-2xl uppercase py-8 px-8">
+                      pas d'instruments..
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
             <div className={`flex justify-center`}>

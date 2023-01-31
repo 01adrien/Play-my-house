@@ -40,6 +40,17 @@
             return \Model\Instrument::get_instrument($post['offset'], $post['limit']);    
         }
 
+        public static function search_instrument($post)
+        {
+            // $post['search'] = self::formatdata($post, 'search', \Model\Table::P_INT);
+            return \Model\Instrument::get_instrument($post['offset'], $post['limit'], 'SEARCH_FILTER', $post);
+        }
+
+        public static function get_search_count($post)
+        {   
+            return \Model\Instrument::get_count_by($post, "SEARCH_FILTER");
+        }
+
         public static function get_all_pictures_for_one($post) 
         {   
             $post['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);

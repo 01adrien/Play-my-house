@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import BasicButton from '../components/button/BasicButton';
 
 export const DatePickerBtn = React.forwardRef(({ onClick }, ref) => (
-  <div className="">
+  <div className="w-52">
     <BasicButton
       ref={ref}
       onClick={onClick}

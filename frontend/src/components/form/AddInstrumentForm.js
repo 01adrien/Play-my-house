@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { user, timelineIds } from '../../store/user';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import useAddInstrument from '../../hooks/useAddInstrument';
 import useReservationSlot from '../../hooks/useReservationSlot';
 import BasicButton from '../button/BasicButton';
 import BasicSelect from '../select/BasicSelect';
-import FileInput from '../input/FileInput';
 import FormInput from '../input/FormInput';
 import { makeErrorToast, makeSuccesToast } from '../../utils';
 import SelectAddInstrument from '../select/SelectAddInstrument';
@@ -17,9 +16,10 @@ import {
   HiOutlineArrowCircleDown,
   HiOutlineArrowCircleUp,
 } from 'react-icons/hi';
+import { BsArrowRightSquare, BsArrowLeftSquare } from 'react-icons/bs';
 
 export default function AddInstrumentForm() {
-  const timelines = useRecoilValue(timelineIds);
+  const [timelines, setTimelines] = useRecoilState(timelineIds);
   const profile = useRecoilValue(user);
   const {
     days,
@@ -44,14 +44,15 @@ export default function AddInstrumentForm() {
     pictures,
     instrumentInfo,
     setInstrumentInfo,
+    setPictures,
   } = useAddInstrument();
 
   const [showSelectedHours, setShowSelectedHours] = useState(false);
   const { type, family, brand, description, name } = instrumentInfo;
   const textAreaDisabled = !family || !type || !brand;
   const uploadDisabled = textAreaDisabled || !description;
-  const selectSlotsDisabled = false;
-  //uploadDisabled || !pictures.length || timelines?.done;
+  const selectSlotsDisabled =
+    uploadDisabled || !pictures.length || timelines?.done;
   const submitDisabled =
     !timelines?.done ||
     !family ||
@@ -62,8 +63,12 @@ export default function AddInstrumentForm() {
     !pictures.length;
 
   async function validateSlots() {
-    //setShowSelectedHours(false);
-    formatDaySlotAndPostTimeline();
+    setShowSelectedHours(false);
+    formatDaySlotAndPostTimeline()
+      .then(() => makeSuccesToast({}, 'Horaires Enregistrees'))
+      .catch(() => {
+        makeErrorToast({}, 'Service indisponible temporairement');
+      });
   }
 
   function handleSlotSelection() {
@@ -89,27 +94,38 @@ export default function AddInstrumentForm() {
       timelineIdSaturday: timelines?.samedi || null,
       timelineIdSunday: timelines?.dimanche || null,
     };
-    console.log(body);
-    console.log(pictures);
 
-    createInstrument(body).then((data) => {
-      if (data.result) {
-        pictures.forEach((picture, i) => {
-          uploadPicture({
-            name: profile.name,
-            file: picture,
-            instrumentId: data.id,
-            mainPicture: i === 0 ? 1 : 0,
+    createInstrument(body)
+      .then((data) => {
+        if (data.result) {
+          pictures.forEach((picture, i) => {
+            uploadPicture({
+              name: profile.name,
+              file: picture,
+              instrumentId: data.id,
+              mainPicture: i === 0 ? 1 : 0,
+            }).catch(() => makeErrorToast({}, `Echec upload image ${i + 1}`));
           });
+        } else {
+          return makeErrorToast({}, 'erreur à la creation..');
+        }
+        makeSuccesToast(
+          {},
+          'instrument crée avec succés il sera validé sous peu!'
+        );
+        setInstrumentInfo({
+          type: '',
+          family: '',
+          brand: '',
+          description: '',
+          name: '',
         });
-      } else {
+        setPictures([]);
+        setTimelines({});
+      })
+      .catch(() => {
         return makeErrorToast({}, 'erreur à la creation..');
-      }
-      makeSuccesToast(
-        {},
-        'instrument crée avec succés il sera validé sous peu!'
-      );
-    });
+      });
   }
 
   return (
@@ -126,12 +142,14 @@ export default function AddInstrumentForm() {
           labelStyle="text-gray-500 text-xs text-center"
           style={'w-[80%] self-center text-xs text-gray-500 border-main_color'}
           value={instrumentInfo.name}
-          fn={(e) =>
+          placeholder="Nom de l'instrument"
+          autoFocus
+          fn={(e) => {
             setInstrumentInfo((prev) => ({
               ...prev,
               name: e.target.value,
-            }))
-          }
+            }));
+          }}
         />
         <div className="flex justify-between items-center xl:flex-row md:flex-col sm:flex-col xs:flex-col 2xs:flex-col 3xs:flex-col xl:h-16 md:h-52 sm:h-52 xs:h-52 2xs:h-52 3xs:h-52 ">
           <SelectAddInstrument
@@ -175,7 +193,7 @@ export default function AddInstrumentForm() {
             rows="5"
             placeholder="Decris ton instrument (255 caracteres max)"
             cols="33"
-            maxlength="255"
+            maxLength="255"
           />
           <div
             disabled={uploadDisabled}
@@ -268,7 +286,7 @@ export default function AddInstrumentForm() {
                 style={`w-28`}
                 disabled={selectSlotsDisabled}
               >
-                <p>prev</p>
+                <BsArrowLeftSquare fontSize={'1.5em'} />
               </BasicButton>
               <BasicButton
                 type="button"
@@ -276,7 +294,7 @@ export default function AddInstrumentForm() {
                 style={`w-28`}
                 disabled={selectSlotsDisabled}
               >
-                <p>next</p>
+                <BsArrowRightSquare fontSize={'1.5em'} />
               </BasicButton>
             </div>
             <div className="flex flex-col text-sm w-[100%] justify-center mb-8">
@@ -323,20 +341,25 @@ export default function AddInstrumentForm() {
                 </ul>
               )}
             </div>
-            <BasicButton
-              type="button"
-              onClick={validateSlots}
-              style={'w-52 self-center mb-8'}
-              disabled={selectSlotsDisabled}
-            >
-              <p>valider les horaires</p>
-            </BasicButton>
+            <div className="w-full flex justify-center">
+              <BasicButton
+                type="button"
+                onClick={validateSlots}
+                width="52"
+                style={'w-52 self-center mb-8'}
+                disabled={selectSlotsDisabled}
+              >
+                <p>valider les horaires</p>
+              </BasicButton>
+            </div>
           </div>
         </div>
         <BasicButton
           disabled={submitDisabled}
           type={'submit'}
-          style={`w-80 self-center mb-4 ${submitDisabled && 'opacity-30'}`}
+          style={`w-80 self-center mb-4 ${
+            submitDisabled && 'opacity-30'
+          } h-[60px]`}
         >
           <p>terminé !</p>
         </BasicButton>

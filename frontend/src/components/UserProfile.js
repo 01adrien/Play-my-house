@@ -20,6 +20,7 @@ import { useRecoilState } from 'recoil';
 import withLoading from '../HOC/withLoading';
 import { Picture } from './Picture';
 import Upload from './icons/Upload';
+import { Spinner } from 'flowbite-react';
 
 const PictureWithLoading = withLoading(Picture);
 
@@ -57,24 +58,17 @@ export default function UserProfile() {
   });
 
   useEffect(() => {
-    getPicture(picture_id, picture_name).then(({ data }) => {
-      setPicture({ src: data });
-      setPictureLoading(false);
-    });
+    getPicture(picture_id, picture_name)
+      .then(({ data }) => {
+        setPicture({ src: data });
+        setPictureLoading(false);
+      })
+      .catch(() => {});
   }, [isUploadImg]);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const {
-      name,
-      email,
-      role,
-      telephone,
-      address,
-      city,
-      newPassword,
-      newPasswordConfirm,
-    } = credentials;
+    const { newPassword, newPasswordConfirm } = credentials;
     setLoading(true);
     setCredentialsErrors(credentialsValidation(credentials));
     if (newPassword || newPasswordConfirm) {
@@ -88,31 +82,34 @@ export default function UserProfile() {
       }
     }
 
-    modifyProfil(credentials).then((data) => {
-      if (data?.errors) setCredentialsErrors(data.errors);
-      if (data?.status === 'succes') {
-        setProfile(data?.user);
-        makeSuccesToast({}, data?.msg);
-      }
-      if (data?.status === 'fail') {
-        setProfile(data?.user);
-        makeErrorToast({}, data?.msg);
-      }
-
-      setLoading(false);
-    });
+    modifyProfil(credentials)
+      .then((data) => {
+        if (data?.errors) setCredentialsErrors(data.errors);
+        if (data?.status === 'succes') {
+          setProfile(data?.user);
+          makeSuccesToast({}, data?.msg);
+        }
+        if (data?.status === 'fail') {
+          setProfile(data?.user);
+          makeErrorToast({}, data?.msg);
+        }
+        setLoading(false);
+      })
+      .catch(() => {});
   }
 
-  async function hamdleSubmitUpload(e) {
+  async function handleSubmitUpload(e) {
     setPictureLoading(true);
     e.preventDefault(e);
     setPicture({ src: null });
-    uploadPicture({ name, id, selectedFile, picture_id }).then(({ data }) => {
-      setIsUploadImg(!isUploadImg);
-      setProfile({ ...profile, ...data });
-      getProfile().then(setProfile);
-      setPictureLoading(false);
-    });
+    uploadPicture({ name, id, selectedFile, picture_id })
+      .then(({ data }) => {
+        setIsUploadImg(!isUploadImg);
+        setProfile({ ...profile, ...data });
+        getProfile().then(setProfile);
+        setPictureLoading(false);
+      })
+      .catch(() => makeErrorToast({}, 'Echec upload, reesayez plus tard'));
   }
   return (
     <div
@@ -135,7 +132,7 @@ export default function UserProfile() {
                 name: e.target.value,
               }));
             }}
-            value={credentials?.name || name}
+            value={credentials?.name || name || ''}
           />
           <FormInput
             required={true}
@@ -150,7 +147,7 @@ export default function UserProfile() {
                 email: e.target.value,
               }));
             }}
-            value={credentials?.email || email}
+            value={credentials?.email || email || ''}
           />
           {role === 'owner' && (
             <div className="flex justify-between">
@@ -167,7 +164,7 @@ export default function UserProfile() {
                     telephone: e.target.value,
                   }));
                 }}
-                value={credentials.telephone || telephone}
+                value={credentials?.telephone || telephone || ''}
               />
               <FormInput
                 required={true}
@@ -182,7 +179,7 @@ export default function UserProfile() {
                     city: e.target.value,
                   }));
                 }}
-                value={credentials.city || city}
+                value={credentials?.city || city || ''}
               />
             </div>
           )}
@@ -199,7 +196,7 @@ export default function UserProfile() {
                   address: e.target.value,
                 }));
               }}
-              value={credentials.address || address}
+              value={credentials?.address || address || ''}
             />
           )}
           <FormInput
@@ -214,7 +211,7 @@ export default function UserProfile() {
                 password: e.target.value,
               }));
             }}
-            value={credentials.password}
+            value={credentials?.password || ''}
           />
           <FormInput
             required={false}
@@ -228,7 +225,7 @@ export default function UserProfile() {
                 newPassword: e.target.value,
               }));
             }}
-            value={credentials.newPassword}
+            value={credentials?.newPassword || ''}
           />
           <FormInput
             required={false}
@@ -242,7 +239,7 @@ export default function UserProfile() {
                 newPasswordConfirm: e.target.value,
               }));
             }}
-            value={credentials.newPasswordConfirm}
+            value={credentials?.newPasswordConfirm || ''}
           />
           <div className="pt-3 flex justify-center w-[100%]">
             <div className="w-[60%]">
@@ -250,7 +247,7 @@ export default function UserProfile() {
                 style={loading && 'border-2 border-slate-700 '}
                 type="submit"
               >
-                {loading ? <span>...</span> : <p>Enregistrer</p>}
+                {loading ? <Spinner /> : <p>Enregistrer</p>}
               </BasicButton>
             </div>
           </div>
@@ -258,7 +255,7 @@ export default function UserProfile() {
         </form>
       </div>
       <form
-        onSubmit={(e) => hamdleSubmitUpload(e)}
+        onSubmit={(e) => handleSubmitUpload(e)}
         className=" w-[60%] h-[45vh] min-w-[300px] flex flex-col justify-between items-center"
       >
         <FileInput setSelectedFile={setSelectedFile} />
@@ -271,8 +268,8 @@ export default function UserProfile() {
             style={'rounded-xl w-60 h-56'}
           />
         </div>
-        <BasicButton width="40" type="submit">
-          {<Upload />}
+        <BasicButton width="[80px]" type="submit">
+          {pictureLoading ? <Spinner /> : <Upload />}
         </BasicButton>
       </form>
     </div>

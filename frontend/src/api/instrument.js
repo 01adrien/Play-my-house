@@ -83,6 +83,24 @@ export async function getInstrumentById(id) {
   return res.data;
 }
 
+export async function searchInstrument(search, offset, limit) {
+  const post = new FormData();
+  post.append('offset', offset);
+  post.append('limit', limit);
+  post.append('search', JSON.stringify(search));
+  console.log('search', search);
+  const res = await AXIOS.post(`/instrument/search_instrument`, post);
+  return res.data;
+}
+
+export async function getSearchCount(search) {
+  const post = new FormData();
+  post.append('search', JSON.stringify(search));
+  const res = await AXIOS.post(`/instrument/get_search_count`, post);
+  const [count] = Object.values(res.data);
+  return count;
+}
+
 export async function getAllPictureForOne(id) {
   const post = new FormData();
   post.append('id', id);

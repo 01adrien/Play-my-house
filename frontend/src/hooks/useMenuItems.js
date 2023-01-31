@@ -14,7 +14,8 @@ export default function useMenuItems() {
           setIsOpen((prev) => ({ ...prev, [item]: false }))
         );
       })
-      .then(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(() => {});
   }, []);
 
   return { menuItems, isOpen, setIsOpen, loading };

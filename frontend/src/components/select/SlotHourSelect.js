@@ -9,7 +9,6 @@ export default function SlotHourSelect({
   day,
   allSlots,
 }) {
-  console.log(day);
   const handleChange = (e) => {
     setValue((prev) => ({
       ...prev,

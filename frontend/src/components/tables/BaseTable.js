@@ -98,9 +98,11 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
             <Table.Head className="sticky top-0">
               {data.length ? (
                 <>
-                  <Table.HeadCell className="text-center !p-4">
-                    <p>🎶</p>
-                  </Table.HeadCell>
+                  {view !== 'ADMIN_VALIDATION' && (
+                    <Table.HeadCell className="text-center !p-4">
+                      <p>🎶</p>
+                    </Table.HeadCell>
+                  )}
                   {view === 'OWNER_INSTRUMENT' && (
                     <Table.HeadCell>editer</Table.HeadCell>
                   )}
