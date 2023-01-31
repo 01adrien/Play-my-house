@@ -83,12 +83,27 @@ export async function getInstrumentById(id) {
   return res.data;
 }
 
-export async function searchInstrument(search, offset, limit) {
+export async function getFamily(name) {
+  const post = new FormData();
+  post.append('name', name);
+  const res = await AXIOS.post(`/instrument/get_family`, post);
+  return res.data;
+}
+
+export async function getType(name) {
+  const post = new FormData();
+  post.append('name', name);
+  const res = await AXIOS.post(`/instrument/get_type`, post);
+  return res.data;
+}
+
+export async function searchInstrument(search, nullArg, offset, limit) {
   const post = new FormData();
   post.append('offset', offset);
   post.append('limit', limit);
   post.append('search', JSON.stringify(search));
   console.log('search', search);
+  console.log(search);
   const res = await AXIOS.post(`/instrument/search_instrument`, post);
   return res.data;
 }

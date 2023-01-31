@@ -19,9 +19,13 @@
                 $sql_brands = 'instru.`brand_id` in ('.implode(",", $filters_cat["brands"]).') AND ';
                 $where .= $sql_brands;
             }
+            
             $where = substr($where, 0, -4);
+            
+            if ($filters_cat['page'] == "FAMILY") $where .= 'AND instru.`family_id` = '.$filters_cat["id"].'';
+            if ($filters_cat['page'] == "TYPE") $where .= 'AND instru.`type_id` = '.$filters_cat["id"].'';
             return $where;
-
+            
         }
 
         public static function get_instrument($offset, $limit, $filter = 'ALL', $post = []) 

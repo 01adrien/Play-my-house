@@ -6,6 +6,7 @@ import {
   getCountByFamilyName,
   searchInstrument,
   getSearchCount,
+  getFamily,
 } from '../api/instrument';
 import InstrumentListPage from '../components/InstrumentListPage';
 import { useRecoilValue, useRecoilState } from 'recoil';
@@ -23,6 +24,10 @@ export default function InstrumentFamily() {
   const profile = useRecoilValue(user);
   const [filter, setFilter] = useState(false);
   const [catFilters, setCatFilters] = useRecoilState(categoryFilter);
+  const getData = filter ? searchInstrument : getByFamilyName;
+  const getCount = filter ? getSearchCount : getCountByFamilyName;
+  const arg = filter ? catFilters : family;
+
   const {
     currentPage,
     setCurrentPage,
@@ -30,16 +35,12 @@ export default function InstrumentFamily() {
     itemsNumber,
     data,
     loading,
-  } = usePagination(
-    getCountByFamilyName,
-    getByFamilyName,
-    family,
-    'INSTRUMENT'
-  );
+  } = usePagination(getCount, getData, arg, 'INSTRUMENT');
 
   useEffect(() => {
     if (catFilters?.brands?.length || catFilters?.types?.length) {
       setFilter(true);
+      searchInstrument(catFilters, null, 0, 10).then(console.log);
       if (!catFilters.page)
         setCatFilters((prev) => ({ ...prev, page: 'FAMILY' }));
     } else {
@@ -49,8 +50,12 @@ export default function InstrumentFamily() {
   }, [catFilters]);
 
   useEffect(() => {
+    setCatFilters({ brands: [], types: [], page: '', id: '' });
     getByFamilyName(family, 'TYPE').then(setTypeList);
     getByFamilyName(family, 'BRAND').then(setBrandList);
+    getFamily(family).then(({ id }) =>
+      setCatFilters((prev) => ({ ...prev, id: id }))
+    );
   }, [family]);
 
   return (

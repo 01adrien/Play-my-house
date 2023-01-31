@@ -17,7 +17,7 @@ export default function InstrumentListPage({
   return (
     <div className={`w-full flex flex-col space-between items-center mt-6`}>
       <div className="w-[85%] h-[100%]">
-        <div className="flex items-center justify-between border-b-2 pb-2 border-border_color">
+        <div className="flex items-center justify-between border-b-2 pb-6 border-border_color">
           <p className="opacity-0">left</p>
           <p className="font-medium text-xl">{name.toUpperCase()}</p>
           <p className="opacity-0 xs:hidden 2xs:hidden 3xs:hidden">riht</p>
@@ -29,7 +29,7 @@ export default function InstrumentListPage({
               }`}
             />
           ) : (
-            <p className="opacity-0">riht</p>
+            <p className="opacity-0">right</p>
           )}
         </div>
         <div className="flex pt-3 min-h-[500px]">
@@ -62,11 +62,7 @@ export default function InstrumentListPage({
                 })
               ) : (
                 <div className="flex justify-center items-center">
-                  <div className="flex justify-center items-center bg-main_color rounded-lg">
-                    <p className="text-2xl uppercase py-8 px-8">
-                      pas d'instruments..
-                    </p>
-                  </div>
+                  <p className="uppercase py-8 px-8">pas d'instruments..</p>
                 </div>
               )}
             </div>

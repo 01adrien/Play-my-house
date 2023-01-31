@@ -32,7 +32,7 @@ export default function InstrumentsAll() {
     itemsNumber,
     data,
     loading,
-  } = usePagination(getCount, getData, filter && catFilters);
+  } = usePagination(getCount, getData, filter && catFilters, filter && null);
 
   useEffect(() => {
     if (catFilters?.brands?.length || catFilters?.types?.length) {
@@ -45,6 +45,7 @@ export default function InstrumentsAll() {
   }, [catFilters]);
 
   useEffect(() => {
+    setCatFilters({ brands: [], types: [], page: '', id: '' });
     getAllBrand().then(setBrandList);
     getAllType().then(setTypeList);
   }, []);

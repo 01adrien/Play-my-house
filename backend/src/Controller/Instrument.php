@@ -40,9 +40,25 @@
             return \Model\Instrument::get_instrument($post['offset'], $post['limit']);    
         }
 
+        public static function get_family_and_type()
+        {
+            return $items = \Model\Instrument_family::get_family_and_type();
+        }
+
+        public static function get_family($post)
+        {   
+            $attr["name"] = self::formatdata($post, 'name', \Model\Table::P_STRING);
+            return \Model\Instrument_family::find_by($attr, true);
+        }
+
+        public static function get_type($post)
+        {   
+            $attr["name"] = self::formatdata($post, 'name', \Model\Table::P_STRING);
+            return \Model\Instrument_type::find_by($attr, true);
+        }
+
         public static function search_instrument($post)
         {
-            // $post['search'] = self::formatdata($post, 'search', \Model\Table::P_INT);
             return \Model\Instrument::get_instrument($post['offset'], $post['limit'], 'SEARCH_FILTER', $post);
         }
 
