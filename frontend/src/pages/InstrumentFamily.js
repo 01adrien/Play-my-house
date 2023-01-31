@@ -40,7 +40,6 @@ export default function InstrumentFamily() {
   useEffect(() => {
     if (catFilters?.brands?.length || catFilters?.types?.length) {
       setFilter(true);
-      searchInstrument(catFilters, null, 0, 10).then(console.log);
       if (!catFilters.page)
         setCatFilters((prev) => ({ ...prev, page: 'FAMILY' }));
     } else {

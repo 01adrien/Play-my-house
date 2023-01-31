@@ -22,8 +22,6 @@ export default function ModalAdminValidation({
   onDeny,
 }) {
   const { loading, pictures } = useCarousel(instrument.id);
-  console.log(instrumentInfos);
-  console.log(instrument);
   return (
     <Modal show={true} size="md" popup={true} onClose={onClose}>
       <Modal.Header />

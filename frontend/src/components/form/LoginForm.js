@@ -67,7 +67,7 @@ export default function LoginForm() {
               style={`w-60 ${loading && 'border-2 border-slate-700'}`}
               type="submit"
             >
-              <p>{loading ? <Spinner /> : 'login'}</p>
+              <div>{loading ? <Spinner /> : 'login'}</div>
             </BasicButton>
           </div>
         </form>

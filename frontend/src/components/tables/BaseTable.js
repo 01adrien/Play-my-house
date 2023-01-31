@@ -111,7 +111,7 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
                 ''
               )}
               {data[0] &&
-                Object.keys(data[0]).map((h) => (
+                Object.keys(data[0])?.map((h) => (
                   <Table.HeadCell className="!px-2 text-xs text-center" key={h}>
                     {h}
                   </Table.HeadCell>
@@ -119,43 +119,44 @@ export default function BaseTable({ fn1, fn2, view, id, title, resaStatus }) {
             </Table.Head>
             <Table.Body className="divide-y">
               <Table.Row></Table.Row>
-              {data?.map((d) => (
-                <Table.Row
-                  key={d.id}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  onClick={() => handleSelectInstrument(d)}
-                >
-                  {view !== 'ADMIN_VALIDATION' && (
-                    <Table.Cell
-                      key={d.id}
-                      className="!focus:ring-0 !p-4 text-sm"
-                    >
-                      <Checkbox
+              {data &&
+                data?.map((d) => (
+                  <Table.Row
+                    key={d.id}
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                    onClick={() => handleSelectInstrument(d)}
+                  >
+                    {view !== 'ADMIN_VALIDATION' && (
+                      <Table.Cell
                         key={d.id}
-                        checked={isChecked(d, view)}
-                        onChange={(e) => handleSelectItem(e, d)}
-                        className="!focus:ring-0"
-                      />
-                    </Table.Cell>
-                  )}
-                  {view === 'OWNER_INSTRUMENT' && (
-                    <Table.Cell className="text-center">
-                      <FiEdit className="text-center" />
-                    </Table.Cell>
-                  )}
+                        className="!focus:ring-0 !p-4 text-sm"
+                      >
+                        <Checkbox
+                          key={d.id}
+                          checked={isChecked(d, view)}
+                          onChange={(e) => handleSelectItem(e, d)}
+                          className="!focus:ring-0"
+                        />
+                      </Table.Cell>
+                    )}
+                    {view === 'OWNER_INSTRUMENT' && (
+                      <Table.Cell className="text-center">
+                        <FiEdit className="text-center" />
+                      </Table.Cell>
+                    )}
 
-                  {Object.keys(d).map((cell, i) => (
-                    <Table.Cell
-                      className={`text-center text-xs !px-2 ${
-                        i % 2 === 0 && 'text-main_color'
-                      }`}
-                      key={cell}
-                    >
-                      {displayStatus(d[cell]) || '*'}
-                    </Table.Cell>
-                  ))}
-                </Table.Row>
-              ))}
+                    {Object.keys(d)?.map((cell, i) => (
+                      <Table.Cell
+                        className={`text-center text-xs !px-2 ${
+                          i % 2 === 0 && 'text-main_color'
+                        }`}
+                        key={cell}
+                      >
+                        {displayStatus(d[cell]) || '*'}
+                      </Table.Cell>
+                    ))}
+                  </Table.Row>
+                ))}
             </Table.Body>
           </Table>
           {showModal && (

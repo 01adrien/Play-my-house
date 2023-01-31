@@ -115,7 +115,7 @@ export default function Instrument() {
                 />
               )}
             </div>
-            <div className="flex flex-col justify-start items-end w-72 h-72">
+            <div className="flex flex-col justify-start items-end w-72 h-72 pt-4">
               <Accordion
                 arrowIcon={HiOutlineArrowCircleDown}
                 flush={true}

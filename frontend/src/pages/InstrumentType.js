@@ -26,6 +26,7 @@ export default function InstrumentType() {
   const getData = filter ? searchInstrument : getByTypeName;
   const getCount = filter ? getSearchCount : getCountByTypeName;
   const arg = filter ? catFilters : type;
+
   const {
     currentPage,
     setCurrentPage,
@@ -40,7 +41,6 @@ export default function InstrumentType() {
       setFilter(true);
       if (!catFilters.page)
         setCatFilters((prev) => ({ ...prev, page: 'TYPE' }));
-      searchInstrument(catFilters, null, 0, 10).then(console.log);
     } else {
       if (catFilters.page) setCatFilters((prev) => ({ ...prev, page: '' }));
       setFilter(false);

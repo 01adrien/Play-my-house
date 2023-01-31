@@ -177,6 +177,7 @@
 
         public static function get_owner_reservation($post)
         {
+            $attr = [];
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
             $reservations = \Model\Reservation::get_owner_reservation($attr, $post['offset'], $post['limit'], $post['active']);
             $data = [];

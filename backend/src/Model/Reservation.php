@@ -85,9 +85,11 @@
 
         public static function get_owner_reservation($post, $offset, $limit, $active)
         {
-            if ($active == 1) $where = "WHERE resa.`start` >= CURRENT_TIMESTAMP() AND resa.`owner_id` =:id"; 
+            if ($active == 1) $where = "WHERE resa.`start` >= CURRENT_TIMESTAMP() AND resa.`owner_id` =:id "; 
             if ($active == 0) $where = "WHERE resa.`start` < CURRENT_TIMESTAMP() AND resa.`owner_id` =:id"; 
-            $sql = "SELECT DISTINCT
+
+
+            $sql = "SELECT
                     resa.`id`,
                     DATE(resa.`start`) `date`,
                     LOWER(DAYNAME(resa.`start`)) `day`,
@@ -99,7 +101,6 @@
                     LEFT JOIN `users` ON users.`id` = resa.`user_id`
                     ".$where."
                     ORDER BY DATE(resa.`start`) ASC LIMIT ".$limit." OFFSET ".$offset."";
-
             return \My_class\App::get_DB()->prepare($sql, $post, null, false);
         }
 

@@ -21,7 +21,6 @@ export default function InstrumentsAll() {
   const [brandList, setBrandList] = useState([]);
   const [filter, setFilter] = useState(false);
   const [catFilters, setCatFilters] = useRecoilState(categoryFilter);
-
   const getData = filter ? searchInstrument : getInstruments;
   const getCount = filter ? getSearchCount : getInstrumentCount;
 

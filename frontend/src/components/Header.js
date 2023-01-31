@@ -20,6 +20,7 @@ export default function Header() {
 
   useEffect(() => {
     getPictureByUserId(profile?.id).then(setAvatar);
+    console.log(profile);
   }, [profile]);
 
   return (

@@ -111,7 +111,6 @@ export default function useReservationSlot() {
   }
 
   function handleDeleteHour(hour) {
-    console.log(numToDay[currentDay]);
     resetTimeChecker();
     hydrateTimeChecker(
       days[numToDay[currentDay]].filter((h) => h !== hour),
@@ -142,7 +141,6 @@ export default function useReservationSlot() {
             timelineObject[timelineArray[i]] = slotNumber;
           }
         });
-        console.log(timelineObject);
         const data = {
           ...timelineScheme,
           ...timelineObject,
