@@ -196,3 +196,8 @@ export async function validateOrNotInstrument(action, id) {
   const res = await AXIOS.post(`/instrument/admin_validation`, post);
   return res.data;
 }
+
+export async function getInstrumentPaginate() {
+  const res = await AXIOS.get(`api/instrument/get_all/2/5`);
+  console.log(res.data);
+}
