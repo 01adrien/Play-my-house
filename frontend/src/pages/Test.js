@@ -11,18 +11,16 @@ import {
 } from '../api/instrument';
 import withLoading from '../HOC/withLoading';
 import usePagination from '../hooks/usePagination';
-import { useRecoilState } from 'recoil';
-import { categoryFilter } from '../store/search';
-import BasicButton from '../components/button/BasicButton';
-import { getInstrumentPaginate } from '../api/instrument';
+import useInstrumentsFilter from '../hooks/useInstrumentsFilter';
 
 const InstrumentListPageWithLoading = withLoading(InstrumentListPage);
 
 export default function InstrumentsAll() {
   const [typeList, setTypeList] = useState([]);
   const [brandList, setBrandList] = useState([]);
-  const [filter, setFilter] = useState(false);
-  const [catFilters, setCatFilters] = useRecoilState(categoryFilter);
+
+  const { resetFilters, filter, catFilters } = useInstrumentsFilter();
+
   const getData = filter ? searchInstrument : getInstruments;
   const getCount = filter ? getSearchCount : getInstrumentCount;
 
@@ -36,23 +34,13 @@ export default function InstrumentsAll() {
   } = usePagination(getCount, getData, filter && catFilters, filter && null);
 
   useEffect(() => {
-    if (catFilters?.brands?.length || catFilters?.types?.length) {
-      setFilter(true);
-      if (!catFilters.page) setCatFilters((prev) => ({ ...prev, page: 'ALL' }));
-    } else {
-      if (catFilters.page) setCatFilters((prev) => ({ ...prev, page: '' }));
-      setFilter(false);
-    }
-  }, [catFilters]);
-
-  useEffect(() => {
-    setCatFilters({ brands: [], types: [], page: '', id: '' });
+    resetFilters();
     getAllBrand().then(setBrandList);
     getAllType().then(setTypeList);
   }, []);
   return (
     <Layout>
-      <BasicButton onClick={getInstrumentPaginate}>click me</BasicButton>
+      {/* <div className="w-full h-8 bg-main_color inne">4</div> */}
       <InstrumentListPageWithLoading
         loading={loading}
         pagesNumber={Math.ceil(itemsNumber / itemsPerPage)}

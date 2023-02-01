@@ -102,6 +102,7 @@ export async function searchInstrument(search, nullArg, offset, limit) {
   post.append('offset', offset);
   post.append('limit', limit);
   post.append('search', JSON.stringify(search));
+  // console.log(search);
   const res = await AXIOS.post(`/instrument/search_instrument`, post);
   return res.data;
 }
@@ -195,9 +196,4 @@ export async function validateOrNotInstrument(action, id) {
   post.append('id', id);
   const res = await AXIOS.post(`/instrument/admin_validation`, post);
   return res.data;
-}
-
-export async function getInstrumentPaginate() {
-  const res = await AXIOS.get(`api/instrument/get_all/2/5`);
-  console.log(res.data);
 }

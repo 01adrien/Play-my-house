@@ -1,9 +1,16 @@
 import React from 'react';
+import useInstrumentsFilter from '../hooks/useInstrumentsFilter';
 
 export default function SearchBar() {
+  const { setCatFilters, catFilters } = useInstrumentsFilter();
+
   function onSubmit(e) {
     e.preventDefault();
     console.log('submit');
+  }
+
+  function handleChangeSearch(e) {
+    setCatFilters((prev) => ({ ...prev, name: e.target.value }));
   }
 
   return (
@@ -36,9 +43,11 @@ export default function SearchBar() {
           className="bg-gray-50 border shadow-md border-gray-300 text-gray-900 text-sm rounded block w-full pl-10 p-2.5 "
           placeholder="Search"
           required
+          onChange={handleChangeSearch}
+          value={catFilters.name}
         />
       </div>
-      <button
+      {/* <button
         type="submit"
         className="p-2.5 ml-2 text-sm font-medium text-white bg-main_color shadow-md rounded-lg border border-main_color hover:bg-main_color_hover focus:bg-main_color_light"
       >
@@ -57,7 +66,7 @@ export default function SearchBar() {
           ></path>
         </svg>
         <span className="sr-only">Search</span>
-      </button>
+      </button> */}
     </form>
   );
 }

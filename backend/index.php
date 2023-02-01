@@ -12,7 +12,7 @@ if ($_SERVER['HTTP_ORIGIN'] === "http://127.0.0.1:1234" || "http://localhost:123
 
     $router = new AltoRouter();
     
-    $router->map('GET', '/', function () { echo '<!doctype html><html lang="fr"><body style="background-color:#000000;"></body></html>' ; });
+    $router->map('GET', '/', function () { echo "server is running"; });
     
     $router->map('GET', '/[*:controller]/[*:fn]', function ($controller, $fn) {
         $cls = '\Controller\\' . ucfirst($controller);
