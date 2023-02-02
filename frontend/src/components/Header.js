@@ -11,7 +11,6 @@ import { getPictureByUserId } from '../api/user';
 
 import NavMobile from './nav/NavMobile';
 import { RxHamburgerMenu } from 'react-icons/rx';
-import useProfilePicture from '../hooks/useProfilePicture';
 
 export default function Header() {
   const [profile, setProfile] = useRecoilState(user);
@@ -44,11 +43,11 @@ export default function Header() {
         </Link>
       </div>
       <div
-        className={`w-full h-12 flex justify-center items-center shadow-inner bg-slate-100`}
+        className={`w-full h-12 flex justify-center items-center shadow-inner bg-slate-100 border-b-2 border-main_color`}
       >
         <div
           onClick={() => <Navigate to={'/instrument-all'} replace />}
-          className="w-[80%] h-12 lg:flex justify-between items-center md:hidden sm:hidden xs:hidden 2xs:hidden 3xs:hidden"
+          className="w-[80%] h-12 lg:flex justify-between  items-center md:hidden sm:hidden xs:hidden 2xs:hidden 3xs:hidden"
         >
           <DropdownMenu />
           <div>

@@ -1,14 +1,37 @@
 import React from 'react';
+import useInstrumentsFilter from '../hooks/useInstrumentsFilter';
+import { useLocation } from 'react-router-dom';
 
 export default function SearchBar() {
+  const { setCatFilters, catFilters } = useInstrumentsFilter();
+  const location = useLocation();
+
+  const searchPages = [
+    '/instrument-all',
+    '/instrument-family',
+    '/instrument-type',
+  ];
+
+  function displaySearchInput() {
+    return (
+      location.pathname.startsWith(searchPages[0]) ||
+      location.pathname.startsWith(searchPages[1]) ||
+      location.pathname.startsWith(searchPages[2])
+    );
+  }
+
   function onSubmit(e) {
     e.preventDefault();
     console.log('submit');
   }
 
+  function handleChangeSearch(e) {
+    setCatFilters((prev) => ({ ...prev, name: e.target.value }));
+  }
+
   return (
     <form
-      className="flex items-center w-[80%] max-w-2xl"
+      className={`flex items-center w-[80%] max-w-2xl `}
       onSubmit={(e) => onSubmit(e)}
     >
       <label htmlFor="simple-search" className="sr-only">
@@ -33,31 +56,14 @@ export default function SearchBar() {
         <input
           type="text"
           id="simple-search"
-          className="bg-gray-50 border shadow-md border-gray-300 text-gray-900 text-sm rounded block w-full pl-10 p-2.5 "
+          className={`bg-gray-50 border shadow-md border-gray-300 text-gray-900 text-sm rounded block w-full pl-10 p-2.5`}
           placeholder="Search"
           required
+          onChange={handleChangeSearch}
+          value={catFilters.name}
+          disabled={!displaySearchInput()}
         />
       </div>
-      <button
-        type="submit"
-        className="p-2.5 ml-2 text-sm font-medium text-white bg-main_color shadow-md rounded-lg border border-main_color hover:bg-main_color_hover focus:bg-main_color_light"
-      >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          ></path>
-        </svg>
-        <span className="sr-only">Search</span>
-      </button>
     </form>
   );
 }

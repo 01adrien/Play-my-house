@@ -1,3 +1,5 @@
+
+
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]
@@ -5,7 +7,7 @@ RewriteRule . index.php [L]
 SetEnvIf Origin "^http(s)?://(.+\.)?(127.0.0.1:1234|no-idea-web.fr)$" REQUEST_ORIGIN=$0
 Header always set Access-Control-Allow-Origin %{REQUEST_ORIGIN}e env=REQUEST_ORIGIN
 Header always set Access-Control-Allow-Methods "OPTIONS, GET, POST, PUT, DELETE"
-Header always set Access-Control-Allow-Headers "origin, x-requested-with, content-type, Authorization, Accept, Accept-Language, X-Authorization"
+Header always set Access-Control-Allow-Headers "content-type, Authorization, Accept, Accept-Language, X-Authorization"
 Header set Access-Control-Allow-Credentials true
 
 Header always set X-Frame-Options "DENY"
@@ -29,3 +31,4 @@ Deny from all
 Order allow,deny
 Deny from all
 </Files>
+
