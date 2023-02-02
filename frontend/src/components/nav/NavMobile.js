@@ -83,11 +83,7 @@ export default function NavMobile({ profile, open }) {
                         className="w-[80%] h-10 flex items-center"
                         to={`/instrument-family/${item}`}
                       >
-                        <span
-                          className={`animate-[appearAfter_0.4s_ease-in-out] ${
-                            navBarClose && 'hidden'
-                          }`}
-                        >
+                        <span className={` ${navBarClose && 'hidden'}`}>
                           {item.toUpperCase()}
                         </span>
                       </Link>
