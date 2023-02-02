@@ -86,7 +86,9 @@ export default function ModalReservation({
     };
     if (!validSlot || !validHour) return makeErrorToast({}, errorMsg);
     createReservation(body)
-      .then(() => makeSuccesToast({}, succesMsg))
+      .then(({ succes, msg }) => {
+        succes ? makeSuccesToast({}, msg) : makeErrorToast({}, msg);
+      })
       .catch(() => makeErrorToast({}, failureMsg));
     handleClose();
   }
