@@ -11,27 +11,25 @@
             $filters_cat = json_decode($post['search'], true);
             if (isset($filters_cat['types']) && count($filters_cat['types']) > 0) 
             {   
-                $sql_types = 'instru.`type_id` IN ('.implode(",", $filters_cat["types"]).') AND ';
-                $where .= $sql_types;
+                $where .= 'instru.`type_id` IN ('.implode(",", $filters_cat["types"]).') AND ';
             } 
             if (isset($filters_cat['brands']) && count($filters_cat['brands']) > 0)
             {
-                $sql_brands = 'instru.`brand_id` IN ('.implode(",", $filters_cat["brands"]).') AND ';
-                $where .= $sql_brands;
+                $where .= 'instru.`brand_id` IN ('.implode(",", $filters_cat["brands"]).') AND ';
             }
             
             $where = substr($where, 0, -4);
             
-            if ($filters_cat['page'] == "FAMILY") $where .= 'AND instru.`family_id` = '.$filters_cat["id"].'';
-            if ($filters_cat['page'] == "TYPE") $where .= 'AND instru.`type_id` = '.$filters_cat["id"].'';
             if (isset($filters_cat['name']) && strlen($filters_cat['name']) > 0 && count($filters_cat['brands']) > 1 || count($filters_cat['types']) > 1)
             {
                 $where .= 'AND LOWER(instru.`name`) LIKE LOWER('.'\''.'%'.$filters_cat['name'].'%'.'\''.')';
             } 
             if (isset($filters_cat['name']) && strlen($filters_cat['name']) > 0 && !count($filters_cat['brands']) > 0 && !count($filters_cat['types']) > 0)
             {
-                $where .= 'ERE LOWER(instru.`name`) LIKE LOWER('.'\''.'%'.$filters_cat['name'].'%'.'\''.') OR LOWER(instru.`description`) LIKE LOWER('.'\''.'%'.$filters_cat['name'].'%'.'\''.')';
+                $where .= 'ERE LOWER(instru.`name`) LIKE LOWER('.'\''.'%'.$filters_cat['name'].'%'.'\''.')';
             } 
+            if ($filters_cat['page'] == "FAMILY") $where .= ' AND instru.`family_id` = '.$filters_cat["id"].'';
+            if ($filters_cat['page'] == "TYPE") $where .= ' AND instru.`type_id` = '.$filters_cat["id"].'';
             return $where;
             
         }
@@ -44,7 +42,7 @@
             if ($filter === "SEARCH") $where = "WHERE LOWER(instru.`name`) LIKE CONCAT ('%', LOWER(:search), '%')";
             if ($filter === "SEARCH_FILTER") {
                 $where = self::build_filter_query($post);
-                // return $where;
+                //return $where;
                 $post = [];
             };
             $sql = "SELECT

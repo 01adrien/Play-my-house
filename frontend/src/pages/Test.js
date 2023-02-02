@@ -19,7 +19,7 @@ export default function InstrumentsAll() {
   const [typeList, setTypeList] = useState([]);
   const [brandList, setBrandList] = useState([]);
 
-  const { resetFilters, filter, catFilters } = useInstrumentsFilter();
+  const { resetFilters, filter, catFilters } = useInstrumentsFilter('ALL');
 
   const getData = filter ? searchInstrument : getInstruments;
   const getCount = filter ? getSearchCount : getInstrumentCount;
@@ -40,7 +40,7 @@ export default function InstrumentsAll() {
   }, []);
   return (
     <Layout>
-      {/* <div className="w-full h-8 bg-main_color inne">4</div> */}
+      {/* <div className="w-full h-8 bg-main_color inner-shadow">4</div> */}
       <InstrumentListPageWithLoading
         loading={loading}
         pagesNumber={Math.ceil(itemsNumber / itemsPerPage)}

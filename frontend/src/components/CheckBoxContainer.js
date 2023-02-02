@@ -9,8 +9,11 @@ export default function CheckBoxContainer({ types, brands, closeFilters }) {
   const isMobile = useMediaQuery('(max-width: 740px)');
   const { setCatFilters, catFilters, resetFilters } = useInstrumentsFilter();
 
-  const isChecked = (id, cat) =>
+  const isChecked = (cat) => (id) =>
     !!catFilters[cat].filter((t) => parseInt(t) === parseInt(id)).length;
+
+  const isCheckedBand = isChecked('brands');
+  const isCheckedType = isChecked('types');
 
   return (
     <div className="flex flex-col w-[95%] pt-3 pb-16">
@@ -41,7 +44,7 @@ export default function CheckBoxContainer({ types, brands, closeFilters }) {
                       label={type.name}
                       type="types"
                       value={type.id}
-                      isChecked={isChecked(type.id, 'types')}
+                      isChecked={isCheckedType(type.id)}
                       setSearchFilters={setCatFilters}
                     />
                     <span className="text-xs text-gray-500">
@@ -71,7 +74,7 @@ export default function CheckBoxContainer({ types, brands, closeFilters }) {
                   label={brand.name}
                   type="brands"
                   value={brand.id}
-                  isChecked={isChecked(brand.id, 'brands')}
+                  isChecked={isCheckedBand(brand.id)}
                   setSearchFilters={setCatFilters}
                 />
                 <span className="text-xs text-gray-500">

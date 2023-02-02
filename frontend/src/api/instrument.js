@@ -102,7 +102,6 @@ export async function searchInstrument(search, nullArg, offset, limit) {
   post.append('offset', offset);
   post.append('limit', limit);
   post.append('search', JSON.stringify(search));
-  // console.log(search);
   const res = await AXIOS.post(`/instrument/search_instrument`, post);
   return res.data;
 }

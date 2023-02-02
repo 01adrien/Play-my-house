@@ -12,15 +12,15 @@ export default function useInstrumentsFilter(page) {
   }
 
   useEffect(() => {
-    //console.log(catFilters);
-    //searchInstrument(catFilters, null, 0, 10).then(console.log);
+    console.log(catFilters);
+    searchInstrument(catFilters, null, 0, 10).then(console.log);
     if (
       catFilters?.brands?.length ||
       catFilters?.types?.length ||
       catFilters?.name?.length
     ) {
       !filter && setFilter(true);
-      if (!catFilters.page) setCatFilters((prev) => ({ ...prev, page: 'ALL' }));
+      if (!catFilters.page) setCatFilters((prev) => ({ ...prev, page: page }));
     } else {
       if (catFilters.page) setCatFilters((prev) => ({ ...prev, page: '' }));
       setFilter(false);
