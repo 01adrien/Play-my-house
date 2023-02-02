@@ -12,8 +12,8 @@ export default function useInstrumentsFilter(page) {
   }
 
   useEffect(() => {
-    console.log(catFilters);
-    searchInstrument(catFilters, null, 0, 10).then(console.log);
+    // console.log(catFilters);
+    //searchInstrument(catFilters, null, 0, 10).then(console.log);
     if (
       catFilters?.brands?.length ||
       catFilters?.types?.length ||

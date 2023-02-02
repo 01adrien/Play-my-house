@@ -21,7 +21,7 @@ export default function InstrumentCard({ instrument, style = '', link }) {
   }, []);
 
   return (
-    <Link to={link} state={{ ...instrument, picture: null }}>
+    <Link className="h-fit" to={link} state={{ ...instrument, picture: null }}>
       <div className={`p-3 ${style}`}>
         <div
           className={`rounded-t border-2 border-border_color-center sm:h-48 sm:w-64 xs:h-28 xs:w-32 2xs:w-32 2xs:h-28 3sx:h-28 3xs:w-32`}

@@ -1,8 +1,24 @@
 import React from 'react';
 import useInstrumentsFilter from '../hooks/useInstrumentsFilter';
+import { useLocation } from 'react-router-dom';
 
 export default function SearchBar() {
   const { setCatFilters, catFilters } = useInstrumentsFilter();
+  const location = useLocation();
+
+  const searchPages = [
+    '/instrument-all',
+    '/instrument-family',
+    '/instrument-type',
+  ];
+
+  function displaySearchInput() {
+    return (
+      location.pathname.startsWith(searchPages[0]) ||
+      location.pathname.startsWith(searchPages[1]) ||
+      location.pathname.startsWith(searchPages[2])
+    );
+  }
 
   function onSubmit(e) {
     e.preventDefault();
@@ -15,7 +31,7 @@ export default function SearchBar() {
 
   return (
     <form
-      className="flex items-center w-[80%] max-w-2xl"
+      className={`flex items-center w-[80%] max-w-2xl `}
       onSubmit={(e) => onSubmit(e)}
     >
       <label htmlFor="simple-search" className="sr-only">
@@ -40,11 +56,12 @@ export default function SearchBar() {
         <input
           type="text"
           id="simple-search"
-          className="bg-gray-50 border shadow-md border-gray-300 text-gray-900 text-sm rounded block w-full pl-10 p-2.5 "
+          className={`bg-gray-50 border shadow-md border-gray-300 text-gray-900 text-sm rounded block w-full pl-10 p-2.5`}
           placeholder="Search"
           required
           onChange={handleChangeSearch}
           value={catFilters.name}
+          disabled={!displaySearchInput()}
         />
       </div>
     </form>
