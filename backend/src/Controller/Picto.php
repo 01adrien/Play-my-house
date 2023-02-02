@@ -23,7 +23,7 @@
             $post = [];
             $file_name = \uniqid().'_'.$_POST['name'].'_'.$_FILES["file"]["name"];
             
-            if ($_FILES['file']['error'] == 0) 
+            if ($_FILES['file']['error'] == 0 && $_FILES['file']['size'] < 10485760) 
             {
                 if (move_uploaded_file($_FILES["file"]["tmp_name"], $_FILES["file"]["name"])) 
                 {
@@ -32,9 +32,9 @@
                     if ($old_name->URI !== 'default.png') unlink(self::USER_PATH.'/'.$old_name->URI);
                     rename($_FILES["file"]["name"], self::USER_PATH.'/'.$file_name);
                 } 
-               else return 'erreur upload'; 
+               else return false; 
             } 
-            else return 'erreur upload';
+            else return false;
             $post['URI'] = $file_name;
             $post['ext'] = pathinfo($file_name, PATHINFO_EXTENSION);
             $post['id'] = $_POST['picture_id'];

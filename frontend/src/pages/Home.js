@@ -5,17 +5,13 @@ import img1 from '../assets/home_banner1.jpg';
 import img2 from '../assets/home_banner2.jpeg';
 import img3 from '../assets/home_banner3.jpg';
 import InstrumentCard from '../components/cards/InstrumentCard';
-import { useRecoilState } from 'recoil';
-import { user } from '../store/user';
 import Footer from '../components/Footer';
 import { Picture } from '../components/Picture';
 import Caroussel from '../components/Caroussel';
 import useMediaQuery from '../hooks/useMediaQuery';
-import { pingServer } from '../api';
 
 export default function Home() {
   const [instruments, setInstruments] = useState([]);
-  const [profile, setProfile] = useRecoilState(user);
   const [loading, setLoading] = useState(true);
   const pictures = [img1, img2, img3];
   const isMobile = useMediaQuery('(max-width: 540px)');
