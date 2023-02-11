@@ -48,6 +48,7 @@ export default function InstrumentsAll() {
         brands={brandList}
         name={'Tous les instruments'}
         instruments={data}
+        page="ALL"
       />
     </Layout>
   );

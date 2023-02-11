@@ -121,12 +121,12 @@
         }
 
 
-        public static function test_slots($post) {
-            $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            $attr['day'] = self::formatdata($post, 'day', \Model\Table::P_STRING);
-            $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
-            return $day_resas;
-        }
+        // public static function test_slots($post) {
+        //     $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
+        //     $attr['day'] = self::formatdata($post, 'day', \Model\Table::P_STRING);
+        //     $day_resas =  \Model\Reservation::get_reservation_for_one_instrument($attr, 'DAY');
+        //     return $day_resas;
+        // }
 
 
         public static function get_timeline_by_day($post)
@@ -140,12 +140,12 @@
             $data = [];
             foreach($time as $k => $v)
             {   
-                //if (!$v) unset($time->$k);
                 if ($v) $data[str_replace('_',"",$k)] = $v;
                 
             } 
             return $data;
         }
+
 
         public static function get_user_reservation($post)
         {   
@@ -213,6 +213,10 @@
         {   
             $post['end'] = date('Y-m-d H:i:s', \strtotime($post['end']));
             $post['start'] = date('Y-m-d H:i:s', \strtotime($post['start']));
+            $post['day'] = date('Y-m-d', \strtotime($post['start']));
+            
+            $start_hour = date("H", \strtotime($post['start']));
+            $end_hour = date("H", \strtotime($post['end']));
 
             $attr['instrument_id'] = self::formatdata($post, 'instrument_id', \Model\Table::P_INT);
             $attr['slot_num'] = self::formatdata($post, 'slot_num', \Model\Table::P_INT);
@@ -220,8 +224,27 @@
             $attr['owner_id'] = self::formatdata($post, 'owner_id', \Model\Table::P_INT);
             $attr['start'] = self::formatdata($post, 'start', \Model\Table::P_STRING);
             $attr['end'] = self::formatdata($post, 'end', \Model\Table::P_STRING);
+                        
+            $date["day"] = self::formatdata($post, 'day', \Model\Table::P_STRING);
+            $date['id'] = self::formatdata($post, 'user_id', \Model\Table::P_INT);
+            $resas_day= \Model\Reservation::get_user_reservation($date, 0, 20, 'DAY');
 
-            return \Model\Reservation::create_update($attr,'CREATE');
+            if ($resas_day)
+            {
+                foreach($resas_day as $resa )
+                {   
+                    $slot = range($resa->start, $resa->end);
+                    if (in_array($start_hour, $slot) || in_array($end_hour, $slot))
+                    {
+                        return (object)["succes" => false, "msg" => "Vous avez deja une reservation a cette horaire"];
+                    }
+                }
+            }
+
+            $is_create = \Model\Reservation::create_update($attr,'CREATE');
+            if ($is_create->result) return  (object)["succes" => true, "msg" => "Reservation validee"];
+            return (object)["succes" => false, "msg" => "erreur, reessayez plus tard"];
+             
         }
 
         public static function create_get_timeline($post) 

@@ -21,7 +21,6 @@ export default function FormInput({
         data-cy={testId}
         type={type}
         id={id}
-        className="bg-none border-slate-300 h-10 focus:ring-0 rounded-md text-gray-900 text-sm block w-full p-2.5"
         placeholder=""
         required={required}
         onChange={(e) => fn(e)}
@@ -32,3 +31,4 @@ export default function FormInput({
     </div>
   );
 }
+

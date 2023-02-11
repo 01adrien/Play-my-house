@@ -53,6 +53,7 @@ export default function InstrumentType() {
         brands={brandList}
         name={type}
         instruments={data}
+        page="TYPE"
       />
     </Layout>
   );

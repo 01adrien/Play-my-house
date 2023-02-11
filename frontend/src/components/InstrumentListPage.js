@@ -12,6 +12,7 @@ export default function InstrumentListPage({
   pagesNumber,
   currentPage,
   setCurrentPage,
+  page,
 }) {
   const [openFilters, setOpenFilters] = useState(false);
   return (
@@ -32,7 +33,7 @@ export default function InstrumentListPage({
             <p className="opacity-0">right</p>
           )}
         </div>
-        <div className="flex pt-3 min-h-[500px]">
+        <div className="flex pt-3 min-h-[80vh]">
           <div
             className={` ${
               !openFilters ? 'xs:hidden 2xs:hidden 3xs:hidden' : ''
@@ -45,6 +46,7 @@ export default function InstrumentListPage({
                 types={types}
                 brands={brands}
                 closeFilters={setOpenFilters}
+                page={page}
               />
             </div>
           </div>
@@ -61,7 +63,7 @@ export default function InstrumentListPage({
                   );
                 })
               ) : (
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center h-[50vh]">
                   <p className="uppercase py-8 px-8">pas d'instruments..</p>
                 </div>
               )}

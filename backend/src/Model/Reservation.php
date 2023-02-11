@@ -55,7 +55,11 @@
         {   
             if ($active == 1) $and = "AND resa.`start` >= CURRENT_TIMESTAMP()"; 
             if ($active == 0) $and = "AND resa.`start` < CURRENT_TIMESTAMP()"; 
-
+            if ($active == "DAY")
+            {
+                $and = "AND DATE(resa.`start`) =:day";
+                //return $post;
+            }
             $sql = "SELECT
                     resa.`id`,
                     DATE(resa.`start`) `date`,

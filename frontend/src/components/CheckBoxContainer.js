@@ -4,10 +4,20 @@ import useMediaQuery from '../hooks/useMediaQuery';
 import { RxCrossCircled } from 'react-icons/rx';
 import { BiReset } from 'react-icons/bi';
 import useInstrumentsFilter from '../hooks/useInstrumentsFilter';
+import { useRecoilValue } from 'recoil';
+import { categoryFilter } from '../store/search';
 
-export default function CheckBoxContainer({ types, brands, closeFilters }) {
+export default function CheckBoxContainer({
+  types,
+  brands,
+  closeFilters,
+  page,
+}) {
   const isMobile = useMediaQuery('(max-width: 740px)');
-  const { setCatFilters, catFilters, resetFilters } = useInstrumentsFilter();
+  const filter = useRecoilValue(categoryFilter);
+  console.log(page);
+  const { setCatFilters, catFilters, resetFilters } =
+    useInstrumentsFilter(page);
 
   const isChecked = (cat) => (id) =>
     !!catFilters[cat].filter((t) => parseInt(t) === parseInt(id)).length;
@@ -17,10 +27,10 @@ export default function CheckBoxContainer({ types, brands, closeFilters }) {
 
   return (
     <div className="flex flex-col w-[95%] pt-3 pb-16">
-      <div className="flex justify-center items-center pb-2">
+      <div className="flex justify-center items-center pb-3">
         <BiReset
           onClick={resetFilters}
-          size={'1.5em'}
+          size={'2em'}
           className="text-main_color cursor-pointer"
         />
       </div>

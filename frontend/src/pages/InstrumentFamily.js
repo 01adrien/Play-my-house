@@ -41,7 +41,6 @@ export default function InstrumentFamily() {
     getByFamilyName(family, 'TYPE').then(setTypeList);
     getByFamilyName(family, 'BRAND').then(setBrandList);
     getFamily(family).then(({ id }) => {
-      console.log(id);
       setCatFilters((prev) => ({ ...prev, id: id }));
     });
   }, [family]);
@@ -58,6 +57,7 @@ export default function InstrumentFamily() {
         brands={brandList}
         name={family}
         instruments={data}
+        page="FAMILY"
       />
     </Layout>
   );

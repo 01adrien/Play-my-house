@@ -42,7 +42,6 @@
             if ($filter === "SEARCH") $where = "WHERE LOWER(instru.`name`) LIKE CONCAT ('%', LOWER(:search), '%')";
             if ($filter === "SEARCH_FILTER") {
                 $where = self::build_filter_query($post);
-                //return $where;
                 $post = [];
             };
             $sql = "SELECT

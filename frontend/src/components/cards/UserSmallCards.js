@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Picture } from '../Picture';
 import { Avatar } from 'flowbite-react';
 
 export default function UserSmallCards({ name, picture }) {

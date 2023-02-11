@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function SelectAddSlot({
+export default function BasiqSelect({
   label,
   data,
   slot,
@@ -35,3 +35,6 @@ export default function SelectAddSlot({
     </div>
   );
 }
+
+
+

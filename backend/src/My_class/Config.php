@@ -5,7 +5,6 @@
     class Config 
     {
 
-        private static $db;
         private static $_instance;
 	    private $config = [];
         private $PHP_ENV;

@@ -99,7 +99,7 @@ export default function Instrument() {
 
   return (
     <Layout>
-      <div className="w-[100%] flex flex-col items-center justify-center mt-6">
+      <div className="w-[100%] flex flex-col items-center justify-center">
         <p className="text-lg">{location.state.instrumentName.toUpperCase()}</p>
         <div className="flex flex-col justify-around mt-8 max-w-[700px] w-[60%]">
           <div

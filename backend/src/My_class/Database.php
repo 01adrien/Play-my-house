@@ -3,7 +3,6 @@
 
     class Database 
     {
-        private static $conn;
         private $db_name;
         private $db_user;
         private $db_pass;
@@ -11,9 +10,7 @@
         private $pdo;
 
 
-        public function __construct(
-            $db_name='',$db_user='',
-            $db_pass='',$db_host='localhost')
+        public function __construct($db_name='',$db_user='', $db_pass='',$db_host='localhost')
         {
             $this->db_name=$db_name;
             $this->db_user=$db_user;
@@ -25,18 +22,13 @@
         { 
             if ($this->pdo === null)
             {
-                $pdo = new \PDO(
-                    "mysql:host=".$this->db_host.";
-                    dbname=".$this->db_name,
-                    $this->db_user, $this->db_pass);	
+                $pdo = new \PDO("mysql:host=".$this->db_host.";dbname=".$this->db_name, $this->db_user, $this->db_pass);	
                 $this->pdo = $pdo;
             } else $pdo = $this->pdo;
             return $pdo;
         }
 
-        public function query(
-            $statement, $class_name = null
-            , $one = false)
+        public function query($statement, $class_name = null, $one = false)
         {
             $req = $this->getPDO()->query($statement);
             if($class_name) $req->setFetchMode(

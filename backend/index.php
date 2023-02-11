@@ -1,7 +1,6 @@
 <?php
 
-if ($_SERVER['HTTP_ORIGIN'] === "http://127.0.0.1:1234" || "http://localhost:1234" || "https://no-idea-web.fr" )
-{
+
     require __DIR__. '/vendor/autoload.php';
     include_once(__DIR__ . '/src/Autoloader.php');
     \Autoloader::register();
@@ -41,5 +40,4 @@ if ($_SERVER['HTTP_ORIGIN'] === "http://127.0.0.1:1234" || "http://localhost:123
     } else {
         header("HTTP/1.0 404 Not Found");
     }
-} else require("forbidden.html");
 

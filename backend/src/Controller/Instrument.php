@@ -26,7 +26,7 @@
         {
             $attr = [];
             $attr['id'] = self::formatdata($post, 'id', \Model\Table::P_INT);
-            return \Model\Instrument::get_by_ID($attr);
+            return \Model\Instrument::get_by_ID($attr); 
         }
 
         public static function get_ten_newest()
@@ -241,7 +241,7 @@
             return \Model\Instrument::get_count_by_owner($attr);
         }
 
-        public static function upload_picture($post) 
+        public static function upload_picture() 
         {
             $ext = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
             if ($ext === 'jpeg' || $ext == 'jpg') 

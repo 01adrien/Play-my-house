@@ -15,6 +15,9 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const pictures = [img1, img2, img3];
   const isMobile = useMediaQuery('(max-width: 540px)');
+  console.log("hello")
+  console.log(process.env.API_BASE_URL)
+
 
   useEffect(() => {
     getTenNewest()
